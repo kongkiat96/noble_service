@@ -292,4 +292,10 @@ class getDataMasterModel extends Model
         // dd($getEmployee);
         return $getEmployee;
     }
+
+    public function getListCategoryMain($tag)
+    {
+        $getListCategoryMain = DB::connection('mysql')->table('tbm_category_main')->where('deleted', 0)->where('status_tag',1)->where('use_tag', $tag)->orderBy('id')->get();
+        return $getListCategoryMain;
+    }
 }

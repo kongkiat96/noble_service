@@ -199,6 +199,23 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'Settings\AboutAppController@index');
             Route::post('/save-about-app', 'Settings\AboutAppController@saveAboutAppData');
         });
+
+        Route::prefix('/set-type-category-it')->group(function () {
+            Route::get('', 'Settings\SetTypeCategoryController@index_it');
+            Route::get('/add-category-main-modal', 'Settings\SetTypeCategoryController@showAddCategoryMainModal');
+            Route::get('/add-category-type-modal', 'Settings\SetTypeCategoryController@showAddCategoryTypeModal');
+        });
+
+        Route::prefix('/set-type-category-tools')->group(function () {
+            Route::post('/save-category', 'Settings\SetTypeCategoryController@saveCategory');
+            Route::get('/show-edit-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@showEditCategoryMain');
+            Route::post('/edit-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@editCategoryMain');
+            Route::post('/delete-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@deleteCategoryMain');
+
+
+            
+            Route::post('/get-data-category-main', 'Settings\SetTypeCategoryController@getDataCategoryMain');
+        });
     });
 
     Route::prefix('getMaster')->group(function () {

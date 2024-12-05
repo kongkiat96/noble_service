@@ -126,35 +126,65 @@ INSERT INTO `tbm_about_app` VALUES ('a5f11576-4a6e-45f2-b338-ce9505baeb1a','Serv
 UNLOCK TABLES;
 
 --
--- Table structure for table `tbm_bank_list`
+-- Table structure for table `tbm_asset_tag`
 --
 
-DROP TABLE IF EXISTS `tbm_bank_list`;
+DROP TABLE IF EXISTS `tbm_asset_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbm_bank_list` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `bank_name` varchar(100) NOT NULL,
-  `bank_short_name` varchar(100) DEFAULT NULL,
-  `bank_logo` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT '1',
-  `deleted` int(11) DEFAULT '0',
+CREATE TABLE `tbm_asset_tag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `asset_tag_name` varchar(45) DEFAULT NULL,
+  `asset_tag_color` varchar(45) DEFAULT NULL,
+  `status_tag` int(11) DEFAULT NULL,
+  `deleted` varchar(45) DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
   `created_user` varchar(45) DEFAULT NULL,
-  `created_at` varchar(45) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `updated_user` varchar(45) DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tbm_bank_list`
+-- Dumping data for table `tbm_asset_tag`
 --
 
-LOCK TABLES `tbm_bank_list` WRITE;
-/*!40000 ALTER TABLE `tbm_bank_list` DISABLE KEYS */;
-INSERT INTO `tbm_bank_list` VALUES (1,'VB','V','1729875374_671bcdae13ea8.png',1,1,'K2024','2024-10-25 23:56:14','K2024','2024-10-26 00:36:07'),(2,'GG','QW','1729876622_671bd28e1a1aa.png',1,1,'K2024','2024-10-25 23:56:29','K2024','2024-10-26 00:36:14'),(3,'Tr','t','1729968607_671d39df41aa0.png',1,0,'K2024','2024-10-26 00:22:15','K2024','2024-10-27 01:50:07'),(4,'dqweeeee','qwe','1729926340_671c94c437b8e.png',1,0,'K2024','2024-10-26 00:32:11','K2024','2024-10-26 21:20:39');
-/*!40000 ALTER TABLE `tbm_bank_list` ENABLE KEYS */;
+LOCK TABLES `tbm_asset_tag` WRITE;
+/*!40000 ALTER TABLE `tbm_asset_tag` DISABLE KEYS */;
+INSERT INTO `tbm_asset_tag` VALUES (1,'ฝ่าย IT','#0eecdd',1,'0','2024-11-12 20:06:51','K2024','2024-11-19 12:02:21','K2024'),(2,'สำนักงานใหญ่','#39aadb',1,'0','2024-11-12 20:29:52','K2024','2024-11-12 22:47:37','K2024'),(3,'ฝ่ายอาคาร','#f20707',1,'0','2024-11-12 20:37:21','K2024','2024-11-13 00:54:50','K2024'),(4,'อาคาร','#388ead',1,'1','2024-11-12 22:33:10','K2024','2024-11-12 22:52:40','K2024'),(5,'ส่วนกลาง A','#1623da',1,'0','2024-11-12 22:53:22','K2024','2024-11-13 00:59:25','K2024'),(6,'ส่วนกลาง B','#8b2dd7',1,'0','2024-11-12 23:24:18','K2024','2024-11-12 23:27:42','K2024'),(7,'FD','#000000',0,'1','2024-11-12 23:24:31','K2024','2024-11-12 23:24:36','K2024'),(8,'ส่วนกลาง C','#e67c19',1,'0','2024-11-13 00:12:27','K2024',NULL,NULL);
+/*!40000 ALTER TABLE `tbm_asset_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbm_asset_type`
+--
+
+DROP TABLE IF EXISTS `tbm_asset_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbm_asset_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `asset_tag_id` int(10) unsigned DEFAULT NULL,
+  `asset_type_name` varchar(100) DEFAULT NULL,
+  `status_type` int(11) DEFAULT NULL,
+  `deleted` varchar(45) DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `created_user` varchar(45) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_user` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbm_asset_type`
+--
+
+LOCK TABLES `tbm_asset_type` WRITE;
+/*!40000 ALTER TABLE `tbm_asset_type` DISABLE KEYS */;
+INSERT INTO `tbm_asset_type` VALUES (1,5,'โทรศัพท์',1,'0','2024-11-13 00:11:29','K2024','2024-11-13 00:59:25','K2024'),(2,3,'โต๊ะ',1,'0','2024-11-13 00:28:04','K2024',NULL,NULL),(3,1,'คอมพิวเตอร์',1,'0','2024-11-13 00:28:25','K2024','2024-11-19 12:02:21','K2024'),(4,5,'โทรศัพท์ตั้งโต๊ะ',1,'0','2024-11-13 00:28:48','K2024','2024-11-13 00:59:25','K2024'),(5,3,'เก้าอี้',1,'0','2024-11-13 00:31:19','K2024',NULL,NULL),(6,1,'เม้าส์',1,'0','2024-11-13 00:31:52','K2024','2024-11-19 12:02:21','K2024'),(7,1,'จอภาพ',1,'0','2024-11-13 00:32:21','K2024','2024-11-19 12:02:21','K2024'),(8,3,'บันได',1,'0','2024-11-13 00:32:31','K2024',NULL,NULL),(9,1,'คีย์บอร์ด',1,'0','2024-11-13 00:32:50','K2024','2024-11-19 12:02:21','K2024'),(10,1,'เมาส์',1,'0','2024-11-19 12:01:04','K2024','2024-11-19 12:02:21','K2024'),(11,1,'เครื่องปริ้น',1,'0','2024-11-19 12:01:23','K2024','2024-11-19 12:02:21','K2024');
+/*!40000 ALTER TABLE `tbm_asset_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -266,7 +296,7 @@ CREATE TABLE `tbm_flag_type` (
   `update_user` varchar(45) DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +305,7 @@ CREATE TABLE `tbm_flag_type` (
 
 LOCK TABLES `tbm_flag_type` WRITE;
 /*!40000 ALTER TABLE `tbm_flag_type` DISABLE KEYS */;
-INSERT INTO `tbm_flag_type` VALUES (1,'เสร็จสิ้น','Complete','0','K2022','2024-03-31 15:36:43',NULL,NULL),(2,'รอก่อน','Hold','0','K2022','2024-03-31 15:36:54',NULL,NULL),(3,'กำลังทำ','Other','1','K2022','2024-03-31 15:37:05','K2022','2024-04-01 14:18:59'),(4,'รอก่อน wating','Wating','0','K2022','2024-03-31 15:37:30',NULL,NULL),(5,'ยกเลิก / ยกเลิกการแจ้ง','Cancel','0','K2022','2024-03-31 15:37:55',NULL,NULL),(6,'อื่น ๆ','Other','0','K2022','2024-03-31 15:38:07',NULL,NULL),(7,'FV','Doing','0','K2022','2024-03-31 15:42:31','K2022','2024-04-01 14:15:48'),(8,'Test','Complete','1','K2024','2024-07-30 20:16:34','K2024','2024-07-30 20:16:41');
+INSERT INTO `tbm_flag_type` VALUES (1,'เสร็จสิ้น','Complete','0','K2022','2024-03-31 15:36:43',NULL,NULL),(2,'รอก่อน','Hold','0','K2022','2024-03-31 15:36:54',NULL,NULL),(3,'กำลังทำ','Other','1','K2022','2024-03-31 15:37:05','K2022','2024-04-01 14:18:59'),(4,'รอก่อน wating','Wating','0','K2022','2024-03-31 15:37:30',NULL,NULL),(5,'ยกเลิก / ยกเลิกการแจ้ง','Cancel','0','K2022','2024-03-31 15:37:55',NULL,NULL),(6,'อื่น ๆ','Other','0','K2022','2024-03-31 15:38:07',NULL,NULL),(7,'FV','Doing','0','K2022','2024-03-31 15:42:31','K2022','2024-04-01 14:15:48'),(8,'Test','Complete','1','K2024','2024-07-30 20:16:34','K2024','2024-07-30 20:16:41'),(9,'ดำเนินงานเรียบร้อย','Complete','0','K2024','2024-11-15 14:38:51',NULL,NULL);
 /*!40000 ALTER TABLE `tbm_flag_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,7 +403,7 @@ CREATE TABLE `tbm_menu_sub` (
 
 LOCK TABLES `tbm_menu_sub` WRITE;
 /*!40000 ALTER TABLE `tbm_menu_sub` DISABLE KEYS */;
-INSERT INTO `tbm_menu_sub` VALUES (1,1,'กำหนดรายการภายในองค์กร','about-company','bx-buildings','1','2024-07-26 21:25:55','K2022','2024-11-12 17:57:21','K2024',0),(2,1,'สถานะงาน','work-status','bxs-purchase-tag','1','2024-07-26 21:27:18','K2022','2024-07-30 20:20:16','K2024',0),(3,1,'รายการเข้าถึงเมนู','menu','bx-menu-alt-right','1','2024-07-26 23:05:37','K2022','2024-07-30 20:24:01','K2024',0),(4,2,'Export Database','table-index','bx bx-exit','1','2024-07-26 23:05:57','K2022','2024-10-27 19:05:11','K2024',0),(5,3,'รายการข้อมูลพนักงาน','list-all-employee','bxs-user-detail','1','2024-07-30 21:05:52','K2024',NULL,NULL,0),(6,3,'เพิ่มข้อมูลพนักงาน','add-employee','bxs-user-plus','1','2024-07-30 21:06:54','K2024',NULL,NULL,0),(7,3,'ค้นหาข้อมูลพนักงาน','search-all-employee','bxs-file-find','1','2024-07-30 21:07:30','K2024','2024-10-25 21:38:13','K2024',0),(8,1,'รายการบัญชีธนาคาร','bank-list','bxs-bank','1','2024-08-06 13:57:57','K2024','2024-11-12 17:26:54','K2024',1),(9,4,'รายการบัญชีที่อายัด สำหรับเอเย่นต์','agent','bx-git-branch','1','2024-10-26 18:39:24','K2024','2024-11-12 17:24:08','K2024',1),(10,4,'รายการบัญชีที่อายัด สำหรับแผนก','department','bx-sitemap','1','2024-10-26 18:40:23','K2024','2024-11-12 17:24:08','K2024',1),(11,5,'แผนกที่รับโทรศัพท์ทำงาน','telelist','bx-list-ol','1','2024-10-27 18:33:42','K2024','2024-11-12 17:24:12','K2024',1),(12,4,'แจ้งขอเช่าบัญชี','rent-account','bxs-food-menu','1','2024-10-29 21:31:12','K2024','2024-11-12 17:24:08','K2024',1),(13,6,'รายการที่อยู่เอเย่นต์','agent-address','bx-street-view','1','2024-10-29 23:34:47','K2024','2024-11-12 17:24:20','K2024',1),(14,7,'รายการใบแจ้งหนี้และใบเสร็จ','invoice','bx-book','1','2024-10-31 00:59:32','K2024','2024-11-12 17:24:37','K2024',1),(15,4,'ยกเลิกการใช้บัญชี','cancel-account','bx-fridge','1','2024-11-06 22:05:29','K2024','2024-11-12 17:24:08','K2024',1),(16,1,'เกี่ยวกับระบบ','about-app','bx-sidebar','1','2024-11-09 13:05:23','K2024',NULL,NULL,0),(17,8,'ประเมินแผนก','form-department','bxs-bar-chart-square','1','2024-11-10 22:03:34','K2024','2024-11-12 17:24:27','K2024',1),(18,10,'รายการสินทรัพย์อุปกรณ์ IT','assets-it','bx-archive','1','2024-11-12 17:32:28','K2024',NULL,NULL,0),(19,10,'ตั้งค่าประเภทหมวดหมู่ทรัพย์สิน','settings-asset-main','bxs-purchase-tag','1','2024-11-12 17:42:17','K2024',NULL,NULL,0);
+INSERT INTO `tbm_menu_sub` VALUES (1,1,'กำหนดรายการภายในองค์กร','about-company','bx-buildings','1','2024-07-26 21:25:55','K2022','2024-11-12 17:57:21','K2024',0),(2,1,'สถานะงาน','work-status','bxs-purchase-tag','1','2024-07-26 21:27:18','K2022','2024-07-30 20:20:16','K2024',0),(3,1,'รายการเข้าถึงเมนู','menu','bx-menu-alt-right','1','2024-07-26 23:05:37','K2022','2024-07-30 20:24:01','K2024',0),(4,2,'Export Database','table-index','bx bx-exit','1','2024-07-26 23:05:57','K2022','2024-10-27 19:05:11','K2024',0),(5,3,'รายการข้อมูลพนักงาน','list-all-employee','bxs-user-detail','1','2024-07-30 21:05:52','K2024',NULL,NULL,0),(6,3,'เพิ่มข้อมูลพนักงาน','add-employee','bxs-user-plus','1','2024-07-30 21:06:54','K2024',NULL,NULL,0),(7,3,'ค้นหาข้อมูลพนักงาน','search-all-employee','bxs-file-find','1','2024-07-30 21:07:30','K2024','2024-10-25 21:38:13','K2024',0),(8,1,'รายการบัญชีธนาคาร','bank-list','bxs-bank','1','2024-08-06 13:57:57','K2024','2024-11-12 17:26:54','K2024',1),(9,4,'รายการบัญชีที่อายัด สำหรับเอเย่นต์','agent','bx-git-branch','1','2024-10-26 18:39:24','K2024','2024-11-12 17:24:08','K2024',1),(10,4,'รายการบัญชีที่อายัด สำหรับแผนก','department','bx-sitemap','1','2024-10-26 18:40:23','K2024','2024-11-12 17:24:08','K2024',1),(11,5,'แผนกที่รับโทรศัพท์ทำงาน','telelist','bx-list-ol','1','2024-10-27 18:33:42','K2024','2024-11-12 17:24:12','K2024',1),(12,4,'แจ้งขอเช่าบัญชี','rent-account','bxs-food-menu','1','2024-10-29 21:31:12','K2024','2024-11-12 17:24:08','K2024',1),(13,6,'รายการที่อยู่เอเย่นต์','agent-address','bx-street-view','1','2024-10-29 23:34:47','K2024','2024-11-12 17:24:20','K2024',1),(14,7,'รายการใบแจ้งหนี้และใบเสร็จ','invoice','bx-book','1','2024-10-31 00:59:32','K2024','2024-11-12 17:24:37','K2024',1),(15,4,'ยกเลิกการใช้บัญชี','cancel-account','bx-fridge','1','2024-11-06 22:05:29','K2024','2024-11-12 17:24:08','K2024',1),(16,1,'เกี่ยวกับระบบ','about-app','bx-sidebar','1','2024-11-09 13:05:23','K2024',NULL,NULL,0),(17,8,'ประเมินแผนก','form-department','bxs-bar-chart-square','1','2024-11-10 22:03:34','K2024','2024-11-12 17:24:27','K2024',1),(18,10,'รายการสินทรัพย์อุปกรณ์ IT','assets-it','bx-archive','1','2024-11-12 17:32:28','K2024',NULL,NULL,0),(19,10,'ตั้งค่าประเภทหมวดหมู่สินทรัพย์','settings-assets','bx bx-cog','1','2024-11-12 17:42:17','K2024','2024-11-19 11:59:04','K2024',0);
 /*!40000 ALTER TABLE `tbm_menu_sub` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -702,7 +732,7 @@ CREATE TABLE `tbt_user_access_menu` (
 
 LOCK TABLES `tbt_user_access_menu` WRITE;
 /*!40000 ALTER TABLE `tbt_user_access_menu` DISABLE KEYS */;
-INSERT INTO `tbt_user_access_menu` VALUES ('K2001','Test IT','1','ตรวจสอบผู้ใช้','3','DFDD','2024-07-28 18:17:38','K2024'),('K2001','Test IT','2','ออกรายงาน','4','รายงานบัญชี','2024-07-28 18:17:38','K2024'),('K001','Test 22','2','ออกรายงาน','4','รายงานบัญชี','2024-07-28 18:19:17','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','1','กำหนดค่าภายในองค์กร','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','2','สถานะงาน','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','3','รายการเข้าถึงเมนู','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','5','รายการข้อมูลพนักงาน','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','6','เพิ่มข้อมูลพนักงาน','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','7','ค้นหาข้อมูลพนักงาน','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','16','เกี่ยวกับระบบ','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','10','รายการสินทรัพย์ภายในองค์กร','18','รายการสินทรัพย์อุปกรณ์ IT','2024-11-12 17:56:02','K2024'),('K2024','User SuperAdmin','10','รายการสินทรัพย์ภายในองค์กร','19','ตั้งค่าประเภทหมวดหมู่ทรัพย์สิน','2024-11-12 17:56:02','K2024');
+INSERT INTO `tbt_user_access_menu` VALUES ('K2001','Test IT','1','ตรวจสอบผู้ใช้','3','DFDD','2024-07-28 18:17:38','K2024'),('K2001','Test IT','2','ออกรายงาน','4','รายงานบัญชี','2024-07-28 18:17:38','K2024'),('K001','Test 22','2','ออกรายงาน','4','รายงานบัญชี','2024-07-28 18:19:17','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','1','กำหนดรายการภายในองค์กร','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','2','สถานะงาน','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','3','รายการเข้าถึงเมนู','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','5','รายการข้อมูลพนักงาน','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','6','เพิ่มข้อมูลพนักงาน','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','3','ระบบข้อมูลพนักงาน','7','ค้นหาข้อมูลพนักงาน','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','1','ตั้งค่าภายในระบบ','16','เกี่ยวกับระบบ','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','10','รายการสินทรัพย์ภายในองค์กร','18','รายการสินทรัพย์อุปกรณ์ IT','2024-11-12 23:23:42','K2024'),('K2024','User SuperAdmin','10','รายการสินทรัพย์ภายในองค์กร','19','ตั้งค่าประเภทหมวดหมู่ทรัพย์สิน','2024-11-12 23:23:42','K2024');
 /*!40000 ALTER TABLE `tbt_user_access_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -752,4 +782,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-12 18:01:26
+-- Dump completed on 2024-12-01 20:38:19
