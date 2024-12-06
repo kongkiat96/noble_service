@@ -241,6 +241,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/edit-category-item/{categoryItemID}', 'Settings\SetTypeCategoryController@editCategoryItem');
             Route::post('/delete-category-item/{categoryItemID}', 'Settings\SetTypeCategoryController@deleteCategoryItem');
 
+            Route::get('/add-category-list-modal/{categoryAllID}', 'Settings\SetTypeCategoryController@showAddCategoryListModal');
+
             Route::post('/get-data-category-item', 'Settings\SetTypeCategoryController@getDataCategoryItem');
         });
 

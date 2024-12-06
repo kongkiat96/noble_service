@@ -340,6 +340,10 @@ $(document).ready(function () {
     $('#addCategoryItem').click(function () {
         showModalWithAjax('#addCategoryItemModal', setURLCategoryTools + '/add-category-item-modal/'+ categoryAllID, ['#status_tag']);
     });
+
+    $('#addCategoryList').click(function () {
+        showModalWithAjax('#addCategoryListModal', setURLCategoryTools + '/add-category-list-modal/'+ categoryAllID, ['#category_item_id','#checker_id','#status_tag']);
+    });
 });
 
 function reTable() {
@@ -508,7 +512,7 @@ function setupFormValidationCategoryItem(formElement) {
     };
 
     const validationRules = {
-        category_item_name: validators.notEmptyAndRegexp('ระบุชื่อ อาการที่เสีย', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
+        category_item_name: validators.notEmptyAndRegexp('ระบุชื่อ สาเหตุที่เสีย', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
         status_tag: validators.notEmpty('เลือกข้อมูล สถานะ'),
     };
 

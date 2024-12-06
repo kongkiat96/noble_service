@@ -27,29 +27,18 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryListModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCategoryListModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryDetailModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-
-        </div>
-    </div>
-
-    <div class="modal fade" id="editCategoryDetailModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-4 mb-4">
@@ -128,13 +117,13 @@
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                             data-bs-target="#settype-category-item" aria-controls="#settype-category-item"
                             aria-selected="true" id="reTabA">
-                            ข้อมูลรายการที่เสีย
+                            ข้อมูลรายการสาเหตุที่เสีย
                         </button>
                     </li>
 
                     <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#settype-category-type" aria-controls="#settype-category-type"
+                            data-bs-target="#settype-category-list" aria-controls="#settype-category-list"
                             aria-selected="true" id="reTabB">
                             ข้อมูลรายการที่แก้ไข
                         </button>
@@ -146,7 +135,7 @@
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
                                 <button type="button" class="btn btn-info" id="addCategoryItem">
-                                    <i class='menu-icon tf-icons bx bx-movie'></i> เพิ่มข้อมูลรายการที่เสีย
+                                    <i class='menu-icon tf-icons bx bx-movie'></i> เพิ่มข้อมูลรายการสาเหตุที่เสีย
                                 </button>
                             @endif
                         </div>
@@ -155,7 +144,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ข้อมูลอาการเสีย</th>
+                                        <th>ข้อมูลสาเหตุที่เสีย</th>
                                         <th>สถานะการใช้งาน</th>
                                         <th>วันที่บันทึกข้อมูล</th>
                                         <th>ผู้บันทึกข้อมูล</th>
@@ -168,10 +157,10 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="settype-category-type" role="tabpanel">
+                    <div class="tab-pane fade" id="settype-category-list" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addCategoryType_mt">
+                                <button type="button" class="btn btn-info" id="addCategoryList">
                                     <i class='menu-icon tf-icons bx bxs-wrench'></i> เพิ่มข้อมูลรายการที่แก้ไข
                                 </button>
                             @endif
@@ -207,7 +196,6 @@
         </div>
     </div>
     <input type="text" id="categoryAllID" name="categoryAllID" value="{{ $dataCategoryDetail->id }}" hidden>
-    <input type="text" name="show_use_tag" id="show_use_tag" value="MT" hidden>
 @endsection
 @section('script')
     <script type="text/javascript"

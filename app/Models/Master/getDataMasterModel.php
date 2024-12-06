@@ -305,4 +305,16 @@ class getDataMasterModel extends Model
         $getListCategoryType = DB::connection('mysql')->table('tbm_category_type')->where('deleted', 0)->where('status_tag', 1)->where('category_main_id', $categoryMainID)->orderBy('id')->get();
         return $getListCategoryType;
     }
+
+    public function getListCategoryItem($categoryDetailID)
+    {
+        $getListCategoryItem = DB::connection('mysql')->table('tbm_category_item')->where('deleted', 0)->where('status_tag', 1)->where('category_detail_id', $categoryDetailID)->orderBy('id')->get();
+        return $getListCategoryItem;
+    }
+
+    public function getChecker($tag)
+    {
+        $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag,'ALL'])->orderBy('id')->get();
+        return $getChecker;
+    }
 }

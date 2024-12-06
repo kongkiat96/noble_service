@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">แก้ไขข้อมูลอาการที่เสีย</h5>
+        <h5 class="modal-title">แก้ไขข้อมูลสาเหตุที่เสีย</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr>
@@ -9,7 +9,7 @@
             <form id="formEditCategoryItem" class="form-block">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="category_item_name">อาการที่เสีย</label>
+                        <label class="form-label-md mb-2" for="category_item_name">สาเหตุที่เสีย</label>
                         <input type="text" id="category_item_name" class="form-control" name="category_item_name"
                             autocomplete="off" value="{{ $dataCategoryItem->category_item_name }}"/>
                     </div>

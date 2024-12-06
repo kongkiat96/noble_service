@@ -315,4 +315,21 @@ class SetTypeCategoryController extends Controller
         $dataCategory = $this->setCategoryModel->deleteDataCategoryItem($categoryItemID);
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
+
+    public function showAddCategoryListModal($categoryDetailID)
+    {
+        if (request()->ajax()) {
+            $getDataCategoryItem = $this->masterModel->getListCategoryItem($categoryDetailID);
+            $getTag = $this->setCategoryModel->getDataCategoryDetailByID($categoryDetailID);
+            $getChecker = $this->masterModel->getChecker($getTag->use_tag);
+            // dd($getDataCategoryItem);
+            // dd($getChecker);
+            return view('app.settings.setTypeCategory.setDetail.dialog.save.addCategoryList', [
+                'categoryDetailID' => $categoryDetailID,
+                'dataCategoryItem' => $getDataCategoryItem,
+                'dataChecker' => $getChecker
+            ]);
+        }
+        return abort(404);
+    }
 }
