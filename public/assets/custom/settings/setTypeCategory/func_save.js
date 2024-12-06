@@ -51,6 +51,22 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#saveCategoryItem").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddCategoryItem")[0];
+        const fv = setupFormValidationCategoryItem(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/save-category-item", formData)
+                    .done(onSaveCategoryItemSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    })
 });
 
 function onSaveCategoryMainSuccess(response) {
@@ -66,4 +82,9 @@ function onSaveCategoryTypeSuccess(response) {
 function onSaveCategoryDetailSuccess(response) {
     handleAjaxSaveResponse(response);
     closeAndResetModal("#addCategoryDetailModal", "#formAddCategoryDetail");
+}
+
+function onSaveCategoryItemSuccess(response) {
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addCategoryItemModal", "#formAddCategoryItem");
 }

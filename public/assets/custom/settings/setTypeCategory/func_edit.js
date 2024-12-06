@@ -54,6 +54,23 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#saveEditCategoryItem").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formEditCategoryItem")[0];
+        const categoryItemID = $('#categoryItemID').val();
+        const fv = setupFormValidationCategoryItem(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/edit-category-item/" + categoryItemID, formData)
+                    .done(onSaveEditCategoryItemSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
 });
 
 function onSaveEditCategoryMainSuccess(response) {
@@ -69,4 +86,9 @@ function onSaveEditCategoryTypeSuccess(response) {
 function onSaveEditCategoryDetailSuccess(response) {
     handleAjaxEditResponse(response);
     closeAndResetModal("#editCategoryDetailModal", "#formEditCategoryDetail");
+}
+
+function onSaveEditCategoryItemSuccess(response) {
+    handleAjaxEditResponse(response);
+    closeAndResetModal("#editCategoryItemModal", "#formEditCategoryItem");
 }

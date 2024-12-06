@@ -15,13 +15,13 @@
 
 
 
-    <div class="modal fade" id="addCategoryMainModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryItemModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryMainModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCategoryItemModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
@@ -126,7 +126,7 @@
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#settype-category-main" aria-controls="#settype-category-main"
+                            data-bs-target="#settype-category-item" aria-controls="#settype-category-item"
                             aria-selected="true" id="reTabA">
                             ข้อมูลรายการที่เสีย
                         </button>
@@ -142,20 +142,20 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="settype-category-main" role="tabpanel">
+                    <div class="tab-pane fade show active" id="settype-category-item" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addItem">
+                                <button type="button" class="btn btn-info" id="addCategoryItem">
                                     <i class='menu-icon tf-icons bx bx-movie'></i> เพิ่มข้อมูลรายการที่เสีย
                                 </button>
                             @endif
                         </div>
                         <div class="text-nowrap table-responsive">
-                            <table class="dt-category-main table table-hover table-striped">
+                            <table class="dt-category-item table table-hover table-striped">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
+                                        <th>ข้อมูลอาการเสีย</th>
                                         <th>สถานะการใช้งาน</th>
                                         <th>วันที่บันทึกข้อมูล</th>
                                         <th>ผู้บันทึกข้อมูล</th>
@@ -206,6 +206,7 @@
             </div>
         </div>
     </div>
+    <input type="text" id="categoryAllID" name="categoryAllID" value="{{ $dataCategoryDetail->id }}" hidden>
     <input type="text" name="show_use_tag" id="show_use_tag" value="MT" hidden>
 @endsection
 @section('script')

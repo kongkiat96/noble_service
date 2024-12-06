@@ -235,6 +235,13 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/get-data-category-detail', 'Settings\SetTypeCategoryController@getDataCategoryDetail');
 
             Route::get('/set-detail-category/{encryptID}', 'Settings\SetTypeCategoryController@setDetailCategory');
+            Route::get('/add-category-item-modal/{categoryAllID}', 'Settings\SetTypeCategoryController@showAddCategoryItemModal');
+            Route::post('/save-category-item', 'Settings\SetTypeCategoryController@saveCategoryItem');
+            Route::get('/show-edit-category-item/{categoryItemID}', 'Settings\SetTypeCategoryController@showEditCategoryItem');
+            Route::post('/edit-category-item/{categoryItemID}', 'Settings\SetTypeCategoryController@editCategoryItem');
+            Route::post('/delete-category-item/{categoryItemID}', 'Settings\SetTypeCategoryController@deleteCategoryItem');
+
+            Route::post('/get-data-category-item', 'Settings\SetTypeCategoryController@getDataCategoryItem');
         });
 
         Route::prefix('/checker')->group(function () {

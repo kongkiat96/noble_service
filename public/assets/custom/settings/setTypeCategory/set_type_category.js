@@ -2,11 +2,13 @@ var setURLSetting = '/settings-system'
 var setURLCategoryIT = setURLSetting + '/set-type-category-it'
 var setURLCategoryMT = setURLSetting + '/set-type-category-mt'
 var setURLCategoryTools = setURLSetting + '/set-type-category-tools'
-
+var categoryAllID = $('#categoryAllID').val();
 $(function () {
     var dt_CategoryMain = $('.dt-category-main')
     var dt_CategoryType = $('.dt-category-type')
     var dt_CategoryDetail = $('.dt-category-detail')
+    var dt_CategoryItem = $('.dt-category-item')
+
     dt_CategoryMain.DataTable({
         processing: true,
         paging: true,
@@ -238,6 +240,78 @@ $(function () {
             },
         ],
     });
+
+    dt_CategoryItem.DataTable({
+        processing: true,
+        paging: true,
+        pageLength: 10,
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: setURLCategoryTools + "/get-data-category-item",
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
+            },
+            data: function (d) {
+                return $.extend({}, d, {
+                    "categoryAllID": categoryAllID
+                });
+            }
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                },
+            },
+            {
+                data: 'category_item_name',
+                class: "text-center",
+            },
+            {
+                data: "status_tag",
+                orderable: true,
+                searchable: false,
+                class: "text-center",
+                render: renderStatusBadge
+            },
+            { data: 'created_at', class: "text-center" },
+            { data: 'created_user', class: "text-center" },
+            { data: 'updated_at', class: "text-center" },
+            { data: 'updated_user', class: "text-center" },
+            {
+                data: 'ID',
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: function (data, type, row) {
+                    const Permission = (row.Permission);
+                    return renderGroupActionButtonsPermission(data, type, row, 'CategoryItem', Permission);
+                }
+            }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+    });
+    
+
 });
 
 $(document).ready(function () {
@@ -262,12 +336,17 @@ $(document).ready(function () {
     $('#addCategoryDetail_mt').click(function () {
         showModalWithAjax('#addCategoryDetailModal', setURLCategoryMT + '/add-category-detail-modal', ['#category_main_id', '#category_type_id', '#status_tag']);
     });
+
+    $('#addCategoryItem').click(function () {
+        showModalWithAjax('#addCategoryItemModal', setURLCategoryTools + '/add-category-item-modal/'+ categoryAllID, ['#status_tag']);
+    });
 });
 
 function reTable() {
     $('.dt-category-main').DataTable().ajax.reload();
     $('.dt-category-type').DataTable().ajax.reload();
     $('.dt-category-detail').DataTable().ajax.reload();
+    $('.dt-category-item').DataTable().ajax.reload();
 }
 
 function funcEditCategoryMain(categoryMainID) {
@@ -282,6 +361,10 @@ function funcEditCategoryDetail(categoryDetailID) {
     showModalWithAjax('#editCategoryDetailModal', setURLCategoryTools + '/show-edit-category-detail/' + categoryDetailID, ['#category_main_id', '#category_type_id', '#status_tag']);
 }
 
+function funcEditCategoryItem(categoryItemID) {
+    showModalWithAjax('#editCategoryItemModal', setURLCategoryTools + '/show-edit-category-item/' + categoryItemID, ['#status_tag']);
+}
+
 function funcDeleteCategoryMain(categoryMainID) {
     handleAjaxDeleteResponse(categoryMainID, setURLCategoryTools + "/delete-category-main/" + categoryMainID);
 }
@@ -292,6 +375,10 @@ function funcDeleteCategoryType(categoryTypeID) {
 
 function funcDeleteCategoryDetail(categoryDetailID) {
     handleAjaxDeleteResponse(categoryDetailID, setURLCategoryTools + "/delete-category-detail/" + categoryDetailID);
+}
+
+function funcDeleteCategoryItem(categoryItemID) {
+    handleAjaxDeleteResponse(categoryItemID, setURLCategoryTools + "/delete-category-item/" + categoryItemID);
 }
 
 // function funcViewCategoryMain(categoryMainID) {
@@ -388,6 +475,40 @@ function setupFormValidationCategoryDetail(formElement) {
         category_detail_name: validators.notEmptyAndRegexp('ระบุชื่อ อาการแจ้งซ่อม', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
         category_main_id: validators.notEmpty('เลือกข้อมูล รายการอุปกรณ์'),
         category_type_id: validators.notEmpty('เลือกข้อมูล รายการประเภทหมวดหมู่'),
+        status_tag: validators.notEmpty('เลือกข้อมูล สถานะ'),
+    };
+
+    return FormValidation.formValidation(formElement, {
+        fields: validationRules,
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: '',
+                rowSelector: '.col-md-6'
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+    });
+}
+
+function setupFormValidationCategoryItem(formElement) {
+    const validators = {
+        notEmpty: message => ({
+            validators: {
+                notEmpty: { message }
+            }
+        }),
+        notEmptyAndRegexp: (message, regexp) => ({
+            validators: {
+                notEmpty: { message },
+                regexp: { regexp, message: 'ข้อมูลไม่ถูกต้อง' }
+            }
+        }),
+    };
+
+    const validationRules = {
+        category_item_name: validators.notEmptyAndRegexp('ระบุชื่อ อาการที่เสีย', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
         status_tag: validators.notEmpty('เลือกข้อมูล สถานะ'),
     };
 

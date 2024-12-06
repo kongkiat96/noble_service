@@ -268,4 +268,51 @@ class SetTypeCategoryController extends Controller
             Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
         }
     }
+
+    public function showAddCategoryItemModal($categoryDetailID)
+    {
+        if (request()->ajax()) {
+            return view('app.settings.setTypeCategory.setDetail.dialog.save.addCategoryItem', [
+                'categoryDetailID' => $categoryDetailID
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function saveCategoryItem(Request $request)
+    {
+        $dataCategory = $this->setCategoryModel->saveCategoryItem($request->input());
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
+
+    public function getDataCategoryItem(Request $request)
+    {
+        // dd($request);
+        $getData = $this->setCategoryModel->getDataCategoryItem($request);
+        return response()->json($getData);
+    }
+
+    public function showEditCategoryItem($categoryItemID)
+    {
+        if (request()->ajax()) {
+            $getDataCategoryItem = $this->setCategoryModel->getDataCategoryItemByID($categoryItemID);
+            // dd($getDataCategoryItem);
+            return view('app.settings.setTypeCategory.setDetail.dialog.edit.editCategoryItem', [
+                'dataCategoryItem' => $getDataCategoryItem
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function editCategoryItem($categoryItemID, Request $request)
+    {
+        $dataCategory = $this->setCategoryModel->saveEditDataCategoryItem($categoryItemID, $request->input());
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
+
+    public function deleteCategoryItem($categoryItemID)
+    {
+        $dataCategory = $this->setCategoryModel->deleteDataCategoryItem($categoryItemID);
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
 }
