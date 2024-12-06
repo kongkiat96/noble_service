@@ -1,16 +1,16 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">เพิ่มข้อมูลรายการประเภทหมวดหมู่</h5>
+        <h5 class="modal-title">เพิ่มข้อมูลอาการ</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr>
     <div class="modal-body pt-0">
         <div class="row g-1">
-            <form id="formAddCategoryType" class="form-block">
+            <form id="formAddCategoryDetail" class="form-block">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="category_main_id">รายการกลุ่มอุปกรณ์</label>
-                        <select class="form-select select2" name="category_main_id" id="category_main_id">
+                        <select class="form-select select2 category_main_id_select" name="category_main_id" id="category_main_id" >
                             <option value="">Select</option>
                             @foreach ($dataCategoryMain as $item)
                                 <option value="{{ $item->id }}">{{ $item->category_main_name }}
@@ -20,8 +20,15 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="category_type_name">รายการประเภทหมวดหมู่</label>
-                        <input type="text" id="category_type_name" class="form-control" name="category_type_name"
+                        <label class="form-label-md mb-2" for="category_type_id">รายการประเภทหมวดหมู่</label>
+                        <select class="form-select select2" name="category_type_id" id="category_type_id">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label-md mb-2" for="category_detail_name">อาการแจ้งซ่อม</label>
+                        <input type="text" id="category_detail_name" class="form-control" name="category_detail_name"
                             autocomplete="off" />
                     </div>
 
@@ -35,7 +42,7 @@
                         </select>
                     </div>
                 </div>
-                <input type="text" name="use_tag" id="use_tag" value="IT" hidden>
+                <input type="text" name="use_tag" id="use_tag" value="MT" hidden>
             </form>
         </div>
     </div>
@@ -43,9 +50,11 @@
         <button type="button" class="btn btn-label-danger" data-bs-dismiss="modal"><i
                 class='menu-icon tf-icons bx bx-window-close'></i> ปิด</button>
 
-        <button type="submit" name="saveCategoryType" id="saveCategoryType" class="btn btn-success btn-form-block-overlay"><i
+        <button type="submit" name="saveCategoryDetail" id="saveCategoryDetail" class="btn btn-success btn-form-block-overlay"><i
                 class='menu-icon tf-icons bx bxs-save'></i> บันทึกข้อมูล</button>
     </div>
 
-    <script type="text/javascript" src="{{ asset('/assets/custom/settings/setTypeCategory/func_save.js?v=') }}@php echo date("H:i:s") @endphp">
+    <script type="text/javascript" src="{{ asset('/assets/custom/settings/setTypeCategory/func_save.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+    <script>
+        mapSelectedCategory('#category_type_id','.category_main_id_select',true)
     </script>

@@ -79,7 +79,7 @@
                     <div class="tab-pane fade show active" id="settype-category-main" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addCategoryMain">
+                                <button type="button" class="btn btn-info" id="addCategoryMain_mt">
                                     <i class='menu-icon tf-icons bx bxs-purchase-tag'></i> เพิ่มข้อมูลรายการกลุ่มอุปกรณ์
                                 </button>
                             @endif
@@ -105,7 +105,7 @@
                     <div class="tab-pane fade" id="settype-category-type" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addCategoryType">
+                                <button type="button" class="btn btn-info" id="addCategoryType_mt">
                                     <i class='menu-icon tf-icons bx bx-layer'></i> เพิ่มข้อมูลรายการประเภทหมวดหมู่
                                 </button>
                             @endif
@@ -132,7 +132,7 @@
                     <div class="tab-pane fade" id="settype-category-detail" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addCategoryDetail">
+                                <button type="button" class="btn btn-info" id="addCategoryDetail_mt">
                                     <i class='menu-icon tf-icons bx bx-sitemap'></i> เพิ่มข้อมูลอาการ
                                 </button>
                             @endif
@@ -161,7 +161,7 @@
             </div>
         </div>
     </div>
-    <input type="text" name="show_use_tag" id="show_use_tag" value="IT" hidden>
+    <input type="text" name="show_use_tag" id="show_use_tag" value="MT" hidden>
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('/assets/custom/settings/setTypeCategory/set_type_category.js?v=') }}@php echo date("H:i:s") @endphp"></script>

@@ -112,6 +112,13 @@ class getDataMasterController extends Controller
         return response()->json($getDataBankList);
     }
 
+    public function getDataCategoryType($categoryMainID)
+    {
+        $getListCategoryType = $this->masterModel->getListCategoryType($categoryMainID);
+        // dd($getListCategoryType);
+        return response()->json($getListCategoryType);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

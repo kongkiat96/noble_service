@@ -255,11 +255,12 @@ class getDataMasterModel extends Model
 
     public function getDataMasterInvoiceList()
     {
-        $getData = DB::connection('mysql')->table('tbm_invoice_list')->where('deleted',0)->orderBy('sort')->get();
+        $getData = DB::connection('mysql')->table('tbm_invoice_list')->where('deleted', 0)->orderBy('sort')->get();
         return $getData;
     }
 
-    public function getDataAboutApp(){
+    public function getDataAboutApp()
+    {
         $getData = DB::connection('mysql')->table('tbm_about_app')->first();
         return $getData;
     }
@@ -267,27 +268,27 @@ class getDataMasterModel extends Model
     public function getEmployeeList()
     {
         $getEmployee = DB::connection('mysql')->table('tbt_employee')
-        ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
-        ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
-        ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
-        ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
-        ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
-        ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
-        ->where('tbt_employee.deleted', 0)
-        ->where('tbt_employee.status_login', 1)
-        ->select(
-            'tbt_employee.ID',
-            'tbt_employee.employee_code',
-            'tbt_employee.email',
-            DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
-            'tbm_class_list.class_name',
-            'tbt_employee.position_name',
-            'tbm_company.company_name_th',
-            'tbm_department.department_name',
-            'tbm_group.group_name',
-            'tbt_employee.user_class',
-            'status_login'
-        )->get();
+            ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
+            ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+            ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+            ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
+            ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
+            ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+            ->where('tbt_employee.deleted', 0)
+            ->where('tbt_employee.status_login', 1)
+            ->select(
+                'tbt_employee.ID',
+                'tbt_employee.employee_code',
+                'tbt_employee.email',
+                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+                'tbm_class_list.class_name',
+                'tbt_employee.position_name',
+                'tbm_company.company_name_th',
+                'tbm_department.department_name',
+                'tbm_group.group_name',
+                'tbt_employee.user_class',
+                'status_login'
+            )->get();
 
         // dd($getEmployee);
         return $getEmployee;
@@ -295,7 +296,13 @@ class getDataMasterModel extends Model
 
     public function getListCategoryMain($tag)
     {
-        $getListCategoryMain = DB::connection('mysql')->table('tbm_category_main')->where('deleted', 0)->where('status_tag',1)->where('use_tag', $tag)->orderBy('id')->get();
+        $getListCategoryMain = DB::connection('mysql')->table('tbm_category_main')->where('deleted', 0)->where('status_tag', 1)->where('use_tag', $tag)->orderBy('id')->get();
         return $getListCategoryMain;
+    }
+
+    public function getListCategoryType($categoryMainID)
+    {
+        $getListCategoryType = DB::connection('mysql')->table('tbm_category_type')->where('deleted', 0)->where('status_tag', 1)->where('category_main_id', $categoryMainID)->orderBy('id')->get();
+        return $getListCategoryType;
     }
 }

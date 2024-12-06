@@ -204,17 +204,35 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'Settings\SetTypeCategoryController@index_it');
             Route::get('/add-category-main-modal', 'Settings\SetTypeCategoryController@showAddCategoryMainModal');
             Route::get('/add-category-type-modal', 'Settings\SetTypeCategoryController@showAddCategoryTypeModal');
+            Route::get('/add-category-detail-modal', 'Settings\SetTypeCategoryController@showAddCategoryDetailModal');
+        });
+
+        Route::prefix('/set-type-category-mt')->group(function () {
+            Route::get('', 'Settings\SetTypeCategoryController@index_mt');
+            Route::get('/add-category-main-modal', 'Settings\SetTypeCategoryController@showAddCategoryMainModal_mt');
+            Route::get('/add-category-type-modal', 'Settings\SetTypeCategoryController@showAddCategoryTypeModal_mt');
+            Route::get('/add-category-detail-modal', 'Settings\SetTypeCategoryController@showAddCategoryDetailModal_mt');
         });
 
         Route::prefix('/set-type-category-tools')->group(function () {
-            Route::post('/save-category', 'Settings\SetTypeCategoryController@saveCategory');
+            Route::post('/save-category-main', 'Settings\SetTypeCategoryController@saveCategoryMain');
             Route::get('/show-edit-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@showEditCategoryMain');
             Route::post('/edit-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@editCategoryMain');
             Route::post('/delete-category-main/{categoryMainID}', 'Settings\SetTypeCategoryController@deleteCategoryMain');
 
+            Route::post('/save-category-type', 'Settings\SetTypeCategoryController@saveCategoryType');
+            Route::get('/show-edit-category-type/{categoryTypeID}', 'Settings\SetTypeCategoryController@showEditCategoryType');
+            Route::post('/edit-category-type/{categoryTypeID}', 'Settings\SetTypeCategoryController@editCategoryType');
+            Route::post('/delete-category-type/{categoryTypeID}', 'Settings\SetTypeCategoryController@deleteCategoryType');
 
-            
+            Route::post('/save-category-detail', 'Settings\SetTypeCategoryController@saveCategoryDetail');
+            Route::get('/show-edit-category-detail/{categoryDetailID}', 'Settings\SetTypeCategoryController@showEditCategoryDetail');
+            Route::post('/edit-category-detail/{categoryDetailID}', 'Settings\SetTypeCategoryController@editCategoryDetail');
+            Route::post('/delete-category-detail/{categoryDetailID}', 'Settings\SetTypeCategoryController@deleteCategoryDetail');
+
             Route::post('/get-data-category-main', 'Settings\SetTypeCategoryController@getDataCategoryMain');
+            Route::post('/get-data-category-type', 'Settings\SetTypeCategoryController@getDataCategoryType');
+            Route::post('/get-data-category-detail', 'Settings\SetTypeCategoryController@getDataCategoryDetail');
         });
     });
 
@@ -226,6 +244,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-province', 'Master\getDataMasterController@getDataProvince');
         Route::get('/get-amphoe/{provinceID}', 'Master\getDataMasterController@getDataAmphoe');
         Route::get('/get-tambon/{aumphoeID}', 'Master\getDataMasterController@getDataTambon');
+        Route::get('/get-category-type/{categoryMainID}', 'Master\getDataMasterController@getDataCategoryType');
     });
 
     Route::prefix('test')->group(function () {

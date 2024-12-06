@@ -13,8 +13,40 @@ $(document).ready(function () {
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
-                postFormData(setURLCategoryTools + "/save-category", formData)
+                postFormData(setURLCategoryTools + "/save-category-main", formData)
                     .done(onSaveCategoryMainSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
+
+    $("#saveCategoryType").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddCategoryType")[0];
+        const fv = setupFormValidationCategoryType(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/save-category-type", formData)
+                    .done(onSaveCategoryTypeSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
+
+    $("#saveCategoryDetail").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddCategoryDetail")[0];
+        const fv = setupFormValidationCategoryDetail(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/save-category-detail", formData)
+                    .done(onSaveCategoryDetailSuccess)
                     .fail(handleAjaxSaveError);
             }
         });
@@ -24,4 +56,14 @@ $(document).ready(function () {
 function onSaveCategoryMainSuccess(response) {
     handleAjaxSaveResponse(response);
     closeAndResetModal("#addCategoryMainModal", "#formAddCategoryMain");
+}
+
+function onSaveCategoryTypeSuccess(response) {
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addCategoryTypeModal", "#formAddCategoryType");
+}
+
+function onSaveCategoryDetailSuccess(response) {
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addCategoryDetailModal", "#formAddCategoryDetail");
 }

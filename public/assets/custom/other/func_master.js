@@ -690,3 +690,41 @@ function ViewPicEdit(pathPic, inputEditID, tagStatusPicID) {
 $(document).ready(function () {
     $('#reTabA, #reTabB, #reTabC, #reTabD, #reTabE, #reTabF, #reTabG').click(reTable);
 });
+
+function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
+    var originalContent = $(disabledElement).html();
+    $(disabledElement).prop('disabled', disableStatus);
+    $(selectElement).on('change', function () {
+        var categoryMainID = $(this).val();
+        var $categoryTypeSelect = $(disabledElement);
+        $categoryTypeSelect.prop('disabled', !categoryMainID);
+
+        if (categoryMainID) {
+            $.ajax({
+                url: '/getMaster/get-category-type/' + categoryMainID,
+                type: 'GET',
+                dataType: 'json',
+                success: function (categoryTypeData) {
+                    $categoryTypeSelect.empty().append('<option value="">Select</option>');
+                    categoryTypeData.forEach(function (categoryType) {
+                        var optionElement = $('<option>').val(categoryType.id).text(categoryType.category_type_name);
+                        $categoryTypeSelect.append(optionElement);
+                    });
+
+                    // $('#groupOfDepartment').prop('disabled', true);
+                    // $('#groupOfDepartment').empty().append('<option value="">Select</option>');
+                    // $('#mapIDGroup').val('');
+                },
+                error: function () {
+                    $categoryTypeSelect.html(originalContent);
+                }
+            });
+        } else {
+            // $('#groupOfDepartment').prop('disabled', true);
+            // $('#groupOfDepartment').empty().append('<option value="">Select</option>');
+            // $('#mapIDGroup').val('');
+            $categoryTypeSelect.html(originalContent);
+            $categoryTypeSelect.empty().append('<option value="">Select</option>');
+        }
+    });
+}
