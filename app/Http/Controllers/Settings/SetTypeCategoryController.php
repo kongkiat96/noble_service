@@ -6,7 +6,10 @@ use App\Helpers\getAccessToMenu;
 use App\Http\Controllers\Controller;
 use App\Models\Master\getDataMasterModel;
 use App\Models\Settings\SetTypeCategoryModel;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class SetTypeCategoryController extends Controller
 {
@@ -236,5 +239,33 @@ class SetTypeCategoryController extends Controller
         // dd($categoryMainID);
         $dataCategory = $this->setCategoryModel->deleteDataCategoryDetail($categoryDetailID);
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
+
+    public function setDetailCategory($encryptID)
+    {
+        try {
+            $decryptID = Crypt::decrypt($encryptID);
+            // dd($decryptID);
+            $dataCategory = $this->setCategoryModel->getDataCategoryDetailAllByID($decryptID);
+            // dd($dataCategory);
+            $url = request()->segments();
+            $urlName = "กำหนดรายรายละเอียดสำหรับเจ้าหน้าที่ (" . $dataCategory->use_tag . "s)";
+            $urlSubLink = "set-type-category-". strtolower($dataCategory->use_tag);
+
+            if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+                return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+            }
+            $getAccessMenus = getAccessToMenu::getAccessMenus();
+            return view('app.settings.setTypeCategory.setDetail.index', [
+                'dataCategoryDetail' => $dataCategory,
+                'url' => $url,
+                'urlName' => $urlName,
+                'urlSubLink' => $urlSubLink,
+                'listMenus' => $getAccessMenus,
+                'tag' => $dataCategory->use_tag
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+        }
     }
 }

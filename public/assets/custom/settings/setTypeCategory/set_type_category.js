@@ -44,8 +44,8 @@ $(function () {
                     return meta.row + 1;
                 },
             },
-            { 
-                data: 'category_main_name', 
+            {
+                data: 'category_main_name',
                 class: "text-center",
             },
             {
@@ -114,12 +114,12 @@ $(function () {
                     return meta.row + 1;
                 },
             },
-            { 
-                data: 'category_main_name', 
+            {
+                data: 'category_main_name',
                 class: "text-center",
             },
-            { 
-                data: 'category_type_name', 
+            {
+                data: 'category_type_name',
                 class: "text-center",
             },
             {
@@ -188,16 +188,16 @@ $(function () {
                     return meta.row + 1;
                 },
             },
-            { 
-                data: 'category_main_name', 
+            {
+                data: 'category_main_name',
                 class: "text-center",
             },
-            { 
-                data: 'category_type_name', 
+            {
+                data: 'category_type_name',
                 class: "text-center",
             },
-            { 
-                data: 'category_detail_name', 
+            {
+                data: 'category_detail_name',
                 class: "text-center",
             },
             {
@@ -212,12 +212,11 @@ $(function () {
             { data: 'updated_at', class: "text-center" },
             { data: 'updated_user', class: "text-center" },
             {
-                data: 'ID',
+                data: 'encrypt_id',
                 orderable: false,
                 searchable: false,
                 class: "text-center",
                 render: function (data, type, row) {
-                    // console.log(row)
                     return setDetailCategory(data, type, row, 'SetDetailCategory');
                 }
             },
@@ -231,7 +230,7 @@ $(function () {
                     return renderGroupActionButtonsPermission(data, type, row, 'CategoryDetail', Permission);
                 }
             }
-            
+
         ],
         columnDefs: [
             {
@@ -246,22 +245,22 @@ $(document).ready(function () {
         showModalWithAjax('#addCategoryMainModal', setURLCategoryIT + '/add-category-main-modal', ['#status_tag']);
     });
     $('#addCategoryType').click(function () {
-        showModalWithAjax('#addCategoryTypeModal', setURLCategoryIT + '/add-category-type-modal', ['#category_main_id','#status_tag']);
+        showModalWithAjax('#addCategoryTypeModal', setURLCategoryIT + '/add-category-type-modal', ['#category_main_id', '#status_tag']);
     });
 
     $('#addCategoryDetail').click(function () {
-        showModalWithAjax('#addCategoryDetailModal', setURLCategoryIT + '/add-category-detail-modal', ['#category_main_id','#category_type_id','#status_tag']);
+        showModalWithAjax('#addCategoryDetailModal', setURLCategoryIT + '/add-category-detail-modal', ['#category_main_id', '#category_type_id', '#status_tag']);
     });
 
     $('#addCategoryMain_mt').click(function () {
         showModalWithAjax('#addCategoryMainModal', setURLCategoryMT + '/add-category-main-modal', ['#status_tag']);
     });
     $('#addCategoryType_mt').click(function () {
-        showModalWithAjax('#addCategoryTypeModal', setURLCategoryMT + '/add-category-type-modal', ['#category_main_id','#status_tag']);
+        showModalWithAjax('#addCategoryTypeModal', setURLCategoryMT + '/add-category-type-modal', ['#category_main_id', '#status_tag']);
     });
 
     $('#addCategoryDetail_mt').click(function () {
-        showModalWithAjax('#addCategoryDetailModal', setURLCategoryMT + '/add-category-detail-modal', ['#category_main_id','#category_type_id','#status_tag']);
+        showModalWithAjax('#addCategoryDetailModal', setURLCategoryMT + '/add-category-detail-modal', ['#category_main_id', '#category_type_id', '#status_tag']);
     });
 });
 
@@ -276,11 +275,11 @@ function funcEditCategoryMain(categoryMainID) {
 }
 
 function funcEditCategoryType(categoryTypeID) {
-    showModalWithAjax('#editCategoryTypeModal', setURLCategoryTools + '/show-edit-category-type/' + categoryTypeID, ['#category_main_id','#status_tag']);
+    showModalWithAjax('#editCategoryTypeModal', setURLCategoryTools + '/show-edit-category-type/' + categoryTypeID, ['#category_main_id', '#status_tag']);
 }
 
 function funcEditCategoryDetail(categoryDetailID) {
-    showModalWithAjax('#editCategoryDetailModal', setURLCategoryTools + '/show-edit-category-detail/' + categoryDetailID, ['#category_main_id','#category_type_id','#status_tag']);
+    showModalWithAjax('#editCategoryDetailModal', setURLCategoryTools + '/show-edit-category-detail/' + categoryDetailID, ['#category_main_id', '#category_type_id', '#status_tag']);
 }
 
 function funcDeleteCategoryMain(categoryMainID) {
@@ -407,17 +406,15 @@ function setupFormValidationCategoryDetail(formElement) {
 }
 
 function setDetailCategory(data, type, row, useFunc) {
-    // console.log(data)
-    // console.log(type)
     const func = `func${useFunc}`;
     return `
-    <button type="button" class="btn btn-icon btn-label-success btn-success" onclick="${func}(${row.ID})">
+    <button type="button" class="btn btn-icon btn-label-success btn-success" onclick="${func}('${data}')">
         <span class="tf-icons bx bx-sitemap"></span>
     </button>
 `;
 }
 
 function funcSetDetailCategory(categoryDetailID) {
-    alert(categoryDetailID)
-    // handleAjaxDeleteResponse(categoryDetailID, setURLCategoryTools + "/delete-category-detail/" + categoryDetailID);
+    // alert(categoryDetailID);
+    window.location.href = setURLCategoryTools + '/set-detail-category/' + encodeURIComponent(categoryDetailID);
 }

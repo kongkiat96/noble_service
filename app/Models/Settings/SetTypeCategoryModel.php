@@ -175,7 +175,8 @@ class SetTypeCategoryModel extends Model
                     'created_user' => $value->created_user,
                     'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
                     'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
-                    'Permission' => Auth::user()->user_system
+                    'Permission' => Auth::user()->user_system,
+                    'encrypt_id' => encrypt($value->id)
                 ];
             }
 
@@ -461,6 +462,26 @@ class SetTypeCategoryModel extends Model
                 'status' => 200,
                 'message' => 'Delete Success'
             ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCategoryDetailAllByID($categoryDetailID)
+    {
+        try {
+            $getDataCategoryType = DB::connection('mysql')->table('tbm_category_detail AS cd')
+            ->leftJoin('tbm_category_main AS cm', 'cd.category_main_id', '=', 'cm.id')
+            ->leftJoin('tbm_category_type AS ct', 'cd.category_type_id', '=', 'ct.id')
+            ->where('cd.id', $categoryDetailID)
+            ->select('cd.*','cm.category_main_name','ct.category_type_name')->first();
+            return $getDataCategoryType;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());

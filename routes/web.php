@@ -233,6 +233,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/get-data-category-main', 'Settings\SetTypeCategoryController@getDataCategoryMain');
             Route::post('/get-data-category-type', 'Settings\SetTypeCategoryController@getDataCategoryType');
             Route::post('/get-data-category-detail', 'Settings\SetTypeCategoryController@getDataCategoryDetail');
+
+            Route::get('/set-detail-category/{encryptID}', 'Settings\SetTypeCategoryController@setDetailCategory');
         });
 
         Route::prefix('/checker')->group(function () {
