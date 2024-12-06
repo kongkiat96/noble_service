@@ -234,6 +234,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/get-data-category-type', 'Settings\SetTypeCategoryController@getDataCategoryType');
             Route::post('/get-data-category-detail', 'Settings\SetTypeCategoryController@getDataCategoryDetail');
         });
+
+        Route::prefix('/checker')->group(function () {
+            Route::get('', 'Settings\CheckerController@index');
+            Route::get('/add-checker-modal', 'Settings\CheckerController@showAddCheckerModal');
+            Route::post('/save-checker', 'Settings\CheckerController@saveCheckerData');
+            Route::get('/show-edit-checker/{checkerID}', 'Settings\CheckerController@showEditChecker');
+            Route::post('/edit-checker/{checkerID}', 'Settings\CheckerController@saveEditChecker');
+            Route::post('/delete-checker/{checkerID}', 'Settings\CheckerController@deleteChecker');
+
+            Route::post('/get-data-checker', 'Settings\CheckerController@getDataChecker');
+        });
     });
 
     Route::prefix('getMaster')->group(function () {

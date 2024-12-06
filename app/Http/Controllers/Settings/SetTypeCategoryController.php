@@ -31,7 +31,7 @@ class SetTypeCategoryController extends Controller
 
         return view('app.settings.setTypeCategory.its.index', [
             'url' => $url,
-            'urlName' => $urlName, 
+            'urlName' => $urlName,
             'urlSubLink' => $urlSubLink,
             'listMenus' => $getAccessMenus
         ]);
@@ -50,16 +50,16 @@ class SetTypeCategoryController extends Controller
 
         return view('app.settings.setTypeCategory.mts.index', [
             'url' => $url,
-            'urlName' => $urlName, 
+            'urlName' => $urlName,
             'urlSubLink' => $urlSubLink,
             'listMenus' => $getAccessMenus
         ]);
     }
 
-    public function showAddCategoryMainModal(){
+    public function showAddCategoryMainModal()
+    {
         if (request()->ajax()) {
-            return view('app.settings.setTypeCategory.its.dialog.save.addCategoryMain', [
-            ]);
+            return view('app.settings.setTypeCategory.its.dialog.save.addCategoryMain', []);
         }
         return abort(404);
     }
@@ -88,10 +88,10 @@ class SetTypeCategoryController extends Controller
         return abort(404);
     }
 
-    public function showAddCategoryMainModal_mt(){
+    public function showAddCategoryMainModal_mt()
+    {
         if (request()->ajax()) {
-            return view('app.settings.setTypeCategory.mts.dialog.save.addCategoryMain', [
-            ]);
+            return view('app.settings.setTypeCategory.mts.dialog.save.addCategoryMain', []);
         }
         return abort(404);
     }
@@ -138,7 +138,8 @@ class SetTypeCategoryController extends Controller
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function showEditCategoryMain($categoryMainID){
+    public function showEditCategoryMain($categoryMainID)
+    {
         if (request()->ajax()) {
             $getDataCategoryMain = $this->setCategoryModel->getDataCategoryMainByID($categoryMainID);
 
@@ -150,7 +151,8 @@ class SetTypeCategoryController extends Controller
         return abort(404);
     }
 
-    public function showEditCategoryType($categoryTypeID){
+    public function showEditCategoryType($categoryTypeID)
+    {
         if (request()->ajax()) {
             $getDataCategoryType = $this->setCategoryModel->getDataCategoryTypeByID($categoryTypeID);
             $getListCategoryMain = $this->masterModel->getListCategoryMain($getDataCategoryType->use_tag);
@@ -163,7 +165,8 @@ class SetTypeCategoryController extends Controller
         return abort(404);
     }
 
-    public function showEditCategoryDetail($categoryDetailID){
+    public function showEditCategoryDetail($categoryDetailID)
+    {
         if (request()->ajax()) {
             $getDataCategoryDetail = $this->setCategoryModel->getDataCategoryDetailByID($categoryDetailID);
             $getListCategoryMain = $this->masterModel->getListCategoryMain($getDataCategoryDetail->use_tag);
@@ -178,49 +181,58 @@ class SetTypeCategoryController extends Controller
         return abort(404);
     }
 
-    public function getDataCategoryMain(Request $request){
+    public function getDataCategoryMain(Request $request)
+    {
         $getData = $this->setCategoryModel->getDataCategoryMain($request);
         return response()->json($getData);
     }
 
-    public function getDataCategoryType(Request $request){
+    public function getDataCategoryType(Request $request)
+    {
         $getData = $this->setCategoryModel->getDataCategoryType($request);
         return response()->json($getData);
     }
 
-    public function getDataCategoryDetail(Request $request){
+    public function getDataCategoryDetail(Request $request)
+    {
         $getData = $this->setCategoryModel->getDataCategoryDetail($request);
         return response()->json($getData);
     }
 
-    public function editCategoryMain($categoryMainID, Request $request){
+    public function editCategoryMain($categoryMainID, Request $request)
+    {
         $dataCategory = $this->setCategoryModel->saveEditDataCategoryMain($categoryMainID, $request->input());
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function editCategoryType($categoryTypeID, Request $request){
+    public function editCategoryType($categoryTypeID, Request $request)
+    {
         $dataCategory = $this->setCategoryModel->saveEditDataCategoryType($categoryTypeID, $request->input());
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function editCategoryDetail($categoryDetailID, Request $request){
+    public function editCategoryDetail($categoryDetailID, Request $request)
+    {
         $dataCategory = $this->setCategoryModel->saveEditDataCategoryDetail($categoryDetailID, $request->input());
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function deleteCategoryMain($categoryMainID){
+    public function deleteCategoryMain($categoryMainID)
+    {
         // dd($categoryMainID);
         $dataCategory = $this->setCategoryModel->deleteDataCategoryMain($categoryMainID);
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function deleteCategoryType($categoryTypeID){
+    public function deleteCategoryType($categoryTypeID)
+    {
         // dd($categoryMainID);
         $dataCategory = $this->setCategoryModel->deleteDataCategoryType($categoryTypeID);
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }
 
-    public function deleteCategoryDetail($categoryDetailID){
+    public function deleteCategoryDetail($categoryDetailID)
+    {
         // dd($categoryMainID);
         $dataCategory = $this->setCategoryModel->deleteDataCategoryDetail($categoryDetailID);
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);

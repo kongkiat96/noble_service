@@ -298,9 +298,9 @@ function renderDeletedBadge(data, type, full, row) {
 
 function renderStatusWorkBadge(data, type, full, row) {
     const statusMap = {
-        all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
-        it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-info' },
-        building: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-warning' },
+        ALL: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
+        IT: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-info' },
+        MT: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-warning' },
         hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -379,11 +379,13 @@ function renderGroupActionButtonsPermission(data, type, row, useFunc, permission
     let returnButton = '';
     const adminRoles = ['SuperAdmin', 'Admin'];
 
-    if (adminRoles.includes(permission)) {
-        returnButton = `
-        <button type="button" class="btn btn-icon btn-label-info btn-info" onclick="${ViewerFunction}(${row.ID})">
+    /*
+    <button type="button" class="btn btn-icon btn-label-info btn-info" onclick="${ViewerFunction}(${row.ID})">
             <span class="tf-icons bx bx-search-alt"></span>
         </button>&nbsp
+    */
+    if (adminRoles.includes(permission)) {
+        returnButton = `
         <button type="button" class="btn btn-icon btn-label-warning btn-warning" onclick="${editFunction}(${row.ID})">
             <span class="tf-icons bx bx-edit-alt"></span>
         </button>&nbsp
