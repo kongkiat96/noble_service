@@ -6,7 +6,7 @@
     <hr>
     <div class="modal-body pt-0">
         <div class="row g-1">
-            <form id="formAddCategoryItem" class="form-block">
+            <form id="formAddCategoryList" class="form-block">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="category_item_id">สาเหตุที่เสีย</label>
@@ -19,8 +19,8 @@
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="category_item_name">การแก้ใข</label>
-                        <input type="text" id="category_item_name" class="form-control" name="category_item_name"
+                        <label class="form-label-md mb-2" for="category_list_name">การแก้ใข</label>
+                        <input type="text" id="category_list_name" class="form-control" name="category_list_name"
                             autocomplete="off" />
                     </div>
 
@@ -75,7 +75,7 @@
         <button type="button" class="btn btn-label-danger" data-bs-dismiss="modal"><i
                 class='menu-icon tf-icons bx bx-window-close'></i> ปิด</button>
 
-        <button type="submit" name="saveCategoryItem" id="saveCategoryItem" class="btn btn-success btn-form-block-overlay"><i
+        <button type="submit" name="saveCategoryList" id="saveCategoryList" class="btn btn-success btn-form-block-overlay"><i
                 class='menu-icon tf-icons bx bxs-save'></i> บันทึกข้อมูล</button>
     </div>
 

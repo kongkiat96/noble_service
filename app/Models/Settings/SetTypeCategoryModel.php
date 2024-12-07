@@ -631,4 +631,94 @@ class SetTypeCategoryModel extends Model
             ];
         }
     }
+
+    public function saveCategoryList($data)
+    {
+        try {
+            // dd($data);
+            $getCategoryAllID = $this->getDataCategoryItemByID($data['category_item_id']);
+            // dd($getCategoryAllID);
+            $data['category_main_id'] = $getCategoryAllID->category_main_id;
+            $data['category_type_id'] = $getCategoryAllID->category_type_id;
+            $data['category_detail_id'] = $getCategoryAllID->category_detail_id;
+            $data['category_item_id'] = $getCategoryAllID->id;
+            $data['use_tag']    = $getCategoryAllID->use_tag;
+            $data['created_at'] = now();
+            $data['created_user'] = Auth::user()->emp_code;
+            // dd($data);
+            unset($data['categoryAllID']);
+            DB::connection('mysql')->table('tbm_category_list')->insert($data);
+            return [
+                'status' => 200,
+                'message' => 'Success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCategoryList($param)
+    {
+        try {
+            // dd($param);
+            $getUseTag = $this->getDataCategoryDetailAllByID($param['categoryAllID']);
+            // dd($getUseTag);
+            $sql = DB::connection('mysql')->table('tbm_category_list AS cl')->where('cl.deleted', 0)->where('cl.use_tag', $getUseTag->use_tag)
+            ->leftJoin('tbm_category_item AS ci', 'ci.id', '=', 'cl.category_item_id')
+            ->leftJoin('tbm_checker AS checker', 'checker.id', '=', 'cl.checker_id')
+            ->select('cl.*', 'ci.category_item_name', 'checker.checker_name');
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('cl.created_at', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('cl.created_at', 'desc')->get();
+            }
+            $dataCount = $sql->count();
+            // dd($sql);
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->id,
+                    'category_item_name' => $value->category_item_name,
+                    'category_list_name' => $value->category_list_name,
+                    'checker_name' => $value->checker_name,
+                    'pr_po' => $value->pr_po,
+                    'order' => $value->order,
+                    'processing' => $value->processing,
+                    'sla' => $value->sla,
+                    'status_tag' => $value->status_tag,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
+                    'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
+                    'Permission' => Auth::user()->user_system,
+                ];
+            }
+            // dd($newArr);
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+
+            // dd($returnData);
+
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
 }

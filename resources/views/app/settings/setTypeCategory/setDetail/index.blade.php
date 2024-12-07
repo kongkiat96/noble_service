@@ -166,12 +166,17 @@
                             @endif
                         </div>
                         <div class="text-nowrap table-responsive">
-                            <table class="dt-category-type table table-hover table-striped">
+                            <table class="dt-category-list table table-hover table-striped">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
-                                        <th>ข้อมูลรายการประเภทหมวดหมู่</th>
+                                        <th>ข้อมูลสาเหตุที่เสีย</th>
+                                        <th>ข้อมูลรายการแก้ไข</th>
+                                        <th>ผู้ตรวจเช็ค / ซ่อม</th>
+                                        <th>PR / PO</th>
+                                        <th>ระยะเวลาสสั่งของ</th>
+                                        <th>ระยะเวลาดำเนินการ</th>
+                                        <th>SLA</th>
                                         <th>สถานะการใช้งาน</th>
                                         <th>วันที่บันทึกข้อมูล</th>
                                         <th>ผู้บันทึกข้อมูล</th>

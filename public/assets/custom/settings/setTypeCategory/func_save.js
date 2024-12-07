@@ -67,6 +67,22 @@ $(document).ready(function () {
             }
         });
     })
+
+    $("#saveCategoryList").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddCategoryList")[0];
+        const fv = setupFormValidationCategoryList(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/save-category-list", formData)
+                    .done(onSaveCategoryListSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    })
 });
 
 function onSaveCategoryMainSuccess(response) {
@@ -87,4 +103,9 @@ function onSaveCategoryDetailSuccess(response) {
 function onSaveCategoryItemSuccess(response) {
     handleAjaxSaveResponse(response);
     closeAndResetModal("#addCategoryItemModal", "#formAddCategoryItem");
+}
+
+function onSaveCategoryListSuccess(response) {
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addCategoryListModal", "#formAddCategoryList");
 }

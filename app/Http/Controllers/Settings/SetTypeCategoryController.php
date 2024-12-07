@@ -332,4 +332,16 @@ class SetTypeCategoryController extends Controller
         }
         return abort(404);
     }
+
+    public function saveCategoryList(Request $request)
+    {
+        $dataCategory = $this->setCategoryModel->saveCategoryList($request->input());
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
+
+    public function getDataCategoryList(Request $request)
+    {
+        $getData = $this->setCategoryModel->getDataCategoryList($request);
+        return response()->json($getData);
+    }
 }
