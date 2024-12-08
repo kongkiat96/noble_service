@@ -617,6 +617,12 @@ class SetTypeCategoryModel extends Model
                 'updated_at' => now(),
                 'updated_user' => Auth::user()->emp_code
             ]);
+
+            DB::connection('mysql')->table('tbm_category_list')->where('deleted', 0)->where('category_item_id', $categoryItemID)->update([
+                'status_tag' => 0,
+                'updated_at' => now(),
+                'updated_user' => Auth::user()->emp_code
+            ]);
             return [
                 'status' => 200,
                 'message' => 'Success'
@@ -669,10 +675,10 @@ class SetTypeCategoryModel extends Model
             // dd($param);
             $getUseTag = $this->getDataCategoryDetailAllByID($param['categoryAllID']);
             // dd($getUseTag);
-            $sql = DB::connection('mysql')->table('tbm_category_list AS cl')->where('cl.deleted', 0)->where('cl.use_tag', $getUseTag->use_tag)
-            ->leftJoin('tbm_category_item AS ci', 'ci.id', '=', 'cl.category_item_id')
-            ->leftJoin('tbm_checker AS checker', 'checker.id', '=', 'cl.checker_id')
-            ->select('cl.*', 'ci.category_item_name', 'checker.checker_name');
+            $sql = DB::connection('mysql')->table('tbm_category_list AS cl')->where('cl.deleted', 0)->where('cl.use_tag', $getUseTag->use_tag)->where('cl.category_detail_id', $getUseTag->id)
+                ->leftJoin('tbm_category_item AS ci', 'ci.id', '=', 'cl.category_item_id')
+                ->leftJoin('tbm_checker AS checker', 'checker.id', '=', 'cl.checker_id')
+                ->select('cl.*', 'ci.category_item_name', 'checker.checker_name');
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('cl.created_at', 'desc')->get();
             } else {
@@ -689,10 +695,10 @@ class SetTypeCategoryModel extends Model
                     'category_item_name' => $value->category_item_name,
                     'category_list_name' => $value->category_list_name,
                     'checker_name' => $value->checker_name,
-                    'pr_po' => $value->pr_po,
-                    'order' => $value->order,
-                    'processing' => $value->processing,
-                    'sla' => $value->sla,
+                    'pr_po' => !empty($value->pr_po) ? $value->pr_po : '-',
+                    'order' => !empty($value->order) ? $value->order : '-',
+                    'processing' => !empty($value->processing) ? $value->processing : '-',
+                    'sla' => !empty($value->sla) ? $value->sla : '-',
                     'status_tag' => $value->status_tag,
                     'created_at' => $value->created_at,
                     'created_user' => $value->created_user,
@@ -711,6 +717,63 @@ class SetTypeCategoryModel extends Model
             // dd($returnData);
 
             return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCategoryListByID($categoryListID)
+    {
+        try {
+            // dd($categoryListID);
+            $dataCategory = DB::connection('mysql')->table('tbm_category_list AS cl')->where('cl.deleted', 0)->where('cl.id', $categoryListID)->first();
+            return $dataCategory;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function saveEditDataCategoryList($categoryListID, $data)
+    {
+        try {
+            $data['updated_at'] = now();
+            $data['updated_user'] = Auth::user()->emp_code;
+            DB::connection('mysql')->table('tbm_category_list')->where('deleted', 0)->where('id', $categoryListID)->update($data);
+            return [
+                'status' => 200,
+                'message' => 'Success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function deleteDataCategoryList($categoryListID)
+    {
+        try {
+            DB::connection('mysql')->table('tbm_category_list')->where('deleted', 0)->where('id', $categoryListID)->update(['deleted' => 1, 'updated_at' => now(), 'updated_user' => Auth::user()->emp_code]);
+            return [
+                'status' => 200,
+                'message' => 'Success'
+            ];
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());

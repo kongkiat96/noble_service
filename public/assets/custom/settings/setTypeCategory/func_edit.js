@@ -71,6 +71,23 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#saveEditCategoryLiist').on('click', function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formEditCategoryList")[0];
+        const categoryListID = $('#categoryListID').val();
+        const fv = setupFormValidationCategoryList(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLCategoryTools + "/edit-category-list/" + categoryListID, formData)
+                    .done(onSaveEditCategoryListSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
 });
 
 function onSaveEditCategoryMainSuccess(response) {
@@ -91,4 +108,10 @@ function onSaveEditCategoryDetailSuccess(response) {
 function onSaveEditCategoryItemSuccess(response) {
     handleAjaxEditResponse(response);
     closeAndResetModal("#editCategoryItemModal", "#formEditCategoryItem");
+}
+
+
+function onSaveEditCategoryListSuccess(response) {
+    handleAjaxEditResponse(response);
+    closeAndResetModal("#editCategoryListModal", "#formEditCategoryList");
 }

@@ -344,4 +344,33 @@ class SetTypeCategoryController extends Controller
         $getData = $this->setCategoryModel->getDataCategoryList($request);
         return response()->json($getData);
     }
+
+    public function showEditCategoryList($categoryListID)
+    {
+        if (request()->ajax()) {
+            $getDataCategoryList = $this->setCategoryModel->getDataCategoryListByID($categoryListID);
+            // dd($getDataCategoryList);
+            $getMasterChecker = $this->masterModel->getChecker($getDataCategoryList->use_tag);
+            $getDataCategoryItem = $this->masterModel->getListCategoryItem($getDataCategoryList->category_detail_id);
+            // dd($getDataCategoryItem);
+            return view('app.settings.setTypeCategory.setDetail.dialog.edit.editCategoryList', [
+                'dataCategoryList' => $getDataCategoryList,
+                'datamasterChecker' => $getMasterChecker,
+                'dataCategoryItem' => $getDataCategoryItem
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function editCategoryList($categoryListID, Request $request)
+    {
+        $dataCategory = $this->setCategoryModel->saveEditDataCategoryList($categoryListID, $request->input());
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
+
+    public function deleteCategoryList($categoryListID)
+    {
+        $dataCategory = $this->setCategoryModel->deleteDataCategoryList($categoryListID);
+        return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
+    }
 }

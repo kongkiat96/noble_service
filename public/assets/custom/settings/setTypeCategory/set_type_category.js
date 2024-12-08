@@ -485,6 +485,10 @@ function funcDeleteCategoryItem(categoryItemID) {
     handleAjaxDeleteResponse(categoryItemID, setURLCategoryTools + "/delete-category-item/" + categoryItemID);
 }
 
+function funcDeleteCategoryList(categoryListID) {
+    handleAjaxDeleteResponse(categoryListID, setURLCategoryTools + "/delete-category-list/" + categoryListID);
+}
+
 
 
 function setupFormValidationCategoryMain(formElement) {
