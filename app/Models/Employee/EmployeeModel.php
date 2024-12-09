@@ -177,6 +177,7 @@ class EmployeeModel extends Model
     {
         try {
             // dd($getData);
+            $setPassword = 'P@ssw0rd#@!';
             $saveEmpGetID = $this->getDatabase->table('tbt_employee')->insertGetId([
                 'employee_code' => $getData['employee_code'],
                 'company_id'        => $getData['company'],
@@ -208,7 +209,7 @@ class EmployeeModel extends Model
                     'name'  => $getData['firstName'] . ' ' . $getData['lastName'],
                     'email' => $getData['email'],
                     'emp_code' => $getData['employee_code'],
-                    'password' => bcrypt($getData['employee_code']),
+                    'password' => bcrypt($setPassword),
                     'created_at' => Carbon::now(),
                     'user_level' => 2,
                     'user_system'   => $getData['userClass'],
