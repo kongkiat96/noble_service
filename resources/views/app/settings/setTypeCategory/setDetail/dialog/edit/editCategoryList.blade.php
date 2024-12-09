@@ -26,7 +26,7 @@
                             autocomplete="off" value="{{ $dataCategoryList->category_list_name }}" />
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    {{-- <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="checker_id">ผู้ตรวจเช็ค/ซ่อม</label>
                         <select id="checker_id" name="checker_id" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
@@ -53,7 +53,7 @@
                         <label class="form-label-md mb-2" for="processing">ระยะดำเนินการ</label>
                         <input type="text" id="processing" class="form-control" name="processing" autocomplete="off"
                             value="{{ $dataCategoryList->processing }}" />
-                    </div>
+                    </div> --}}
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="sla">SLA</label>
@@ -72,7 +72,6 @@
                         </select>
                     </div>
                 </div>
-                {{-- <input type="text" name="categoryAllID" id="categoryAllID" value="{{ $categoryDetailID }}" hidden> --}}
             </form>
         </div>
     </div>

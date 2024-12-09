@@ -61,14 +61,14 @@
                         <h5 class="pb-2 border-bottom mb-4 mt-3">รายละเอียดข้อมูลส่วนตัว</h5>
                         <div class="info-container">
                             <ul class="list-unstyled">
-                                <li class="mb-3">
+                                {{-- <li class="mb-3">
                                     <span class="fw-bold me-2">Username :</span>
                                     <span>{{ $dataEmployee->employee_code }}</span>
                                 </li>
                                 <li class="mb-3">
                                     <span class="fw-bold me-2">Email :</span>
                                     <span>{{ $dataEmployee->email }}</span>
-                                </li>
+                                </li> --}}
                                 <li class="mb-3">
                                     <span class="fw-bold me-2">Status :</span>
                                     @if($dataEmployee->status_login == 1)
@@ -77,7 +77,7 @@
                                     <span class="badge bg-label-danger">Inactive</span>
                                     @endif
                                 </li>
-                                <li class="mb-3">
+                                {{-- <li class="mb-3">
                                     <span class="fw-bold me-2">Role :</span>
                                     @if($dataEmployee->user_class == 'SuperAdmin')
                                         <span class="badge bg-label-danger">ผู้ดูแลระบบ</span>
@@ -88,7 +88,6 @@
                                     @else
                                     <span class="badge bg-label-info">ผู้ใช้งานทั่วไป</span>
                                     @endif
-                                    {{-- <span>Author</span> --}}
                                 </li>
                                 <li class="mb-3">
                                     <span class="fw-bold me-2">วันที่เริ่มงาน :</span>
@@ -97,7 +96,7 @@
                                 <li class="mb-3">
                                     <span class="fw-bold me-2">อายุงาน :</span>
                                     <span>{{ $getCalWorking['service_period']['years'] }} ปี {{ $getCalWorking['service_period']['months'] }} เดือน {{ $getCalWorking['service_period']['days'] }} วัน</span>
-                                </li>
+                                </li> --}}
                                 <li class="mb-3">
                                     <span class="fw-bold me-2">บริษัท :</span>
                                     <span>{{ $aboutDepartment[0]->company_name_th }}</span>
@@ -110,7 +109,7 @@
                             <div class="d-flex justify-content-center pt-3">
                                 <a href="javascript:;" class="btn btn-primary me-3" data-bs-target="#editUser"
                                     data-bs-toggle="modal">Edit</a>
-                                <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a>
+                                {{-- <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a> --}}
                             </div>
                         </div>
                     </div>

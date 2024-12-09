@@ -357,22 +357,22 @@ $(function () {
                 data: 'category_list_name',
                 class: "text-center",
             },
-            {
-                data: 'checker_name',
-                class: "text-center",
-            },
-            {
-                data: 'pr_po',
-                class: "text-center",
-            },
-            {
-                data: 'order',
-                class: "text-center",
-            },
-            {
-                data: 'processing',
-                class: "text-center",
-            },
+            // {
+            //     data: 'checker_name',
+            //     class: "text-center",
+            // },
+            // {
+            //     data: 'pr_po',
+            //     class: "text-center",
+            // },
+            // {
+            //     data: 'order',
+            //     class: "text-center",
+            // },
+            // {
+            //     data: 'processing',
+            //     class: "text-center",
+            // },
             {
                 data: 'sla',
                 class: "text-center",
