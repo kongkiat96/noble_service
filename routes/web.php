@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    Route::prefix('employee')->group(function () {
+    Route::prefix('/employee')->group(function () {
         Route::prefix('/list-all-employee')->group(function () {
             Route::get('', 'Employee\EmployeeController@getAllEmployee');
             Route::get('/table-employee-current', 'Employee\EmployeeController@showDataEmployeeCurrent');
@@ -76,6 +76,11 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/add-employee')->group(function () {
             Route::get('', 'Employee\EmployeeController@addEmployee');
             Route::post('/save-employee', 'Employee\EmployeeController@saveEmployee');
+        });
+
+        Route::prefix('/manager')->group(function () {
+            Route::get('', 'Employee\ManagerController@index');
+            Route::get('/add-manager-modal', 'Employee\ManagerController@showAddManagerModal');
         });
     });
 
@@ -260,6 +265,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/delete-checker/{checkerID}', 'Settings\CheckerController@deleteChecker');
 
             Route::post('/get-data-checker', 'Settings\CheckerController@getDataChecker');
+        });
+
+        Route::prefix('/branch')->group(function () {
+            Route::get('', 'Settings\BranchController@index');
+            Route::get('/add-branch-modal', 'Settings\BranchController@showAddBranchModal');
+            Route::post('/save-branch', 'Settings\BranchController@saveBranchData');
+            Route::get('/show-edit-branch/{branchID}', 'Settings\BranchController@showEditBranch');
+            Route::post('/edit-branch/{branchID}', 'Settings\BranchController@saveEditBranch');
+            Route::post('/delete-branch/{branchID}', 'Settings\BranchController@deleteBranch');
+
+            Route::post('/get-data-branch', 'Settings\BranchController@getDataBranch');
         });
     });
 
