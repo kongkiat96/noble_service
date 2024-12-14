@@ -6,7 +6,7 @@ function handleAjaxSaveResponse(response) {
             text = 'บันทึกข้อมูลสำเร็จ';
             timer = 2500;
             break;
-        case 23000:
+        case '23000':
             icon = 'warning';
             text = 'พบข้อมูลซ้ำในระบบ';
             timer = undefined;

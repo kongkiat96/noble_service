@@ -274,6 +274,7 @@ class getDataMasterModel extends Model
             ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
             ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
             ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+            ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
             ->where('tbt_employee.deleted', 0)
             ->where('tbt_employee.status_login', 1)
             ->select(
@@ -287,7 +288,9 @@ class getDataMasterModel extends Model
                 'tbm_department.department_name',
                 'tbm_group.group_name',
                 'tbt_employee.user_class',
-                'status_login'
+                'status_login',
+                'tbm_branch.branch_name',
+                'tbm_branch.branch_code'
             )->get();
 
         // dd($getEmployee);
@@ -316,5 +319,79 @@ class getDataMasterModel extends Model
     {
         $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag,'ALL'])->orderBy('id')->get();
         return $getChecker;
+    }
+
+    public function getEmployeeListByPosition()
+    {
+        $getEmployee = DB::connection('mysql')->table('tbt_employee')
+            ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
+            ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+            ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+            ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
+            ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
+            ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+            ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
+            ->where('tbt_employee.deleted', 0)
+            ->where('tbt_employee.status_login', 1)
+            ->whereIn('tbt_employee.position_class',['1','3','4'])
+            ->select(
+                'tbt_employee.ID',
+                'tbt_employee.employee_code',
+                'tbt_employee.email',
+                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+                'tbm_class_list.class_name',
+                'tbt_employee.position_name',
+                'tbm_company.company_name_th',
+                'tbm_department.department_name',
+                'tbm_group.group_name',
+                'tbt_employee.user_class',
+                'status_login',
+                'tbm_branch.branch_name',
+                'tbm_branch.branch_code'
+            )->get();
+
+        // dd($getEmployee);
+        return $getEmployee;
+    }
+
+    public function getDataAboutEmployee($empID)
+    {
+        try {
+            $getEmployee = DB::connection('mysql')->table('tbt_employee')
+            ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
+            ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+            ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+            ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
+            ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
+            ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+            ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
+            ->where('tbt_employee.deleted', 0)
+            ->where('tbt_employee.status_login', 1)
+            ->where('tbt_employee.ID', $empID)
+            ->select(
+                'tbt_employee.ID',
+                'tbt_employee.employee_code',
+                'tbt_employee.email',
+                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+                'tbm_class_list.class_name',
+                'tbt_employee.position_name',
+                'tbm_company.company_name_th',
+                'tbm_department.department_name',
+                'tbm_group.group_name',
+                'tbt_employee.user_class',
+                'status_login',
+                'tbm_branch.branch_name',
+                'tbm_branch.branch_code'
+            )->first();
+
+        // dd($getEmployee);
+        return $getEmployee;
+        } catch(Exception $e) {
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            return [
+                'status' => intval($e->getCode()) ?: 500,
+                'message' => 'Error occurred: ' . $e->getMessage()
+            ];
+        }
     }
 }

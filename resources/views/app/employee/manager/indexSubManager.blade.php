@@ -6,6 +6,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ url('/home') }}">หน้าแรก</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{ url('/employee/manager') }}">กำหนดรายการผู้บังคับบัญชา</a>
+            </li>
             <li class="breadcrumb-item active">{{ $urlName }}</li>
         </ol>
     </nav>
@@ -22,6 +25,75 @@
     <div class="modal fade" id="editManagerModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">ชื่อ - นามสกุลผู้บังคับบัญชา</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">{{ $getDataManager->full_name }}</h4>
+                            </div>
+                            <figcaption class="blockquote-footer mb-0 text-muted mt-3">
+                                <cite title="Source Title">ผู้บังคับบัญชา</cite>
+                            </figcaption>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-primary rounded p-2">
+                                <i class="bx bx-sitemap bx-sm"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">บริษัท</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">{{ $getDataManager->company_name_th }}</h4>
+                            </div>
+                            <figcaption class="blockquote-footer mb-0 text-muted mt-3">
+                                <cite title="Source Title">ผู้บังคับบัญชา</cite>
+                            </figcaption>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-info rounded p-2">
+                                <i class="bx bxs-business bx-sm"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">แผนก</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">{{ $getDataManager->group_name }}</h4>
+                            </div>
+                            <figcaption class="blockquote-footer mb-0 text-muted mt-3">
+                                <cite title="Source Title">ผู้บังคับบัญชา</cite>
+                            </figcaption>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-success rounded p-2">
+                                <i class="bx bx-spreadsheet bx-sm"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -72,6 +144,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4">
+                <a href="{{ url('/employee/manager') }}" class="btn btn-danger"><i
+                        class="bx bx-arrow-back"></i> ย้อนกลับ</a>
             </div>
         </div>
     </div>

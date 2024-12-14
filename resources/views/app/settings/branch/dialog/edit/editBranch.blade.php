@@ -38,7 +38,7 @@
         <button type="button" class="btn btn-label-danger" data-bs-dismiss="modal"><i
                 class='menu-icon tf-icons bx bx-window-close'></i> ปิด</button>
             <input type="text" name="branchID" id="branchID" value="{{ $getDataBranch->id }}" hidden>
-        <button type="submit" name="saveEditBranch" id="saveEditBranch" class="btn btn-success btn-form-block-overlay"><i
+        <button type="submit" name="saveEditBranch" id="saveEditBranch" class="btn btn-warning btn-form-block-overlay"><i
                 class='menu-icon tf-icons bx bxs-save'></i> บันทึกข้อมูล</button>
     </div>
 

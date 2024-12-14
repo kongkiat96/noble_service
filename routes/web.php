@@ -81,6 +81,16 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/manager')->group(function () {
             Route::get('', 'Employee\ManagerController@index');
             Route::get('/add-manager-modal', 'Employee\ManagerController@showAddManagerModal');
+            Route::post('/save-manager', 'Employee\ManagerController@saveDataManager');
+            Route::get('/show-edit-manager/{managerID}', 'Employee\ManagerController@showEditManager');
+            Route::post('/edit-manager/{managerID}', 'Employee\ManagerController@saveEditManager');
+            Route::post('/delete-manager/{managerID}', 'Employee\ManagerController@deleteManager');
+
+            Route::post('/get-data-manager', 'Employee\ManagerController@getDataManager');
+
+            Route::prefix('/add-sub-manager')->group(function () {
+                Route::get('/{managerID}', 'Employee\ManagerController@index_sub_manager');
+            });
         });
     });
 
@@ -288,6 +298,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-amphoe/{provinceID}', 'Master\getDataMasterController@getDataAmphoe');
         Route::get('/get-tambon/{aumphoeID}', 'Master\getDataMasterController@getDataTambon');
         Route::get('/get-category-type/{categoryMainID}', 'Master\getDataMasterController@getDataCategoryType');
+
+        Route::get('/get-about-employee/{empID}', 'Master\getDataMasterController@getDataAboutEmployee');
     });
 
     Route::prefix('test')->group(function () {
