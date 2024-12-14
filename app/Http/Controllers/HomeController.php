@@ -39,7 +39,7 @@ class HomeController extends Controller
         $getClassList   = $this->masterModel->getClassList();
         $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
         $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
-        // dd($getDepartment);
+        // dd($getDataEmployee);
         $getCalWorking = CalculateDateHelper::convertDateAndCalculateServicePeriod($getDataEmployee->date_start_work);
         // dd($getCalWorking);
         return view('app.home.index',[

@@ -712,19 +712,12 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
                         var optionElement = $('<option>').val(categoryType.id).text(categoryType.category_type_name);
                         $categoryTypeSelect.append(optionElement);
                     });
-
-                    // $('#groupOfDepartment').prop('disabled', true);
-                    // $('#groupOfDepartment').empty().append('<option value="">Select</option>');
-                    // $('#mapIDGroup').val('');
                 },
                 error: function () {
                     $categoryTypeSelect.html(originalContent);
                 }
             });
         } else {
-            // $('#groupOfDepartment').prop('disabled', true);
-            // $('#groupOfDepartment').empty().append('<option value="">Select</option>');
-            // $('#mapIDGroup').val('');
             $categoryTypeSelect.html(originalContent);
             $categoryTypeSelect.empty().append('<option value="">Select</option>');
         }

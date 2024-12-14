@@ -423,8 +423,9 @@ class EmployeeModel extends Model
                 ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
                 ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
                 ->where('tbt_employee.ID', $getEmpGetID)
-                ->select('tbt_employee.*', 'tbt_employee.ID AS emp_id', 'tbm_group.*', 'tbm_group.ID AS group_id', 'tbm_class_list.*', 'tbm_class_list.ID AS class_id', 'tbm_prefix_name.*', 'tbm_prefix_name.ID AS prefix_id', 'tbm_province.*', 'tbm_province.ID AS province_id')
+                ->select('tbt_employee.*', 'tbt_employee.ID AS emp_id', 'tbm_group.*', 'tbm_group.ID AS group_id', 'tbm_class_list.*', 'tbm_class_list.ID AS class_id', 'tbm_prefix_name.*', 'tbm_prefix_name.ID AS prefix_id', 'tbm_province.*', 'tbm_province.ID AS province_id',DB::raw('CONCAT(tbm_branch.branch_name, " (", tbm_branch.branch_code, ")") AS branch_name'))
                 ->first();
 
             // dd($data);
