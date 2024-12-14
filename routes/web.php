@@ -87,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/delete-manager/{managerID}', 'Employee\ManagerController@deleteManager');
 
             Route::post('/get-data-manager', 'Employee\ManagerController@getDataManager');
+            Route::post('/get-data-search-manager', 'Employee\ManagerController@getDataSearchManager');
 
             Route::prefix('/sub-manager')->group(function () {
                 Route::get('/{managerID}', 'Employee\ManagerController@index_sub_manager');

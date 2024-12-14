@@ -383,4 +383,97 @@ class ManagerModel extends Model
             ];
         }
     }
+
+    public function getDataSearchManager($param){
+        try {
+            $sql = DB::connection('mysql')->table('tbt_sub_manager AS subManager')
+                ->leftJoin('tbt_manager AS manager', 'subManager.manager_id', '=', 'manager.id')
+                ->leftJoin('tbt_employee AS Manageremployee', 'manager.manager_emp_id', '=', 'Manageremployee.ID')
+                ->leftJoin('tbt_employee AS employee', 'subManager.sub_emp_id', '=', 'employee.ID')
+                ->leftJoin('tbm_group', 'employee.map_company', '=', 'tbm_group.ID')
+                ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+                ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+                ->leftJoin('tbm_class_list', 'employee.position_class', '=', 'tbm_class_list.ID')
+                ->leftJoin('tbm_prefix_name AS manager_prefix', 'Manageremployee.prefix_id', '=', 'manager_prefix.ID')
+                ->leftJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
+                ->leftJoin('tbm_province', 'employee.map_province', '=', 'tbm_province.ID')
+                ->leftJoin('tbm_branch', 'employee.branch_id', '=', 'tbm_branch.id')
+                ->where('subManager.deleted', 0)
+                ->where('manager.deleted', 0)
+                ->where('employee.deleted', 0);
+                if($param['manager_id'] != null){
+                    $sql = $sql->where('manager.manager_emp_id', $param['manager_id']);
+                } else if ($param['sub_emp_id']){
+                    $sql = $sql->where('subManager.sub_emp_id', $param['sub_emp_id']);
+                }
+            $sql = $sql->select(
+                'subManager.id',
+                'employee.employee_code',
+                'employee.email',
+                DB::raw('CONCAT(manager_prefix.prefix_name, " ", Manageremployee.first_name, " ", Manageremployee.last_name) AS full_name_manager'),
+                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", employee.first_name, " ", employee.last_name) AS full_name_sub_manager'),
+                'tbm_class_list.class_name',
+                'employee.position_name',
+                'tbm_company.company_name_th',
+                'tbm_department.department_name',
+                'tbm_group.group_name',
+                'employee.user_class',
+                'subManager.status_tag',
+                'tbm_branch.branch_name',
+                'tbm_branch.branch_code',
+                'subManager.created_at',
+                'subManager.created_user',
+                'subManager.updated_at',
+                'subManager.updated_user'
+            );
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('subManager.created_at', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('subManager.created_at', 'desc')->get();
+            }
+            // $sql = $sql->orderBy('subManager.created_at', 'desc');
+            $dataCount = $sql->count();
+
+            // dd($sql);
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->id,
+                    'full_name_manager' => $value->full_name_manager,
+                    'full_name_sub_manager' => $value->full_name_sub_manager,
+                    'company_name_th' => $value->company_name_th,
+                    'class_name' => $value->class_name,
+                    'position_name' => $value->position_name,
+                    'department_name' => $value->department_name,
+                    'group_name' => $value->group_name,
+                    'branch_name' => $value->branch_name,
+                    'branch_code' => $value->branch_code,
+                    'status_tag' => $value->status_tag,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
+                    'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
+                    // 'Permission' => Auth::user()->user_system
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

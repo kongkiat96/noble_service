@@ -146,7 +146,7 @@
             </div>
         </div>
     </div>
-    <input type="text" id="managerID" name="managerID" value="{{ $managerID }}">
+    <input type="text" id="managerID" name="managerID" value="{{ $managerID }}" hidden>
     <div class="col-12">
         <div class="row">
             <div class="col-4">

@@ -30,11 +30,15 @@ class ManagerController extends Controller
         }
         $getAccessMenus = getAccessToMenu::getAccessMenus();
 
+        $getDataManager = $this->masterModel->getEmployeeListByPosition('manager');
+        $getDataSubManager = $this->masterModel->getEmployeeListByPosition('subManager');
         return view('app.employee.manager.index', [
             'url' => $url,
             'urlName' => $urlName,
             'urlSubLink' => $urlSubLink,
-            'listMenus' => $getAccessMenus
+            'listMenus' => $getAccessMenus,
+            'dataManager' => $getDataManager,
+            'dataSubManager' => $getDataSubManager
         ]);
     }
 
@@ -172,5 +176,21 @@ class ManagerController extends Controller
     {
         $deleteData = $this->managerModel->deleteManager($subManagerID, 'subManager');
         return response()->json(['status' => $deleteData['status'], 'message' => $deleteData['message']]);
+    }
+
+    public function getDataSearchManager(Request $request)
+    {
+        if(empty($request['manager_id']) && empty($request['sub_emp_id'])){
+            $getData = [
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => [],
+            ];
+            return response()->json($getData);
+        } else {
+            $getData = $this->managerModel->getDataSearchManager($request);
+            return response()->json($getData);
+        }
+        
     }
 }
