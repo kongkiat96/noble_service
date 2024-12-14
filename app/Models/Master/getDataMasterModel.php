@@ -321,7 +321,7 @@ class getDataMasterModel extends Model
         return $getChecker;
     }
 
-    public function getEmployeeListByPosition()
+    public function getEmployeeListByPosition($tagPosition)
     {
         $getEmployee = DB::connection('mysql')->table('tbt_employee')
             ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
@@ -332,9 +332,15 @@ class getDataMasterModel extends Model
             ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
             ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
             ->where('tbt_employee.deleted', 0)
-            ->where('tbt_employee.status_login', 1)
-            ->whereIn('tbt_employee.position_class',['1','3','4'])
-            ->select(
+            ->where('tbt_employee.status_login', 1);
+            if($tagPosition == 'manager'){
+                $getEmployee = $getEmployee->whereIn('tbt_employee.position_class',['1','3','4']);
+
+            } else {
+                $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class',['1','3','4']);
+                
+            }
+            $getEmployee = $getEmployee->select(
                 'tbt_employee.ID',
                 'tbt_employee.employee_code',
                 'tbt_employee.email',
@@ -393,5 +399,11 @@ class getDataMasterModel extends Model
                 'message' => 'Error occurred: ' . $e->getMessage()
             ];
         }
+    }
+
+    public function getBranchList()
+    {
+        $getBranch = DB::connection('mysql')->table('tbm_branch')->where('deleted', 0)->where('status_tag', 1)->orderBy('id')->get();
+        return $getBranch;
     }
 }

@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/employee')->group(function () {
         Route::prefix('/list-all-employee')->group(function () {
             Route::get('', 'Employee\EmployeeController@getAllEmployee');
-            Route::get('/table-employee-current', 'Employee\EmployeeController@showDataEmployeeCurrent');
+            Route::post('/table-employee-current', 'Employee\EmployeeController@showDataEmployeeCurrent');
             Route::get('/table-employee-disable', 'Employee\EmployeeController@showDataEmployeeDisable');
         });
 
@@ -88,8 +88,15 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/get-data-manager', 'Employee\ManagerController@getDataManager');
 
-            Route::prefix('/add-sub-manager')->group(function () {
+            Route::prefix('/sub-manager')->group(function () {
                 Route::get('/{managerID}', 'Employee\ManagerController@index_sub_manager');
+                Route::get('/add-sub-manager-modal/{managerID}', 'Employee\ManagerController@showAddSubManagerModal');
+                Route::post('/save-sub-manager', 'Employee\ManagerController@saveDataSubManager');
+                Route::get('/show-edit-sub-manager/{subManagerID}', 'Employee\ManagerController@showEditSubManager');
+                Route::post('/edit-sub-manager/{subManagerID}', 'Employee\ManagerController@saveEditSubManager');
+                Route::post('/delete-sub-manager/{subManagerID}', 'Employee\ManagerController@deleteSubManager');
+
+                Route::post('/get-data-sub-manager', 'Employee\ManagerController@getDataSubManager');
             });
         });
     });

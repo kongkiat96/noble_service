@@ -31,7 +31,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="employee-current" role="tabpanel">
                         <div class="text-nowrap">
-                            <table class="dt-employee-current table table-bordered table-hover">
+                            <table class="dt-employee-current table table-hover">
                                 <thead>
                                     <tr>
                                         <th>ลำดับ</th>
@@ -43,6 +43,7 @@
                                         <th>บริษัท</th>
                                         <th>สังกัด/ฝ่าย</th>
                                         <th>แผนก</th>
+                                        <th>สาขา</th>
                                         <th>สังกัดใช้งาน</th>
                                         <th>สถานะการใช้งาน</th>
                                         <th>จัดการ</th>

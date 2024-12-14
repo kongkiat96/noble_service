@@ -1,12 +1,12 @@
 var setURLEmployee = '/employee'
 var setURLManager = setURLEmployee + '/manager'
-
+var setURLSubManager = setURLManager + '/sub-manager'
 $(document).ready(function () {
     $("#saveManager").on("click", function (e) {
         e.preventDefault();
         removeValidationFeedback();
         const form = $("#formAddManager")[0];
-        const fv = setupFormValidationManager(form);
+        const fv = setupFormValidationManager(form,'manager_emp_id');
         const formData = new FormData(form);
 
         fv.validate().then(function (status) {
@@ -18,7 +18,23 @@ $(document).ready(function () {
         });
     });
 
-    $('#manager_emp_id').on('change', function () {
+    $("#saveSubManager").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddSubManager")[0];
+        const fv = setupFormValidationManager(form,'sub_emp_id');
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLSubManager + "/save-sub-manager", formData)
+                    .done(onSaveSubManagerSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
+
+    $('#manager_emp_id,#sub_emp_id').on('change', function () {
         let managerId = $(this).val();
         // alert(managerId);
         // return
@@ -60,4 +76,10 @@ function onSaveManagerSuccess(response) {
     // console.log(response)
     handleAjaxSaveResponse(response);
     closeAndResetModal("#addManagerModal", "#formAddManager");
+}
+
+function onSaveSubManagerSuccess(response) {
+    // console.log(response)
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addSubManagerModal", "#formAddSubManager");
 }

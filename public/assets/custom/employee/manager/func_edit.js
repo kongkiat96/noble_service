@@ -1,6 +1,6 @@
 var setURLEmployee = '/employee'
 var setURLManager = setURLEmployee + '/manager'
-
+var setURLSubManager = setURLManager + '/sub-manager'
 
 $(document).ready(function () {
     $("#saveEditManager").on("click", function (e) {
@@ -8,7 +8,7 @@ $(document).ready(function () {
         removeValidationFeedback();
         const form = $("#formEditManager")[0];
         const managerID = $('#managerID').val();
-        const fv = setupFormValidationManager(form);
+        const fv = setupFormValidationManager(form,'manager_emp_id');
         const formData = new FormData(form);
 
         fv.validate().then(function (status) {
@@ -20,7 +20,24 @@ $(document).ready(function () {
         });
     });
 
-    $('#manager_emp_id').on('change', function () {
+    $("#saveEditSubManager").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formEditSubManager")[0];
+        const subManagerID = $('#subManagerID').val();
+        const fv = setupFormValidationManager(form, 'sub_emp_id');
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLSubManager + "/edit-sub-manager/" + subManagerID, formData)
+                    .done(onSaveEditSubManagerSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
+
+    $('#manager_emp_id,#sub_emp_id').on('change', function () {
         let managerId = $(this).val();
         // alert(managerId);
         // return
@@ -63,3 +80,8 @@ function onSaveEditManagerSuccess(response) {
     handleAjaxEditResponse(response);
     closeAndResetModal("#editManagerModal", "#formEditManager");
 }   
+
+function onSaveEditSubManagerSuccess(response) {
+    handleAjaxEditResponse(response);
+    closeAndResetModal("#editSubManagerModal", "#formEditSubManager");
+} 

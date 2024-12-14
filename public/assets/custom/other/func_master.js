@@ -35,7 +35,7 @@ function handleAjaxEditResponse(response) {
             text = 'แก้ไขข้อมูลสำเร็จ';
             timer = 2500;
             break;
-        case 23000:
+        case '23000':
             icon = 'warning';
             text = 'พบข้อมูลซ้ำในระบบ';
             timer = undefined;
@@ -314,9 +314,9 @@ function renderUserClassBadge(data, type, full, row) {
         // hr: { title: 'สังกัด บุคคล', className: 'bg-label-primary' },
         // userOther: { title: 'ผู้ใช้ทั่วไป', className: 'bg-label-danger' }
         SuperAdmin: { title: 'ผู้ดูแลระบบ', className: 'bg-label-danger' },
-        Admin: { title: 'เจ้าหน้าที่', className: 'bg-label-success' },
-        User: { title: 'ผู้บันทึกข้อมูล', className: 'bg-label-warning' },
-        Viewer: { title: 'ผู้ใช้งานทั่วไป', className: 'bg-label-info' }
+        Admin: { title: 'เจ้าหน้าที่', className: 'bg-label-warning' },
+        User: { title: 'ผู้ใช้งานทั่วไป', className: 'bg-label-info' },
+        // Viewer: { title: 'ผู้ใช้งานทั่วไป', className: 'bg-label-info' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;

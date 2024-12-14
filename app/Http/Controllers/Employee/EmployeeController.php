@@ -61,6 +61,7 @@ class EmployeeController extends Controller
         $provinceName   = $this->masterModel->getDataProvince();
         $getCompany     = $this->masterModel->getDataCompany();
         $getClassList   = $this->masterModel->getClassList();
+        $getBranch      = $this->masterModel->getBranchList();
         // dd($provinceName);
 
         if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
@@ -76,7 +77,8 @@ class EmployeeController extends Controller
             'provinceName'      => $provinceName,
             'dataCompany'       => $getCompany,
             'dataClassList'     => $getClassList,
-            'listMenus'     => $getAccessMenus
+            'listMenus'         => $getAccessMenus,
+            'dataBranch'        => $getBranch
         ]);
     }
     public function saveEmployee(Request $request)
@@ -101,6 +103,7 @@ class EmployeeController extends Controller
         $getGroup       = $this->masterModel->getDataGroupOfDepartment($getDataEmployee->department_id);
         $getMapAmphoe = $this->masterModel->getDataAmphoe($getDataEmployee->province_code);
         $getMapTambon = $this->masterModel->getDataTambon($getDataEmployee->amphoe_code);
+        $getBranch      = $this->masterModel->getBranchList();
         // dd($getDataEmployee);
         $urlSubLink = "list-all-employee";
 
@@ -122,7 +125,8 @@ class EmployeeController extends Controller
             'getMapAmphoe'      => $getMapAmphoe,
             'getMapTambon'      => $getMapTambon,
             'dataEmployee'      => $getDataEmployee,
-            'listMenus'     => $getAccessMenus
+            'listMenus'     => $getAccessMenus,
+            'dataBranch'        => $getBranch
         ]);
     }
 
@@ -156,7 +160,8 @@ class EmployeeController extends Controller
         return response()->json(['status' => $deleteData['status'], 'message' => $deleteData['message']]);
     }
 
-    public function searchEmployee(){
+    public function searchEmployee()
+    {
         $url        = request()->segments();
         $urlName    = "ค้นหาข้อมูลพนักงาน";
         $urlSubLink = "search-all-employee";
@@ -166,7 +171,7 @@ class EmployeeController extends Controller
         }
         $getAccessMenus = getAccessToMenu::getAccessMenus();
 
-        return view('app.employee.searchAllEmployee',[
+        return view('app.employee.searchAllEmployee', [
             'url'           => $url,
             'urlName'       => $urlName,
             'urlSubLink'    => $urlSubLink,

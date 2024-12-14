@@ -123,6 +123,18 @@
                                         placeholder="YYYY-MM-DD" id="dateEnd" name="dateEnd" />
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="form-label-md mb-2" for="branch_id">สาขา</label>
+
+                                    <select id="branch_id" name="branch_id" class="form-select select2"
+                                        autocomplete="off" data-allow-clear="true">
+                                        <option value="">Select</option>
+                                        @foreach ($dataBranch as $key => $value)
+                                            <option value="{{ $value->id }}">
+                                                {{ $value->branch_name .' ('. $value->branch_code .')' }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
                                     <label class="form-label-md mb-2" for="userClass">ระดับสิทธิ์ผู้ใช้งาน</label>
 
                                     <select id="userClass" name="userClass" class="form-select select2"
@@ -130,8 +142,8 @@
                                         <option value="">Select</option>
                                         <option value="SuperAdmin">ผู้ดูแลระบบ</option>
                                         <option value="Admin">เจ้าหน้าที่</option>
-                                        <option value="User">ผู้บันทึกข้อมูล</option>
-                                        <option value="Viewer">ผู้ใช้งานทั่วไป</option>
+                                        {{-- <option value="Viewer">ผู้บันทึกข้อมูล</option> --}}
+                                        <option value="User">ผู้ใช้งานทั่วไป</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">

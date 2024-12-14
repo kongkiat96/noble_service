@@ -21,7 +21,87 @@ class EmployeeModel extends Model
         $this->getDatabase = DB::connection('mysql');
     }
 
-    public function getDataEmployeeCurrent($request)
+    public function getDataEmployeeCurrent($param)
+    {
+        try {
+            $sql = $this->getDatabase->table('tbt_employee')
+                ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
+                ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+                ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+                ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
+                ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
+                ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
+                ->where('tbt_employee.deleted', 0)
+                ->where('tbt_employee.status_login', 1)
+                ->select(
+                    'tbt_employee.ID',
+                    'tbt_employee.employee_code',
+                    'tbt_employee.email',
+                    DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+                    'tbm_class_list.class_name',
+                    'tbt_employee.position_name',
+                    'tbm_company.company_name_th',
+                    'tbm_department.department_name',
+                    'tbm_group.group_name',
+                    'tbt_employee.user_class',
+                    'status_login',
+                    'tbm_branch.branch_name',
+                    'tbm_branch.branch_code',
+                    'tbt_employee.created_at',
+                    'tbt_employee.created_user',
+                    'tbt_employee.update_at',
+                    'tbt_employee.update_user'
+                );
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('tbt_employee.user_class', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('tbt_employee.user_class', 'desc')->get();
+            }
+            // $sql = $sql->orderBy('tbt_employee.user_class', 'desc');
+            $dataCount = $sql->count();
+
+            // dd($sql);
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->ID,
+                    'full_name' => $value->full_name,
+                    'employee_code' => $value->employee_code,
+                    'email' => $value->email,
+                    'full_name' => $value->full_name,
+                    'class_name' => $value->class_name,
+                    'position_name' => $value->position_name,
+                    'company_name_th' => $value->company_name_th,
+                    'department_name' => $value->department_name,
+                    'group_name' => $value->group_name,
+                    'user_class' => $value->user_class,
+                    'branch_name' => !empty($value->branch_name) && !empty($value->branch_code) ? $value->branch_name . ' (' . $value->branch_code . ')' : '-',
+                    'status_login' => $value->status_login,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
+                    'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
+                    'Permission' => Auth::user()->user_system
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function getDataEmployeeCurrentOld($request)
     {
         try {
 
@@ -200,6 +280,7 @@ class EmployeeModel extends Model
                 'current_address'   => $getData['currentAddress'],
                 'map_province'      => $getData['mapIDProvince'],
                 'img_base'          => $getData['baseimg'],
+                'branch_id'         => $getData['branch_id'],
                 'created_at'        => Carbon::now(),
                 'created_user'      => Auth::user()->emp_code
             ]);
@@ -230,10 +311,10 @@ class EmployeeModel extends Model
             }
         } catch (Exception $e) {
             $returnStatus = [
-                'status'    => intval($e->getCode()),
+                'status'    => $e->getCode(),
                 'message'   => $e->getMessage()
             ];
-            Log::info($returnStatus);
+            // Log::info($returnStatus);
         } finally {
             return $returnStatus;
         }
@@ -267,6 +348,7 @@ class EmployeeModel extends Model
                     'current_address'   => $dataEmployee['currentAddress'],
                     'map_province'      => $dataEmployee['mapIDProvince'],
                     'img_base'          => $dataEmployee['baseimg'],
+                    'branch_id'         => $dataEmployee['branch_id'],
                     'update_at'         => Carbon::now(),
                     'update_user'       => Auth::user()->emp_code
                 ]);
