@@ -18,50 +18,98 @@ class MenuModel extends Model
         $this->getDatabase = DB::connection('mysql');
     }
 
-    public function getDataMenuMain($request)
+    public function getDataMenuMain($param)
     {
-        // dd($request->all());
-        $columns = ['menu_sort', 'ID', 'menu_name', 'menu_link', 'menu_icon', 'status'];
+        try {
+            $sql = $this->getDatabase->table('tbm_menu_main')->where('deleted', 0);
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('menu_sort', 'asc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('menu_sort', 'asc')->get();
+            }
+            $dataCount = $sql->count();
 
-        $query = $this->getDatabase->table('tbm_menu_main')->where('deleted', 0);
+            // dd($sql);
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->ID,
+                    'menu_name' => $value->menu_name,
+                    'menu_icon' => $value->menu_icon,
+                    'menu_link' => $value->menu_link,
+                    'menu_sort' => $value->menu_sort,
+                    'status' => $value->status,
+                ];
+            }
 
-        $orderColumnIndex = $request->input('order.0.column');
-        $orderDirection = $request->input('order.0.dir', 'asc');
-
-        if ($orderColumnIndex !== null || isset($columns[$orderColumnIndex])) {
-            $orderColumn = $columns[$orderColumnIndex];
-            $query->orderBy($orderColumn, $orderDirection);
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
         }
-        // คำสั่งค้นหา (Searching)
-        $searchValue = $request->input('search.value');
-        if (!empty($searchValue)) {
-            $query->where(function ($query) use ($columns, $searchValue) {
-                foreach ($columns as $column) {
-                    $query->orWhere('menu_name', 'like', '%' . $searchValue . '%');
-                    $query->orWhere('menu_link', 'like', '%' . $searchValue . '%');
-                }
-            });
-        }
-        $recordsTotal = $query->count();
-        // รับค่าที่ส่งมาจาก DataTables
-        $start = $request->input('start');
-        $length = $request->input('length');
-
-        $data = $query->offset($start)
-            ->limit($length)
-            ->get();
-
-        $output = [
-            'draw' => $request->input('draw'),
-            'recordsTotal' => $recordsTotal,
-            'recordsFiltered' => $recordsTotal, // หรือจำนวนรายการที่ผ่านการค้นหา
-            'data' => $data,
-        ];
-        // dd($output);
-        return $output;
     }
 
-    public function getDataMenuSub($request)
+    public function getDataMenuSub($param)
+    {
+        try {
+            $sql = $this->getDatabase->table('tbm_menu_sub AS tms')
+                ->leftJoin('tbm_menu_main AS tmm', 'tms.menu_main_ID', '=', 'tmm.ID')
+                ->select('tms.ID', 'tms.menu_sub_name', 'tms.menu_sub_link', 'tms.menu_main_ID', 'tmm.menu_name', 'tmm.menu_icon', 'tmm.menu_link', 'tms.menu_sub_icon', 'tms.status', 'tmm.menu_sort')
+                ->where('tms.deleted', 0)
+                ->where('tmm.deleted', 0);
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('tmm.menu_sort', 'asc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('tmm.menu_sort', 'asc')->get();
+            }
+            $dataCount = $sql->count();
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->ID,
+                    'menu_sub_name' => $value->menu_sub_name,
+                    'menu_sub_link' => $value->menu_sub_link,
+                    'menu_main_ID' => $value->menu_main_ID,
+                    'menu_name' => $value->menu_name,
+                    'menu_icon' => $value->menu_icon,
+                    'menu_link' => $value->menu_link,
+                    'menu_sub_icon' => $value->menu_sub_icon,
+                    'status' => $value->status,
+                ];
+            }
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataMenuSubOld($request)
     {
         $query = $this->getDatabase->table('tbm_menu_sub AS tms')
             ->leftJoin('tbm_menu_main AS tmm', 'tms.menu_main_ID', '=', 'tmm.ID')

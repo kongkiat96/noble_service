@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('/search-all-employee')->group(function () {
             Route::get('', 'Employee\EmployeeController@searchEmployee');
+            Route::post('/get-data-search-employee', 'Employee\EmployeeController@getDataSearchEmployee');
         });
 
         Route::post('/delete-employee/{employeeID}', 'Employee\EmployeeController@deleteEmployee');
@@ -173,8 +174,8 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/save-access-menu', 'Settings\MenuController@saveDataAccessMenu');
 
-            Route::get('/table-menu', 'Settings\MenuController@showDataMenu');
-            Route::get('/table-menu-sub', 'Settings\MenuController@showDataMenuSub');
+            Route::post('/table-menu', 'Settings\MenuController@showDataMenu');
+            Route::post('/table-menu-sub', 'Settings\MenuController@showDataMenuSub');
         });
 
         Route::prefix('/about-company')->group(function () {

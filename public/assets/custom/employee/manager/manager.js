@@ -314,7 +314,7 @@ $(document).ready(function () {
         var manager_id = $('#manager_id').val();
         var sub_emp_id = $('#sub_emp_id').val();
 
-        if (manager_id !== '' && sub_emp_id !== '') {
+        if (manager_id !== '' && sub_emp_id !== '' || (manager_id === '' && sub_emp_id === '')) {
             Swal.fire({
                 icon: 'warning',
                 text: 'กรุณาเลือกเพียงหนึ่งข้อมูลในการค้นหา',

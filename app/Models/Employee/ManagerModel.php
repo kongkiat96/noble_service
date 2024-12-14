@@ -354,20 +354,35 @@ class ManagerModel extends Model
         }
     }
 
-    public function deleteManager($managerID,$tag)
+    public function deleteManager($managerID, $tag)
     {
         try {
             $sql = DB::connection('mysql');
-            if($tag == 'manager'){
-                $sql = $sql->table('tbt_manager');
+            if ($tag == 'manager') {
+                $sql->table('tbt_manager')
+                    ->where('id', $managerID)
+                    ->update([
+                        'deleted' => 1,
+                        'updated_at' => now(),
+                        'updated_user' => Auth::user()->emp_code,
+                    ]);
+                $sql->table('tbt_sub_manager')
+                    ->where('manager_id', $managerID)
+                    ->update([
+                        'deleted' => 1,
+                        'updated_at' => now(),
+                        'updated_user' => Auth::user()->emp_code,
+                    ]);
             } else {
-                $sql = $sql->table('tbt_sub_manager');
+                $sql->table('tbt_sub_manager')
+                    ->where('id', $managerID)
+                    ->update([
+                        'deleted' => 1,
+                        'updated_at' => now(),
+                        'updated_user' => Auth::user()->emp_code,
+                    ]);
             }
-            $sql = $sql->where('id', $managerID)->update([
-                'deleted' => 1,
-                'updated_at' => now(),
-                'updated_user' => Auth::user()->emp_code
-            ]);
+
             $returnData = [
                 'status' => 200,
                 'message' => 'Delete Success'
@@ -384,7 +399,8 @@ class ManagerModel extends Model
         }
     }
 
-    public function getDataSearchManager($param){
+    public function getDataSearchManager($param)
+    {
         try {
             $sql = DB::connection('mysql')->table('tbt_sub_manager AS subManager')
                 ->leftJoin('tbt_manager AS manager', 'subManager.manager_id', '=', 'manager.id')
@@ -401,11 +417,11 @@ class ManagerModel extends Model
                 ->where('subManager.deleted', 0)
                 ->where('manager.deleted', 0)
                 ->where('employee.deleted', 0);
-                if($param['manager_id'] != null){
-                    $sql = $sql->where('manager.manager_emp_id', $param['manager_id']);
-                } else if ($param['sub_emp_id']){
-                    $sql = $sql->where('subManager.sub_emp_id', $param['sub_emp_id']);
-                }
+            if ($param['manager_id'] != null) {
+                $sql = $sql->where('manager.manager_emp_id', $param['manager_id']);
+            } else if ($param['sub_emp_id']) {
+                $sql = $sql->where('subManager.sub_emp_id', $param['sub_emp_id']);
+            }
             $sql = $sql->select(
                 'subManager.id',
                 'employee.employee_code',

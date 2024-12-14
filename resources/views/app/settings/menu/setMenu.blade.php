@@ -47,19 +47,19 @@
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#set-menu-main" aria-controls="set-menu-main" aria-selected="true">
+                            data-bs-target="#set-menu-main" aria-controls="#set-menu-main" aria-selected="true" id="reTabA">
                             รายการชื่อเมนู (หลัก)
                         </button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#set-menu-sub" aria-controls="set-menu-sub" aria-selected="true">
+                            data-bs-target="#set-menu-sub" aria-controls="#set-menu-sub" aria-selected="true" id="reTabB">
                             รายการชื่อเมนู (ย่อย)
                         </button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#flag-type" aria-controls="flag-type" aria-selected="false">
+                            data-bs-target="#access-menu" aria-controls="#access-menu" aria-selected="true" id="reTabC">
                             สิทธิ์การเข้าถึงเมนู
                         </button>
                     </li>
@@ -111,10 +111,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="flag-type" role="tabpanel">
-                        {{-- <div class="inline-spacing text-end">
-                            <button type="button" class="btn btn-info" id="addAccessMenuModal"><i class='menu-icon tf-icons bx bxs-layer'></i> เพิ่มรายชื่อผู้ใช้เข้าถึงเมนู</button>
-                        </div> --}}
+                    <div class="tab-pane fade" id="access-menu" role="tabpanel">
                         <div class="text-nowrap">
                             <table class="dt-user-access-menu table table-bordered table-hover">
                                 <thead>

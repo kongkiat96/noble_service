@@ -1,188 +1,223 @@
-'use strict';
 $(function () {
     var dt_Menu_table = $('.dt-settingMenu')
     var dt_Menu_sub_table = $('.dt-settingMenuSub')
     var dt_user_access_menu_table = $('.dt-user-access-menu')
 
-    if (dt_Menu_table.length) {
-        dt_Menu_table.DataTable({
-            serverSide: true,
-            searching: true,
-            processing: true,
-            ajax: {
-                url: '/settings-system/menu/table-menu'
+    dt_Menu_table.DataTable({
+        processing: true,
+        paging: true,
+        pageLength: 10,
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: '/settings-system/menu/table-menu',
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
             },
-            columns: [
-                { data: null, orderable: false, searchable: false, class: "text-center" },
-                { data: "menu_name", class: "text-nowrap" },
-                {
-                    data: "menu_icon",
-                    class: "text-nowrap text-center",
-                    render: function (data, type, row) {
-                        return `<i class='menu-icon tf-icons bx ${data}'></i> `;
-                    }
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
                 },
-                { data: "menu_link", class: "text-nowrap text-center" },
-                { data: "menu_sort", searchable: false, class: "text-center" },
-                {
-                    data: "status",
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: renderStatusBadge
-                },
-                {
-                    data: 'ID',
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    // render: (data, type, row) => renderGroupActionButtons(data, type, row, 'MenuMain',disableButtons)
-                    render: function (data, type, row) {
-                        return renderGroupActionButtons(data, type, row, 'MenuMain');
-                    }
+            },
+            { data: "menu_name", class: "text-nowrap" },
+            {
+                data: "menu_icon",
+                class: "text-nowrap text-center",
+                render: function (data, type, row) {
+                    return `<i class='menu-icon tf-icons bx ${data}'></i> `;
                 }
-            ],
-            fnCreatedRow: (nRow, aData, iDisplayIndex) => {
-                $('td:first', nRow).text(iDisplayIndex + 1);
             },
-            pagingType: 'full_numbers',
-            drawCallback: function (settings) {
-                const dataTableApi = this.api();
-                const startIndexOfPage = dataTableApi.page.info().start;
-                dataTableApi.column(0).nodes().each((cell, index) => {
-                    cell.textContent = startIndexOfPage + index + 1;
-                });
+            { data: "menu_link", class: "text-nowrap text-center" },
+            { data: "menu_sort", searchable: false, class: "text-center" },
+            {
+                data: "status",
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: renderStatusBadge
             },
-            // order: [[1, "ASC"]],
-            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
-        });
-    }
-
-    if (dt_Menu_sub_table.length) {
-        dt_Menu_sub_table.DataTable({
-            serverSide: true,
-            searching: true,
-            processing: true,
-            ajax: {
-                url: '/settings-system/menu/table-menu-sub'
-            },
-            columns: [
-                { data: null, orderable: false, searchable: false, class: "text-center" },
-                { data: "menu_name", class: "text-nowrap" },
-                {
-                    data: "menu_icon",
-                    orderable: false, searchable: false,
-                    class: "text-nowrap text-center",
-                    render: function (data, type, row) {
-                        return `<i class='menu-icon tf-icons bx ${data}'></i> `;
-                    }
-                },
-                { data: "menu_link", class: "text-nowrap text-center" },
-                { data: "menu_sub_name", class: "text-nowrap" },
-                {
-                    data: "menu_sub_icon",
-                    orderable: false, searchable: false,
-                    class: "text-nowrap text-center",
-                    render: function (data, type, row) {
-                        return `<i class='menu-icon tf-icons bx ${data}'></i> `;
-                    }
-                },
-                { data: "menu_sub_link", class: "text-nowrap text-center" },
-                
-                {
-                    data: "status",
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: renderStatusBadge
-                },
-
-                
-                {
-                    data: 'ID',
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: (data, type, row) => renderGroupActionButtons(data, type, row, 'MenuSub')
+            {
+                data: 'ID',
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                // render: (data, type, row) => renderGroupActionButtons(data, type, row, 'MenuMain',disableButtons)
+                render: function (data, type, row) {
+                    return renderGroupActionButtons(data, type, row, 'MenuMain');
                 }
-            ],
-            fnCreatedRow: (nRow, aData, iDisplayIndex) => {
-                $('td:first', nRow).text(iDisplayIndex + 1);
+            }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
             },
-            pagingType: 'full_numbers',
-            drawCallback: function (settings) {
-                const dataTableApi = this.api();
-                const startIndexOfPage = dataTableApi.page.info().start;
-                dataTableApi.column(0).nodes().each((cell, index) => {
-                    cell.textContent = startIndexOfPage + index + 1;
-                });
-            },
-            order: [[1, "desc"]],
-            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
-        });
-    }
+        ],
+    });
 
-    if (dt_user_access_menu_table.length) {
-        dt_user_access_menu_table.DataTable({
-            serverSide: true,
-            searching: true,
-            processing: true,
-            ajax: {
-                url: '/employee/list-all-employee/table-employee-current'
+    dt_Menu_sub_table.DataTable({
+        processing: true,
+        paging: true,
+        pageLength: 20,
+        lengthMenu: [20, 25, 50, 75, 100],
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: '/settings-system/menu/table-menu-sub',
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
             },
-            columns: [
-                { data: null, orderable: false, searchable: false, class: "text-center" },
-                { data: "employee_code", class: "text-nowrap" },
-                { data: "email", class: "text-nowrap" },
-                { data: "full_name", class: "text-nowrap" },
-                { data: "class_name", class: "text-nowrap" },
-                { data: "position_name", class: "text-nowrap" },
-                { data: "company_name_th", class: "text-nowrap" },
-                { data: "department_name", class: "text-nowrap" },
-                { data: "group_name", class: "text-nowrap" },
-                { data: "user_class", class: "text-nowrap", render: renderUserClassBadge },
-                {
-                    data: "status_login",
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: renderStatusBadge
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
                 },
-                {
-                    data: 'ID',
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: (data, type, row) => renderGroupActionAccessMenuButtons(data, type, row, 'AccessMenu')
+            },
+            { data: "menu_name", class: "text-nowrap" },
+            {
+                data: "menu_icon",
+                orderable: false, searchable: false,
+                class: "text-nowrap text-center",
+                render: function (data, type, row) {
+                    return `<i class='menu-icon tf-icons bx ${data}'></i> `;
                 }
-            ],
-            fnCreatedRow: (nRow, aData, iDisplayIndex) => {
-                $('td:first', nRow).text(iDisplayIndex + 1);
             },
-            pagingType: 'full_numbers',
-            drawCallback: function (settings) {
-                const dataTableApi = this.api();
-                const startIndexOfPage = dataTableApi.page.info().start;
-                dataTableApi.column(0).nodes().each((cell, index) => {
-                    cell.textContent = startIndexOfPage + index + 1;
-                });
+            { data: "menu_link", class: "text-nowrap text-center" },
+            { data: "menu_sub_name", class: "text-nowrap" },
+            {
+                data: "menu_sub_icon",
+                orderable: false, searchable: false,
+                class: "text-nowrap text-center",
+                render: function (data, type, row) {
+                    return `<i class='menu-icon tf-icons bx ${data}'></i> `;
+                }
             },
-            order: [[9, "asc"]],
-            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
-        });
-    }
+            { data: "menu_sub_link", class: "text-nowrap text-center" },
+
+            {
+                data: "status",
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: renderStatusBadge
+            },
+
+
+            {
+                data: 'ID',
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: (data, type, row) => renderGroupActionButtons(data, type, row, 'MenuSub')
+            }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+    });
+
+    dt_user_access_menu_table.DataTable({
+        processing: true,
+        paging: true,
+        pageLength: 20,
+        lengthMenu: [20, 25, 50, 75, 100],
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: '/employee/list-all-employee/table-employee-current',
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
+            },
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                },
+            },
+            { data: "employee_code", class: "text-nowrap" },
+            { data: "email", class: "text-nowrap" },
+            { data: "full_name", class: "text-nowrap" },
+            { data: "class_name", class: "text-nowrap" },
+            { data: "position_name", class: "text-nowrap" },
+            { data: "company_name_th", class: "text-nowrap" },
+            { data: "department_name", class: "text-nowrap" },
+            { data: "group_name", class: "text-nowrap" },
+            { data: "user_class", class: "text-nowrap", render: renderUserClassBadge },
+            {
+                data: "status_login",
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: renderStatusBadge
+            },
+            {
+                data: 'ID',
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: (data, type, row) => renderGroupActionAccessMenuButtons(data, type, row, 'AccessMenu')
+            }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+    });
 
 })
 
 function reTable() {
     $('.dt-settingMenu').DataTable().ajax.reload();
     $('.dt-settingMenuSub').DataTable().ajax.reload();
+    $('.dt-user-access-menu').DataTable().ajax.reload();
 }
 $(document).ready(function () {
     $('#addMenuModal').click(function () {
@@ -215,5 +250,5 @@ function funcDeleteMenuSub(menuSubID) {
 
 function funcAccessMenu(idMapEmployee) {
     // showModalWithAjax('#editMenuSubModal', '/settings-system/menu/show-edit-menu-sub/' + menuSubID, ['#menuMain', '#edit_statusMenu']);
-    showModalWithAjax('#accessMenuModal', '/settings-system/menu/access-menu-modal/'+ idMapEmployee,[]);
+    showModalWithAjax('#accessMenuModal', '/settings-system/menu/access-menu-modal/' + idMapEmployee, []);
 }
