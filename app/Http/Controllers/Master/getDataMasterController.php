@@ -78,10 +78,31 @@ class getDataMasterController extends Controller
         return response()->json($getListCategoryType);
     }
 
+    public function getDataCategoryDetail($categoryTypeID)
+    {
+        $getListCategoryDetail = $this->masterModel->getListCategoryDetail($categoryTypeID);       
+        // dd($getListCategoryDetail); 
+        return response()->json($getListCategoryDetail);
+    }
+
     public function getDataAboutEmployee($empID)
     {
         $getDataEmployee = $this->masterModel->getDataAboutEmployee($empID);
         // dd($getDataEmployee);
         return response()->json($getDataEmployee);
+    }
+
+    public function getDataManager($empID)
+    {
+        $getDataManager = $this->masterModel->getDataManager($empID);
+        // dd($getDataManager);
+        return response()->json($getDataManager);
+    }
+
+    public function getDataCategoryTag($useTag)
+    {
+        $getDataCategoryMain = $this->masterModel->getDataCategoryMain($useTag);
+        // dd($getDataCategoryMain);
+        return response()->json($getDataCategoryMain);
     }
 }

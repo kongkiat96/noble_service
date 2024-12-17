@@ -298,6 +298,12 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    Route::prefix('/service')->group(function () {
+        Route::prefix('/case')->group(function () {
+            Route::post('/open-case-service', 'Service\CaseController@openCaseService');
+        });
+    });
+
     Route::prefix('getMaster')->group(function () {
         Route::get('/get-company/{id}', 'Master\getDataMasterController@getDataCompany');
         Route::get('/get-department/{id}', 'Master\getDataMasterController@getDataDepartment');
@@ -307,8 +313,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-amphoe/{provinceID}', 'Master\getDataMasterController@getDataAmphoe');
         Route::get('/get-tambon/{aumphoeID}', 'Master\getDataMasterController@getDataTambon');
         Route::get('/get-category-type/{categoryMainID}', 'Master\getDataMasterController@getDataCategoryType');
+        Route::get('/get-category-detail/{categoryTypeID}', 'Master\getDataMasterController@getDataCategoryDetail');
 
         Route::get('/get-about-employee/{empID}', 'Master\getDataMasterController@getDataAboutEmployee');
+        Route::get('/get-data-manager/{empID}', 'Master\getDataMasterController@getDataManager');
+        Route::get('/get-category-tag/{useTag}', 'Master\getDataMasterController@getDataCategoryTag');
     });
 
     Route::prefix('test')->group(function () {

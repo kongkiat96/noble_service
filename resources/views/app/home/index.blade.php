@@ -84,7 +84,7 @@
                             <ul class="nav nav-pills mb-3" role="tablist">
                                 <li class="nav-item">
                                     <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#service-problem" aria-controls="#service-problem"
+                                        data-bs-target="#open-case" aria-controls="#open-case"
                                         aria-selected="true">
                                         แจ้งปัญหาการใช้งาน
                                     </button>
@@ -92,16 +92,16 @@
 
                                 <li class="nav-item">
                                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#service-it" aria-controls="#service-it"
-                                        aria-selected="true" id="reTabA">
+                                        data-bs-target="#service-it" aria-controls="#service-it" aria-selected="true"
+                                        id="reTabA">
                                         รายการแจ้งปัญหาฝ่ายไอที
                                     </button>
                                 </li>
 
                                 <li class="nav-item">
                                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#service-mt" aria-controls="#service-mt"
-                                        aria-selected="true" id="reTabB">
+                                        data-bs-target="#service-mt" aria-controls="#service-mt" aria-selected="true"
+                                        id="reTabB">
                                         รายการแจ้งปัญหาฝ่ายอาคาร
                                     </button>
                                 </li>
@@ -116,19 +116,11 @@
                             </ul>
 
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="service-problem" role="tabpanel">
+                                <div class="tab-pane fade show active" id="open-case" role="tabpanel">
                                     @include('app.home.service.opencase')
                                 </div>
 
                                 <div class="tab-pane fade" id="service-it" role="tabpanel">
-                                    <div class="inline-spacing text-end">
-                                        @if (Auth::user()->user_system != 'Viewer')
-                                            <button type="button" class="btn btn-info" id="addCategoryType">
-                                                <i class='menu-icon tf-icons bx bx-layer'></i>
-                                                เพิ่มข้อมูลรายการประเภทหมวดหมู่
-                                            </button>
-                                        @endif
-                                    </div>
                                     <div class="text-nowrap table-responsive">
                                         <table class="dt-category-type table table-hover table-striped">
                                             <thead class="table-light">
@@ -149,35 +141,12 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="service-mt" role="tabpanel">
-                                    <div class="inline-spacing text-end">
-                                        @if (Auth::user()->user_system != 'Viewer')
-                                            <button type="button" class="btn btn-info" id="addCategoryDetail">
-                                                <i class='menu-icon tf-icons bx bx-sitemap'></i> เพิ่มข้อมูลอาการ
-                                            </button>
-                                        @endif
-                                    </div>
                                     <div class="text-nowrap table-responsive">
-                                        <table class="dt-category-detail table table-hover table-striped">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
-                                                    <th>ข้อมูลรายการประเภทหมวดหมู่</th>
-                                                    <th>ข้อมูลอาการแจ้งซ่อม</th>
-                                                    <th>สถานะการใช้งาน</th>
-                                                    <th>วันที่บันทึกข้อมูล</th>
-                                                    <th>ผู้บันทึกข้อมูล</th>
-                                                    <th>วันที่แก้ไขข้อมูล</th>
-                                                    <th>ผู้แก้ไขข้อมูล</th>
-                                                    <th>กำหนดรายละเอียด</th>
-                                                    <th>จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                        @include('app.home.service.mt.tableCaseAll')
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="service-user-check" role="tabpanel">
-                                    
+
                                     <div class="text-nowrap table-responsive">
                                         <table class="dt-category-detail table table-hover table-striped">
                                             <thead class="table-light">

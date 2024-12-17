@@ -5,7 +5,6 @@
 {{-- <script src="{{ asset('assets/js/form-validation.js')}}"></script> --}}
 <script src="{{ asset('assets/vendor/libs/tagify/tagify.js') }}"></script>
 
-
 <!-- build:js assets/vendor/js/core.js -->
 <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>

@@ -309,6 +309,12 @@ class getDataMasterModel extends Model
         return $getListCategoryType;
     }
 
+    public function getListCategoryDetail($categoryTypeID)
+    {
+        $getListCategoryDetail = DB::connection('mysql')->table('tbm_category_detail')->where('deleted', 0)->where('status_tag', 1)->where('category_type_id', $categoryTypeID)->orderBy('id')->get();
+        return $getListCategoryDetail;
+    }
+
     public function getListCategoryItem($categoryDetailID)
     {
         $getListCategoryItem = DB::connection('mysql')->table('tbm_category_item')->where('deleted', 0)->where('status_tag', 1)->where('category_detail_id', $categoryDetailID)->orderBy('id')->get();
@@ -336,9 +342,11 @@ class getDataMasterModel extends Model
             if($tagPosition == 'manager'){
                 $getEmployee = $getEmployee->whereIn('tbt_employee.position_class',['1','3','4']);
 
-            } else {
+            } else if ($tagPosition == 'subManager') {
                 $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class',['1','3','4']);
                 
+            } else {
+                $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
             }
             $getEmployee = $getEmployee->select(
                 'tbt_employee.ID',
@@ -405,5 +413,34 @@ class getDataMasterModel extends Model
     {
         $getBranch = DB::connection('mysql')->table('tbm_branch')->where('deleted', 0)->where('status_tag', 1)->orderBy('id')->get();
         return $getBranch;
+    }
+
+    public function getDataManager($empID)
+    {
+        try {
+            $query = DB::connection('mysql')->table('tbt_sub_manager AS subManager')->where('subManager.sub_emp_id', $empID)->where('subManager.deleted', 0)
+            ->leftJoin('tbt_manager AS manager', 'subManager.manager_id', '=', 'manager.id')
+            ->leftJoin('tbt_employee AS Manageremployee', 'manager.manager_emp_id', '=', 'Manageremployee.ID')
+            ->leftJoin('tbm_prefix_name', 'Manageremployee.prefix_id', '=', 'tbm_prefix_name.ID')
+            ->leftJoin('tbt_employee AS SubManagerEmployee', 'subManager.sub_emp_id', '=', 'SubManagerEmployee.ID')
+            ->leftJoin('tbm_prefix_name AS SubManagerPrefix', 'SubManagerEmployee.prefix_id', '=', 'SubManagerPrefix.ID')
+            ->select('subManager.sub_emp_id','manager.manager_emp_id',DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", Manageremployee.first_name, " ", Manageremployee.last_name) AS full_name_manager'),DB::raw('CONCAT(SubManagerPrefix.prefix_name, " ", SubManagerEmployee.first_name, " ", SubManagerEmployee.last_name) AS full_name_sub_manager'))
+            ->first();
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCategoryMain($useTag)
+    {
+        $query = DB::connection('mysql')->table('tbm_category_main')->where('deleted', 0)->where('status_tag', 1)->where('use_tag', $useTag)->orderBy('id')->get();
+        return $query;
     }
 }

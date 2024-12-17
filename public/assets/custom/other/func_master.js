@@ -1,3 +1,5 @@
+var multiplePic; 
+
 function handleAjaxSaveResponse(response) {
     let icon, text, timer;
     switch (response.status) {
@@ -283,7 +285,7 @@ function renderStatusBadge(data, type, full, row) {
     return `<span class="badge ${status.className}">${status.title}</span>`;
 }
 
-function renderAssetsTagBadge(color,data) {
+function renderAssetsTagBadge(color, data) {
     return `<span class="badge" style="background-color: ${color}; width: 100px">${data}</span>`;
 }
 
@@ -413,7 +415,7 @@ function renderGroupActionButtonsPermission(data, type, row, useFunc, permission
     return returnButton;
 }
 
-function renderGroupActionButtonsSearchMonth(data, type, row, useFunc,tag_search,color,countTotal) {
+function renderGroupActionButtonsSearchMonth(data, type, row, useFunc, tag_search, color, countTotal) {
     // console.log(row.SearchMonth)
     const ViewerFunction = `funcView${useFunc}`;
 
@@ -629,6 +631,45 @@ function AddPic(inputPicID) {
         });
     })();
 }
+
+function AddPicMultiple(inputPicID) {
+    (function () {
+        const previewTemplate = `
+            <div class="dz-preview dz-file-preview">
+                <div class="dz-details">
+                    <div class="dz-thumbnail">
+                        <img data-dz-thumbnail />
+                        <span class="dz-nopreview">No preview</span>
+                        <div class="dz-success-mark"></div>
+                        <div class="dz-error-mark"></div>
+                        <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></div>
+                        </div>
+                    </div>
+                    <div class="dz-filename" data-dz-name></div>
+                    <div class="dz-size" data-dz-size></div>
+                </div>
+            </div>
+        `;
+
+        multiplePic = new Dropzone(inputPicID, {
+            previewTemplate: previewTemplate,
+            parallelUploads: 1,
+            maxFilesize: 2,
+            maxFiles: 5,
+            addRemoveLinks: true,
+            acceptedFiles: 'image/*'
+        });
+    })();
+}
+
+function resetDropzone() {
+    if (multiplePic) {
+        multiplePic.removeAllFiles();  // ลบไฟล์ทั้งหมดใน Dropzone
+    }
+}
+
 function ViewPicEdit(pathPic, inputEditID, tagStatusPicID) {
     // console.log(inputEditID, tagStatusPicID)
     (function () {
@@ -695,6 +736,8 @@ $(document).ready(function () {
 
 function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
     var originalContent = $(disabledElement).html();
+    $('#category_detail').prop('disabled', true);
+
     $(disabledElement).prop('disabled', disableStatus);
     $(selectElement).on('change', function () {
         var categoryMainID = $(this).val();
@@ -708,6 +751,8 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
                 dataType: 'json',
                 success: function (categoryTypeData) {
                     $categoryTypeSelect.empty().append('<option value="">Select</option>');
+                    $('#category_detail').empty().append('<option value="">Select</option>');
+
                     categoryTypeData.forEach(function (categoryType) {
                         var optionElement = $('<option>').val(categoryType.id).text(categoryType.category_type_name);
                         $categoryTypeSelect.append(optionElement);
@@ -720,6 +765,88 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
         } else {
             $categoryTypeSelect.html(originalContent);
             $categoryTypeSelect.empty().append('<option value="">Select</option>');
+
+            $('#category_detail').prop('disabled', true);
+            $('#category_detail').empty().append('<option value="">Select</option>');
+        }
+    });
+}
+
+function mapSelectedCategoryDetail(disabledElement, selectElement, disableStatus) {
+    var originalContent = $(disabledElement).html();
+    $('#category_detail').prop('disabled', true);
+
+    $(disabledElement).prop('disabled', disableStatus);
+    $(selectElement).on('change', function () {
+        var categoryTypeID = $(this).val();
+        var $categoryDetailSelect = $(disabledElement);
+        $categoryDetailSelect.prop('disabled', !categoryTypeID);
+
+        if (categoryTypeID) {
+            $.ajax({
+                url: '/getMaster/get-category-detail/' + categoryTypeID,
+                type: 'GET',
+                dataType: 'json',
+                success: function (categoryTypeData) {
+                    $categoryDetailSelect.empty().append('<option value="">Select</option>');
+                    categoryTypeData.forEach(function (categoryType) {
+                        var optionElement = $('<option>').val(categoryType.id).text(categoryType.category_detail_name);
+                        $categoryDetailSelect.append(optionElement);
+                    });
+                },
+                error: function () {
+                    $categoryDetailSelect.html(originalContent);
+                }
+            });
+        } else {
+            $categoryDetailSelect.html(originalContent);
+            $categoryDetailSelect.empty().append('<option value="">Select</option>');
+        }
+    });
+}
+
+function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
+    var originalContent = $(disabledElement).html();
+    $('#category_type').prop('disabled', true);
+    $('#category_detail').prop('disabled', true);
+
+    $(disabledElement).prop('disabled', disableStatus);
+    $(selectElement).on('change', function () {
+        var useTag = $(this).val();
+        var $categoryMainSelect = $(disabledElement);
+        $categoryMainSelect.prop('disabled', !useTag);
+
+        if (useTag) {
+            $.ajax({
+                url: '/getMaster/get-category-tag/' + useTag,
+                type: 'GET',
+                dataType: 'json',
+                success: function (categoryMainData) {
+                    $categoryMainSelect.empty().append('<option value="">Select</option>');
+                    $('#category_type').prop('disabled', true);
+                    $('#category_type').empty().append('<option value="">Select</option>');
+
+                    $('#category_detail').prop('disabled', true);
+                    $('#category_detail').empty().append('<option value="">Select</option>');
+
+                    categoryMainData.forEach(function (categoryMain) {
+                        var optionElement = $('<option>').val(categoryMain.id).text(categoryMain.category_main_name);
+                        $categoryMainSelect.append(optionElement);
+                    });
+                },
+                error: function () {
+                    $categoryMainSelect.html(originalContent);
+                }
+            });
+        } else {
+            $categoryMainSelect.html(originalContent);
+            $categoryMainSelect.empty().append('<option value="">Select</option>');
+
+            $('#category_type').prop('disabled', true);
+            $('#category_type').empty().append('<option value="">Select</option>');
+
+            $('#category_detail').prop('disabled', true);
+            $('#category_detail').empty().append('<option value="">Select</option>');
         }
     });
 }

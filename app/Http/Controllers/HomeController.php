@@ -41,6 +41,9 @@ class HomeController extends Controller
         $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
         // dd($getDataEmployee);
         $getCalWorking = CalculateDateHelper::convertDateAndCalculateServicePeriod($getDataEmployee->date_start_work);
+        $getDataSelectEmp = $this->masterModel->getEmployeeListByPosition('all');
+        // dd(Auth::user()->map_employee);
+        $getDataManager = $this->masterModel->getDataManager(Auth::user()->map_employee);
         // dd($getCalWorking);
         return view('app.home.index',[
             'name'      => $user->name,
@@ -49,7 +52,9 @@ class HomeController extends Controller
             'dataEmployee'      => $getDataEmployee,
             'listMenus'         => $getAccessMenus,
             'getCalWorking'     => $getCalWorking,
-            'aboutDepartment'   => $getDepartment
+            'aboutDepartment'   => $getDepartment,
+            'dataAllEmployee'   => $getDataSelectEmp,
+            'dataManager'       => $getDataManager,
         ]);
     }
 }
