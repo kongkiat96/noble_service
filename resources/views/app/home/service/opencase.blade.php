@@ -35,16 +35,20 @@
             </div>
             <div class="col-md-6 mb-4">
                 <label class="form-label-md mb-2 text-danger" for="employee_other_case">กรณีแจ้งแทนผู้อื่น</label>
-                <select id="employee_other_case" name="employee_other_case" class="form-select select2" data-allow-clear="true">
+                <select id="employee_other_case" name="employee_other_case" class="form-select select2"
+                    data-allow-clear="true">
                     <option value="">Select</option>
                     @foreach ($dataAllEmployee as $key => $value)
-                        <option value="{{ $value->ID }}">{{ $value->full_name }}</option>
+                        @if ($value->ID != Auth::user()->map_employee)
+                            <option value="{{ $value->ID }}">{{ $value->full_name }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
             <div class="col-md-6 mb-4">
                 <label class="form-label-md mb-2" for="manager_name">ผู้อนุมัติงานแจ้งปัญหา</label>
-                <input type="text" id="manager_name" class="form-control" name="manager_name" value="{{ @$dataManager->full_name_manager }}"  readonly>
+                <input type="text" id="manager_name" class="form-control" name="manager_name"
+                    value="{{ @$dataManager->full_name_manager }}" readonly>
             </div>
             <div class="col-md-12 mb-2">
                 <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
@@ -53,7 +57,8 @@
             <div class="divider">
                 <div class="divider-text font-weight-bold font-size-lg">อัพโหลดรูปภาพ</div>
             </div>
-            <input type="text" name="manager_emp_id" id="manager_emp_id" value="{{ @$dataManager->manager_emp_id }}" hidden>
+            <input type="text" name="manager_emp_id" id="manager_emp_id" value="{{ @$dataManager->manager_emp_id }}"
+                hidden>
             <input type="text" name="sub_emp_id" id="sub_emp_id" value="{{ @$dataManager->sub_emp_id }}" hidden>
         </div>
     </form>
@@ -70,9 +75,12 @@
     </div>
     <hr class="mt-4">
     <div class="col-12 text-center">
-        <button type="button" class="btn btn-label-danger"><i class='menu-icon tf-icons bx bx-reset'></i> ล้างฟอร์ม</button>
+        <button type="button" class="btn btn-label-danger"><i class='menu-icon tf-icons bx bx-reset'></i>
+            ล้างฟอร์ม</button>
 
-        <button type="submit" name="openCaseService" id="openCaseService" class="btn btn-info btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-paper-plane'></i> แจ้งปัญหา</button>
+        <button type="submit" name="openCaseService" id="openCaseService"
+            class="btn btn-info btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-paper-plane'></i>
+            แจ้งปัญหา</button>
     </div>
 
     <input type="text" name="empID" id="empID" data-empid="{{ Auth::user()->map_employee }}" hidden>
@@ -84,9 +92,9 @@
     <script src="{{ asset('/assets/custom/service/caseServiceHome.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 
     <script>
-        mapCategoryUseTag('#category_main','#use_tag',true)
-        mapSelectedCategory('#category_type','#category_main',true)
-        mapSelectedCategoryDetail('#category_detail','#category_type',true)
+        mapCategoryUseTag('#category_main', '#use_tag', true)
+        mapSelectedCategory('#category_type', '#category_main', true)
+        mapSelectedCategoryDetail('#category_detail', '#category_type', true)
         AddPicMultiple('#pic-case');
         const textarea = document.querySelectorAll('textarea')
         if (textarea) {

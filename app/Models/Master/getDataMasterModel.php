@@ -443,4 +443,23 @@ class getDataMasterModel extends Model
         $query = DB::connection('mysql')->table('tbm_category_main')->where('deleted', 0)->where('status_tag', 1)->where('use_tag', $useTag)->orderBy('id')->get();
         return $query;
     }
+
+    public function checkAccessManager($empID){
+        try {
+            $query = DB::connection('mysql')->table('tbt_manager AS manager')
+            ->leftJoin('tbt_sub_manager AS subManager', 'manager.id', '=', 'subManager.manager_id')
+            ->where('manager.manager_emp_id', $empID)
+            ->where('manager.deleted', 0)->get();
+            // dd($query);
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

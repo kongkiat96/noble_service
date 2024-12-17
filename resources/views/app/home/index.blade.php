@@ -9,10 +9,10 @@
         </ol>
     </nav>
     <hr>
-    <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-p-y">
         <div class="row">
             <!-- User Sidebar -->
-            <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+            <div class="col-md-4 order-md-0">
                 <!-- User Card -->
                 <div class="card mb-4">
                     <div class="card-body">
@@ -65,9 +65,16 @@
                                 </li>
                             </ul>
                             <div class="d-flex justify-content-center pt-3">
-                                <a href="javascript:;" class="btn btn-secondary me-3" data-bs-target="#editUser"
-                                    data-bs-toggle="modal">Edit</a>
+                                {{-- <a href="javascript:;" class="btn btn-secondary me-3" data-bs-target="#editUser"
+                                    data-bs-toggle="modal">Edit</a> --}}
                                 {{-- <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a> --}}
+                                @if(COUNT($checkAccessManaget) >= 1)
+                                {{-- <a href="#" class="btn btn-warning me-3"><i class='menu-icon tf-icons bx bxs-user-check'></i>รายการอนุมัติงาน </a> --}}
+                                <button type="button" class="btn btn-warning" id="btnApproveCaseSubManager">
+                                    <i class='menu-icon tf-icons bx bxs-user-check'></i> รายการรออนุมัติงาน
+                                    <span class="badge bg-white text-primary ms-1">{{ $countCaseApprove }}</span>
+                                  </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -77,7 +84,7 @@
             <!--/ User Sidebar -->
 
             <!-- User Content -->
-            <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+            <div class="col-md-8 order-md-1">
                 <div class="row">
                     <div class="col-12">
                         <div class="nav-align-top mb-4">
@@ -122,21 +129,7 @@
 
                                 <div class="tab-pane fade" id="service-it" role="tabpanel">
                                     <div class="text-nowrap table-responsive">
-                                        <table class="dt-category-type table table-hover table-striped">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
-                                                    <th>ข้อมูลรายการประเภทหมวดหมู่</th>
-                                                    <th>สถานะการใช้งาน</th>
-                                                    <th>วันที่บันทึกข้อมูล</th>
-                                                    <th>ผู้บันทึกข้อมูล</th>
-                                                    <th>วันที่แก้ไขข้อมูล</th>
-                                                    <th>ผู้แก้ไขข้อมูล</th>
-                                                    <th>จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                        @include('app.home.service.it.tableCaseAll')
                                     </div>
                                 </div>
 

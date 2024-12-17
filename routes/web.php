@@ -301,6 +301,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/service')->group(function () {
         Route::prefix('/case')->group(function () {
             Route::post('/open-case-service', 'Service\CaseController@openCaseService');
+            Route::post('/get-data-case-all', 'Service\CaseController@getDataCaseAll');
+        });
+        Route::prefix('/approve-case')->group(function () {
+            Route::get('/sub-manager', 'Service\ApproveCaseController@approveCaseSubManager');
         });
     });
 

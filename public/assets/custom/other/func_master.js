@@ -850,3 +850,13 @@ function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
         }
     });
 }
+
+function badgeStatusTagWork(data, type, full, row) {
+    const statusTagWork = {
+        wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
+        Admin: { title: 'เจ้าหน้าที่', className: 'bg-label-warning' },
+        User: { title: 'ผู้ใช้งานทั่วไป', className: 'bg-label-info' },
+    };
+    const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
+    return `<span class="badge ${status.className}">${status.title}</span>`;
+}

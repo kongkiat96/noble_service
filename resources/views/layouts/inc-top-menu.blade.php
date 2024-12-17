@@ -38,7 +38,7 @@
                             <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/img-not-found.png') }}"
                                 alt="Employee Image" />
                         @else
-                            <img class="w-px-40 h-auto rounded-circle"
+                            <img class="w-px-40 h-px-40 rounded-circle"
                                 src="{{ config('aboutEmployee.getAll')->img_base }}" alt="Employee Image" />
                         @endif
                     </div>

@@ -81,6 +81,7 @@ class CaseModel extends Model
             'sub_emp_id' => $request->input("sub_emp_id"),
             'created_at' => date('Y-m-d H:i:s'),
             'created_user'  => Auth::user()->emp_code,
+            'case_status'  => 'wait_manager_approve',
             'tag_work'  => 'wait_manager_approve',
         ];
 
@@ -159,6 +160,93 @@ class CaseModel extends Model
             ];
             // ส่งคืนข้อมูล caseService
             return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseAll($param)
+    {
+        try {
+            $sql = DB::connection('mysql')->table('tbt_case_service AS cs')
+                ->where(function ($query) use ($param) {
+                    $query->where('cs.case_user_open', Auth::user()->emp_code)
+                        // ->orWhere('cs.manager_emp_id', Auth::user()->map_employee)
+                        ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
+                })
+                ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
+                ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
+                ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
+                ->leftJoin('tbt_employee AS em', 'cs.manager_emp_id', '=', 'em.ID')
+                ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
+                ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
+                ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
+            if ($param['use_tag'] == 'IT') {
+                $sql = $sql->where('cs.use_tag', 'IT');
+            } else if ($param['use_tag'] == 'MT') {
+                $sql = $sql->where('cs.use_tag', 'MT');
+            }
+            $sql = $sql->where('cs.deleted', 0)
+                ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"),DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
+
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('cs.created_at', 'desc')->get();
+            }
+            $dataCount = $sql->count();
+
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID'    => encrypt($value->id),
+                    'ticket'    => $value->ticket,
+                    'category_main_name'    => $value->category_main_name,
+                    'category_type_name'    => $value->category_type_name,
+                    'category_detail_name'    => $value->category_detail_name,
+                    'case_detail'    => $value->case_detail,
+                    'created_at'    => $value->created_at,
+                    'case_status'   => $value->case_status,
+                    'employee_other_case'   => $value->employee_other_case_name,
+                    'manager_name'   => $value->manager_name,
+                    'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
+                    'created_user'  => $value->created_user
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function countCaseApprove($empIDmanager)
+    {
+        try {
+            $query = DB::connection('mysql')->table('tbt_case_service AS cs')->where('cs.manager_emp_id', $empIDmanager)->where('cs.case_status', 'wait_manager_approve')->where('cs.deleted', 0)->count();
+            return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
