@@ -302,10 +302,21 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/case')->group(function () {
             Route::post('/open-case-service', 'Service\CaseController@openCaseService');
             Route::post('/get-data-case-all', 'Service\CaseController@getDataCaseAll');
+
+            Route::get('/get-detail-case/{ticket}', 'Service\CaseController@getDataCaseDetail');
         });
         Route::prefix('/approve-case')->group(function () {
             Route::get('/sub-manager', 'Service\ApproveCaseController@approveCaseSubManager');
+            Route::post('/get-data-case-all', 'Service\ApproveCaseController@getDataCaseAll');
+            Route::get('/realtime-case-approve-count', 'Service\ApproveCaseController@realtimeCaseApproveCount');
+
+            Route::post('/approve-case-manager/{caseID}', 'Service\ApproveCaseController@approveCaseManager');
         });
+    });
+
+    Route::prefix('/case-service')->group(function () {
+        Route::get('/case-approve-mt', 'CaseService\CaseServiceController@index_case_approve_mt');
+        
     });
 
     Route::prefix('getMaster')->group(function () {

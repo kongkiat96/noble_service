@@ -75,7 +75,7 @@
     </div>
     <hr class="mt-4">
     <div class="col-12 text-center">
-        <button type="button" class="btn btn-label-danger"><i class='menu-icon tf-icons bx bx-reset'></i>
+        <button type="button" class="btn btn-label-danger" id="resetFormOpenCaseService"><i class='menu-icon tf-icons bx bx-reset'></i>
             ล้างฟอร์ม</button>
 
         <button type="submit" name="openCaseService" id="openCaseService"

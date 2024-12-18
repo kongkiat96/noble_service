@@ -83,7 +83,16 @@ class CaseModel extends Model
             'created_user'  => Auth::user()->emp_code,
             'case_status'  => 'wait_manager_approve',
             'tag_work'  => 'wait_manager_approve',
+            'case_step' => 'openCase'
         ];
+
+        if($data['manager_emp_id'] == null){
+            $data['case_start'] = now();
+            $data['case_status'] = 'padding';
+            $data['case_step'] = 'padding';
+            $data['tag_manager_approve'] = null;
+            $data['tag_work'] = null;
+        }
 
         // ตรวจสอบว่ามีการอัปโหลดไฟล์หรือไม่
         if ($request->hasFile('file')) {
@@ -110,7 +119,7 @@ class CaseModel extends Model
                 }
             }
         }
-
+        // dd($data);
         return $data;
     }
 
@@ -132,8 +141,12 @@ class CaseModel extends Model
                 DB::connection('mysql')->table('tbt_case_service_history')->insert([
                     'case_service_id' => $caseService,
                     'ticket' => $data['ticket'],
-                    'case_step' => 'openCase',
+                    'case_step' => $data['case_step'],
+                    'case_status' => $data['case_step'],
+                    'case_detail' => $data['case_detail'],
                     'tag_work' => $data['tag_work'],
+                    'created_at' => now(),
+                    'created_user'  => Auth::user()->emp_code
                 ]);
 
                 // หากมี case_image ให้บันทึกลงใน tbt_case_pic
@@ -144,7 +157,7 @@ class CaseModel extends Model
                             'case_service_id' => $caseService,
                             'ticket' => $data['ticket'],
                             'pic_name'  => $image,
-                            'pic_tag'   => 'openCase',
+                            'pic_tag'   => $data['case_step'],
                             'created_at' => now(),
                             'created_user'  => Auth::user()->emp_code
                         ];
@@ -194,7 +207,7 @@ class CaseModel extends Model
                 $sql = $sql->where('cs.use_tag', 'MT');
             }
             $sql = $sql->where('cs.deleted', 0)
-                ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"),DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
+                ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
 
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
@@ -247,6 +260,74 @@ class CaseModel extends Model
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')->where('cs.manager_emp_id', $empIDmanager)->where('cs.case_status', 'wait_manager_approve')->where('cs.deleted', 0)->count();
             return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseDetail($getTicket)
+    {
+        try {
+            $query = DB::connection('mysql')
+                ->table('tbt_case_service AS cs')
+                ->leftJoin('tbt_case_pic AS cp', 'cs.id', '=', 'cp.case_service_id')
+                ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
+                ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
+                ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
+                ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
+                ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
+                ->where('cs.ticket', $getTicket)
+                ->where('cs.deleted', 0)
+                ->select('cs.*', 'cp.pic_name AS image_name', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"))
+                ->get();
+
+            $data = [
+                'datadetail' => null,
+                'dataimage'  => [],
+            ];
+
+            foreach ($query as $row) {
+                // เก็บข้อมูลหลักไว้ใน datadetail (ครั้งแรกเท่านั้น)
+                if (!$data['datadetail']) {
+                    $data['datadetail'] = [
+                        'id'        => encrypt($row->id),
+                        'ticket'    => $row->ticket,
+                        'category_main' => $row->category_main,
+                        'category_type' => $row->category_type,
+                        'category_detail' => $row->category_detail,
+                        'asset_number' => $row->asset_number,
+                        'employee_other_case' => $row->employee_other_case,
+                        'case_detail' => $row->case_detail,
+                        'use_tag' => $row->use_tag,
+                        'category_main_name' => $row->category_main_name,
+                        'category_type_name' => $row->category_type_name,
+                        'category_detail_name' => $row->category_detail_name,
+                        'employee_other_case_name' => $row->employee_other_case_name
+                    ];
+                }
+
+                // เก็บข้อมูลรูปไว้ใน dataimage
+                if ($row->image_name) {
+                    $data['dataimage'][] = [
+                        'file_name' => $row->image_name,
+                    ];
+                }
+            }
+
+            // ตรวจสอบผลลัพธ์
+            // dd($data);
+            $returnData = [
+                'status' => 200,
+                'message' => $data
+            ];
+            return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());

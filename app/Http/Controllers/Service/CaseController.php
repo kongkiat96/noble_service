@@ -49,4 +49,30 @@ class CaseController extends Controller
             ];
         }
     }
+
+    public function getDataCaseDetail($ticket)
+    {
+        try {
+            // dd($request);
+            // dd($ticket);
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetail($ticket);
+            // dd($getCaseDetail);
+            if($getCaseDetail['status'] == 200){
+                return view('app.home.approvecase.caseSubManager.caseDetail',[
+                    'data' => $getCaseDetail['message']['datadetail'],
+                    'image' => $getCaseDetail['message']['dataimage']
+                ]);
+            } else {
+                return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
+            }
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

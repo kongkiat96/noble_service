@@ -854,8 +854,8 @@ function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
 function badgeStatusTagWork(data, type, full, row) {
     const statusTagWork = {
         wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
-        Admin: { title: 'เจ้าหน้าที่', className: 'bg-label-warning' },
-        User: { title: 'ผู้ใช้งานทั่วไป', className: 'bg-label-info' },
+        padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
+        wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
     };
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;

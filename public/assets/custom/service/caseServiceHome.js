@@ -102,7 +102,7 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     // console.log(row)
-                    return row.ID
+                    return 'dee'
                 }
             }
         ],

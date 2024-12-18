@@ -33,6 +33,13 @@ $(document).ready(function () {
             }
         });
     })
+
+    $('#resetFormOpenCaseService').click(function (e) {
+        $('#formOpenCaseService')[0].reset();
+        $('.select2').val(null).trigger('change');
+        resetDropzone();
+    })
+
     $('#employee_other_case').on('change', function () {
         let emp_id = $(this).val();
         if (emp_id) {
@@ -44,7 +51,7 @@ $(document).ready(function () {
                     $('#manager_name').val(data.full_name_manager);
                     $('#manager_emp_id').val(data.manager_emp_id);
                     $('#sub_emp_id').val(data.sub_emp_id);
-                    
+
                 },
                 error: function () {
                     Swal.fire({
@@ -56,7 +63,7 @@ $(document).ready(function () {
             });
         } else {
             var empID = $('#empID').data('empid');
-    
+
             $.ajax({
                 url: `/getMaster/get-data-manager/${empID}`,
                 type: 'GET',
@@ -65,7 +72,7 @@ $(document).ready(function () {
                     $('#manager_name').val(data.full_name_manager);
                     $('#manager_emp_id').val(data.manager_emp_id);
                     $('#sub_emp_id').val(data.sub_emp_id);
-                    
+
                 },
                 error: function () {
                     Swal.fire({
@@ -136,3 +143,26 @@ function onSaveOpenCaseServiceSuccess(response) {
         })
     }
 }
+
+$(document).ready(function () {
+    // ฟังก์ชันสำหรับดึงข้อมูลจำนวนรออนุมัติ
+    function fetchCountApprove() {
+        $.ajax({
+            url: "/service/approve-case/realtime-case-approve-count", // URL ไปที่ Route
+            type: "GET",
+            success: function (response) {
+                // อัปเดตจำนวนบน badge
+                $('#caseApproveCount').text(response.count);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: ", error);
+            }
+        });
+    }
+
+    // เรียกฟังก์ชันครั้งแรกทันทีที่หน้าโหลด
+    fetchCountApprove();
+
+    // ตั้งเวลาเรียกฟังก์ชันทุก 1 นาที (60000 มิลลิวินาที)
+    setInterval(fetchCountApprove, 60000);
+});
