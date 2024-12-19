@@ -857,8 +857,15 @@ function badgeStatusTagWork(data, type, full, row) {
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
         wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         openCaseWaitApprove : { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
+
         manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
+
+        reject_manager_approve_MT : { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+        reject_manager_approve_IT : { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+
+        reject_manager_mt_approve : { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
+        reject_manager_it_approve : { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
     };
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;

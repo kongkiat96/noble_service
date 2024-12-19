@@ -248,7 +248,7 @@ class CaseModel extends Model
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
-                    'created_user'  => $value->created_user
+                    'created_user'  => $this->getDataMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
                 ];
             }
 
@@ -258,76 +258,6 @@ class CaseModel extends Model
                 "data" => $newArr,
             ];
             // dd($returnData);
-            return $returnData;
-        } catch (Exception $e) {
-            // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
-
-            // ส่งคืนข้อผิดพลาด
-            return [
-                'status' => $e->getCode(),
-                'message' => $e->getMessage()
-            ];
-        }
-    }
-
-
-
-    public function getDataCaseDetail($getTicket)
-    {
-        try {
-            $query = DB::connection('mysql')
-                ->table('tbt_case_service AS cs')
-                ->leftJoin('tbt_case_pic AS cp', 'cs.id', '=', 'cp.case_service_id')
-                ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
-                ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
-                ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
-                ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
-                ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
-                ->where('cs.ticket', $getTicket)
-                ->where('cs.deleted', 0)
-                ->select('cs.*', 'cp.pic_name AS image_name', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"))
-                ->get();
-
-            $data = [
-                'datadetail' => null,
-                'dataimage'  => [],
-            ];
-
-            foreach ($query as $row) {
-                // เก็บข้อมูลหลักไว้ใน datadetail (ครั้งแรกเท่านั้น)
-                if (!$data['datadetail']) {
-                    $data['datadetail'] = [
-                        'id'        => encrypt($row->id),
-                        'ticket'    => $row->ticket,
-                        'category_main' => $row->category_main,
-                        'category_type' => $row->category_type,
-                        'category_detail' => $row->category_detail,
-                        'asset_number' => $row->asset_number,
-                        'employee_other_case' => $row->employee_other_case,
-                        'case_detail' => $row->case_detail,
-                        'use_tag' => $row->use_tag,
-                        'category_main_name' => $row->category_main_name,
-                        'category_type_name' => $row->category_type_name,
-                        'category_detail_name' => $row->category_detail_name,
-                        'employee_other_case_name' => $row->employee_other_case_name
-                    ];
-                }
-
-                // เก็บข้อมูลรูปไว้ใน dataimage
-                if ($row->image_name) {
-                    $data['dataimage'][] = [
-                        'file_name' => $row->image_name,
-                    ];
-                }
-            }
-
-            // ตรวจสอบผลลัพธ์
-            // dd($data);
-            $returnData = [
-                'status' => 200,
-                'message' => $data
-            ];
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log

@@ -320,6 +320,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/realtime-case-approve-count-fu', 'Service\ApproveCaseController@realtimeCaseApproveCountFU');
 
             Route::post('/approve-case-manager/{caseID}', 'Service\ApproveCaseController@approveCaseManager');
+            Route::post('/approve-case-padding/{caseID}', 'Service\ApproveCaseController@approveCasePadding');
         });
     });
 

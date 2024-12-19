@@ -130,7 +130,5 @@
     </div>
 @endsection
 @section('script')
-    <script type="text/javascript"
-        src="{{ asset('/assets/custom/caseService/mt/approveCase.js?v=') }}@php echo date("H:i:s") @endphp">
-    </script>
+    <script type="text/javascript" src="{{ asset('/assets/custom/caseService/mt/approveCase.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 @endsection

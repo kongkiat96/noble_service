@@ -55,7 +55,7 @@ class CaseController extends Controller
         try {
             // dd($request);
             // dd($ticket);
-            $getCaseDetail = $this->caseServiceModel->getDataCaseDetail($ticket);
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
             if($getCaseDetail['status'] == 200){
                 return view('app.home.approvecase.caseSubManager.caseDetail',[

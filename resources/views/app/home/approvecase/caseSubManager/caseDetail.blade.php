@@ -92,15 +92,19 @@
 
         <div class="tab-pane fade" id="detail-pic" role="tabpanel">
             <div class="row g-1 form-block">
-                @foreach ($image as $key => $value)
-                    <div class="col-md-6 mb-3">
-                        <div class="card">
-                            <img class="card-img-top img-fluid w-150 h-150"
-                                src="{{ asset('storage/uploads/caseService/' . $value['file_name']) }}"
-                                alt="{{ $value['file_name'] }}" />
+                @if (!empty($image))
+                    @foreach ($image as $key => $value)
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img class="card-img-top img-fluid w-150 h-150"
+                                    src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                    alt="{{ $value->file_name }}" />
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    ไม่พบข้อมูลรูปภาพ
+                @endif
             </div>
         </div>
     </div>
