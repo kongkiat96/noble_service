@@ -18,7 +18,7 @@
                     <select id="edit_statusUse" name="edit_statusUse" class="form-select select2" data-allow-clear="true">
                         <option value="">Select</option>
                         <option value="it" @if ($dataStatus[0]->status_use == 'it') selected @endif>ใช้งานฝ่าย IT</option>
-                        <option value="building" @if ($dataStatus[0]->status_use == 'building') selected @endif>ใช้งานฝ่ายอาคาร</option>
+                        <option value="mt" @if ($dataStatus[0]->status_use == 'mt') selected @endif>ใช้งานฝ่ายอาคาร</option>
                         <option value="hr" @if ($dataStatus[0]->status_use == 'hr') selected @endif>ใช้งานฝ่าย HR</option>
                         <option value="all" @if ($dataStatus[0]->status_use == 'all') selected @endif>ใช้งานทุกระบบ</option>
                     </select>

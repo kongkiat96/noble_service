@@ -326,6 +326,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('/case-service')->group(function () {
         Route::get('/case-approve-mt', 'CaseService\CaseServiceController@index_case_approve_mt');
+        Route::get('/case-all-mt', 'CaseService\CaseServiceController@index_case_all_mt');
     });
 
     Route::prefix('getMaster')->group(function () {

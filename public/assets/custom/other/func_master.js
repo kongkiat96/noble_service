@@ -300,10 +300,10 @@ function renderDeletedBadge(data, type, full, row) {
 
 function renderStatusWorkBadge(data, type, full, row) {
     const statusMap = {
-        ALL: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
-        IT: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-info' },
-        MT: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-warning' },
-        hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
+        all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
+        it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
+        mt: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-danger' },
+        // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;
@@ -328,7 +328,7 @@ function renderStatusWorkTypeBadge(data, type, full, row) {
     const statusMap = {
         Complete: { title: 'ดำเนินงานเสร็จสิ้น', className: 'bg-label-success' },
         Wating: { title: 'อยู่ระหว่างดำเนินงาน', className: 'bg-label-warning' },
-        Hold: { title: 'รอชั่วคราว', className: 'bg-label-warning' },
+        Hold: { title: 'ระหว่างรอดำเนินการ', className: 'bg-label-warning' },
         Doing: { title: 'กำลังดำเนินงาน', className: 'bg-label-primary' },
         Cancel: { title: 'ยกเลิกงาน / ยกเลิกการแจ้ง', className: 'bg-label-danger' },
         Other: { title: 'อื่น ๆ', className: 'bg-label-info' },

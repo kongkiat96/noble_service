@@ -26,4 +26,23 @@ class CaseServiceController extends Controller
             'listMenus' => $getAccessMenus
         ]);
     }
+
+    public function index_case_all_mt()
+    {
+        $url = request()->segments();
+        $urlName = "รายการแจ้งปัญหาฝ่ายอาคาร (MTs)";
+        $urlSubLink = "case-all-mt";
+
+        if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+            return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+        }
+        $getAccessMenus = getAccessToMenu::getAccessMenus();
+
+        return view('app.caseService.mt.caseAll.index', [
+            'url' => $url,
+            'urlName' => $urlName,
+            'urlSubLink' => $urlSubLink,
+            'listMenus' => $getAccessMenus
+        ]);
+    }
 }

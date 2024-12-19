@@ -64,7 +64,7 @@
                                     <tr>
                                         <th class="text-center">ลำดับ</th>
                                         <th class="text-center">รายการสถานะ</th>
-                                        <th class="text-center">รูปแบบการทำงาน</th>
+                                        <th class="text-center">สถานะการทำงาน</th>
                                         <th class="text-center">การใช้งานระบบ</th>
                                         <th class="text-center">รูปแบบสถานะงาน</th>
                                         <th class="text-center">จัดการ</th>

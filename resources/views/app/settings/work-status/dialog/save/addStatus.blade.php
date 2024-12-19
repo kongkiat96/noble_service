@@ -18,8 +18,8 @@
                             <select id="statusUse" name="statusUse" class="form-select select2" data-allow-clear="true">
                                 <option value="">Select</option>
                                 <option value="it">ใช้งานฝ่าย IT</option>
-                                <option value="building">ใช้งานฝ่ายอาคาร</option>
-                                <option value="hr">ใช้งานฝ่าย HR</option>
+                                <option value="mt">ใช้งานฝ่ายอาคาร</option>
+                                {{-- <option value="hr">ใช้งานฝ่าย HR</option> --}}
                                 <option value="all">ใช้งานทุกระบบ</option>
                             </select>
                         </div>

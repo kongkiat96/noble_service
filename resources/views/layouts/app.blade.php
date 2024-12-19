@@ -33,7 +33,7 @@
                     @include('layouts.inc-menu')
                     <!-- /Menu -->
 
-                    <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="container-fluid flex-grow-1 container-p-y">
                         {{-- container-fluid --}}
                         @yield('content')
                     </div>

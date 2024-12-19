@@ -13,8 +13,8 @@ $(function () {
             columns: [
                 { data: null, orderable: false, searchable: false, class: "text-center" },
                 { data: "status_name", class: "text-nowrap" },
-                { data: "status_use", class: "text-nowrap", render: renderStatusWorkBadge },
                 { data: "type_work", class: "text-nowrap", render: renderStatusWorkTypeBadge },
+                { data: "status_use", class: "text-nowrap", render: renderStatusWorkBadge },
                 {
                     data: "status",
                     orderable: false,
