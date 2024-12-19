@@ -2,6 +2,7 @@
 
 namespace App\Models\Service;
 
+use App\Models\Master\getDataMasterModel;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,12 @@ use Intervention\Image\Facades\Image;
 class CaseModel extends Model
 {
     use HasFactory;
+    private $getDataMasterModel;
+
+    public function __construct()
+    {
+        $this->getDataMasterModel = new getDataMasterModel();
+    }
 
     public function generateCaseTicket($tag)
     {
@@ -81,17 +88,26 @@ class CaseModel extends Model
             'sub_emp_id' => $request->input("sub_emp_id"),
             'created_at' => date('Y-m-d H:i:s'),
             'created_user'  => Auth::user()->emp_code,
-            'case_status'  => 'wait_manager_approve',
+            'case_status'  => 'openCaseWaitApprove',
             'tag_work'  => 'wait_manager_approve',
-            'case_step' => 'openCase'
+            'case_step' => 'wait_manager_approve'
         ];
 
-        if($data['manager_emp_id'] == null){
-            $data['case_start'] = now();
-            $data['case_status'] = 'padding';
-            $data['case_step'] = 'padding';
-            $data['tag_manager_approve'] = null;
-            $data['tag_work'] = null;
+
+        if ($data['manager_emp_id'] == null) {
+            if ($data['use_tag'] == 'MT') {
+                $data['case_start'] = now();
+                $data['case_status'] = 'padding';
+                $data['case_step'] = 'wait_manager_mt_approve';
+                $data['tag_manager_approve'] = 'NoManager';
+                $data['tag_work'] = 'wait_manager_mt_approve';
+            } else {
+                $data['case_start'] = now();
+                $data['case_status'] = 'padding';
+                $data['case_step'] = 'padding';
+                $data['tag_manager_approve'] = null;
+                $data['tag_work'] = null;
+            }
         }
 
         // ตรวจสอบว่ามีการอัปโหลดไฟล์หรือไม่
@@ -142,7 +158,7 @@ class CaseModel extends Model
                     'case_service_id' => $caseService,
                     'ticket' => $data['ticket'],
                     'case_step' => $data['case_step'],
-                    'case_status' => $data['case_step'],
+                    'case_status' => $data['case_status'],
                     'case_detail' => $data['case_detail'],
                     'tag_work' => $data['tag_work'],
                     'created_at' => now(),
@@ -255,22 +271,7 @@ class CaseModel extends Model
         }
     }
 
-    public function countCaseApprove($empIDmanager)
-    {
-        try {
-            $query = DB::connection('mysql')->table('tbt_case_service AS cs')->where('cs.manager_emp_id', $empIDmanager)->where('cs.case_status', 'wait_manager_approve')->where('cs.deleted', 0)->count();
-            return $query;
-        } catch (Exception $e) {
-            // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
-            // ส่งคืนข้อผิดพลาด
-            return [
-                'status' => $e->getCode(),
-                'message' => $e->getMessage()
-            ];
-        }
-    }
 
     public function getDataCaseDetail($getTicket)
     {
@@ -327,6 +328,130 @@ class CaseModel extends Model
                 'status' => 200,
                 'message' => $data
             ];
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseDetailApprove($getTicket)
+    {
+        try {
+            // Query ข้อมูลหลัก (datadetail)
+            $mainQuery = DB::connection('mysql')
+                ->table('tbt_case_service AS cs')
+                ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
+                ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
+                ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
+                ->where('cs.ticket', $getTicket)
+                ->where('cs.deleted', 0)
+                ->select(
+                    'cs.*',
+                    'cm.category_main_name',
+                    'ct.category_type_name',
+                    'cd.category_detail_name'
+                )
+                ->first(); // ดึงข้อมูลแค่ 1 แถว
+
+            // Query ข้อมูลรูปภาพ (dataimage)
+            $imageQuery = DB::connection('mysql')
+                ->table('tbt_case_pic')
+                ->where('case_service_id', $mainQuery->id)
+                ->select('pic_name AS file_name')
+                ->get();
+
+            // สร้างโครงสร้างข้อมูลผลลัพธ์
+            $data = [
+                'datadetail' => [
+                    'id'                    => encrypt($mainQuery->id),
+                    'ticket'                => $mainQuery->ticket,
+                    'category_main'         => $mainQuery->category_main,
+                    'category_type'         => $mainQuery->category_type,
+                    'category_detail'       => $mainQuery->category_detail,
+                    'asset_number'          => $mainQuery->asset_number,
+                    'employee_other_case'   => $mainQuery->employee_other_case,
+                    'case_detail'           => $mainQuery->case_detail,
+                    'use_tag'               => $mainQuery->use_tag,
+                    'category_main_name'    => $mainQuery->category_main_name,
+                    'category_type_name'    => $mainQuery->category_type_name,
+                    'category_detail_name'  => $mainQuery->category_detail_name,
+                    'employee_other_case_name' => $this->getDataMasterModel->getFullNameEmp($mainQuery->employee_other_case,'mapEmpID'),
+                    'manager_name'          => $mainQuery->manager_emp_id ? $this->getDataMasterModel->getFullNameEmp($mainQuery->manager_emp_id, 'mapEmpID') : null,
+                ],
+                'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
+            ];
+            // dd($data);
+
+            $returnData = [
+                'status' => 200,
+                'message' => $data
+            ];
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseDetailHistory($param)
+    {
+        try {
+            $param['caseID'] = decrypt($param['caseID']);
+            // Query ข้อมูล history
+            $sql = DB::connection('mysql')
+                ->table('tbt_case_service_history AS h')
+                ->leftJoin('tbt_employee AS emp', 'h.created_user', '=', 'emp.employee_code')
+                ->leftJoin('tbm_prefix_name AS pre', 'emp.prefix_id', '=', 'pre.ID')
+                ->where('case_service_id', $param['caseID'])
+                ->select(
+                    'h.id AS hId',
+                    'h.case_status AS hCaseStatus',
+                    'h.case_detail AS hCaseDetail',
+                    'h.price AS hPrice',
+                    'h.created_at AS hCreatedAt',
+                    'h.created_user AS hCreatedUser',
+                    DB::raw("CONCAT(pre.prefix_name,' ',emp.first_name,' ',emp.last_name) AS hCreatedUserName")
+                );
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('h.created_at', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('h.created_at', 'desc')->get();
+            }
+            $dataCount = $sql->count();
+
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID'    => encrypt($value->hId),
+                    'CaseStatus'    => $value->hCaseStatus ?? '-',
+                    'CaseDetail'    => wordwrap($value->hCaseDetail, 50, "<br>", true) ?? '-',
+                    'Price'         => $value->hPrice ?? '0.00',
+                    'CreatedAt'     => $value->hCreatedAt ?? '-',
+                    'CreatedUserName'    => $value->hCreatedUserName ?? '-',
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log

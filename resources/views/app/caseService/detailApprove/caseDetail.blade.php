@@ -14,6 +14,13 @@
             </button>
         </li>
 
+        <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#detail-history"
+                aria-controls="#detail-history" aria-selected="true" id="reTabA">
+                ประวัติการบันทึกข้อมูล
+            </button>
+        </li>
+
     </ul>
 
     <div class="tab-content">
@@ -96,15 +103,36 @@
                     <div class="col-md-6 mb-3">
                         <div class="card">
                             <img class="card-img-top img-fluid w-150 h-150"
-                                src="{{ asset('storage/uploads/caseService/' . $value['file_name']) }}"
-                                alt="{{ $value['file_name'] }}" />
+                                src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                alt="{{ $value->file_name }}" />
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
+
+        <div class="tab-pane fade" id="detail-history" role="tabpanel">
+            {{-- <div class="row g-1 form-block"> --}}
+                <div class="text-nowrap table-responsive">
+                    <table class="dt-approve-history table table-bordered table-hover table-striped" style="width: 100%">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>สถานะ</th>
+                                <th class="text-center">รายละเอียด</th>
+                                <th>วัน / เวลาที่บันทึกข้อมูล</th>
+                                <th>ผู้บันทึกข้อมูล</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            {{-- </div> --}}
+
+            
+        </div>
+        <input type="text" value="{{ $data['id'] }}" name="caseID" id="caseID" hidden>
     </div>
 </div>
 {{-- @section('script') --}}
-<script type="text/javascript" src="{{ asset('/assets/custom/service/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+
 {{-- @endsection --}}

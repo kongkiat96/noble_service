@@ -323,7 +323,7 @@ class getDataMasterModel extends Model
 
     public function getChecker($tag)
     {
-        $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag,'ALL'])->orderBy('id')->get();
+        $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag, 'ALL'])->orderBy('id')->get();
         return $getChecker;
     }
 
@@ -339,30 +339,28 @@ class getDataMasterModel extends Model
             ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
             ->where('tbt_employee.deleted', 0)
             ->where('tbt_employee.status_login', 1);
-            if($tagPosition == 'manager'){
-                $getEmployee = $getEmployee->whereIn('tbt_employee.position_class',['1','3','4']);
-
-            } else if ($tagPosition == 'subManager') {
-                $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class',['1','3','4']);
-                
-            } else {
-                $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
-            }
-            $getEmployee = $getEmployee->select(
-                'tbt_employee.ID',
-                'tbt_employee.employee_code',
-                'tbt_employee.email',
-                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
-                'tbm_class_list.class_name',
-                'tbt_employee.position_name',
-                'tbm_company.company_name_th',
-                'tbm_department.department_name',
-                'tbm_group.group_name',
-                'tbt_employee.user_class',
-                'status_login',
-                'tbm_branch.branch_name',
-                'tbm_branch.branch_code'
-            )->get();
+        if ($tagPosition == 'manager') {
+            $getEmployee = $getEmployee->whereIn('tbt_employee.position_class', ['1', '3', '4']);
+        } else if ($tagPosition == 'subManager') {
+            $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class', ['1', '3', '4']);
+        } else {
+            $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
+        }
+        $getEmployee = $getEmployee->select(
+            'tbt_employee.ID',
+            'tbt_employee.employee_code',
+            'tbt_employee.email',
+            DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+            'tbm_class_list.class_name',
+            'tbt_employee.position_name',
+            'tbm_company.company_name_th',
+            'tbm_department.department_name',
+            'tbm_group.group_name',
+            'tbt_employee.user_class',
+            'status_login',
+            'tbm_branch.branch_name',
+            'tbm_branch.branch_code'
+        )->get();
 
         // dd($getEmployee);
         return $getEmployee;
@@ -372,35 +370,35 @@ class getDataMasterModel extends Model
     {
         try {
             $getEmployee = DB::connection('mysql')->table('tbt_employee')
-            ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
-            ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
-            ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
-            ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
-            ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
-            ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
-            ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
-            ->where('tbt_employee.deleted', 0)
-            ->where('tbt_employee.status_login', 1)
-            ->where('tbt_employee.ID', $empID)
-            ->select(
-                'tbt_employee.ID',
-                'tbt_employee.employee_code',
-                'tbt_employee.email',
-                DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
-                'tbm_class_list.class_name',
-                'tbt_employee.position_name',
-                'tbm_company.company_name_th',
-                'tbm_department.department_name',
-                'tbm_group.group_name',
-                'tbt_employee.user_class',
-                'status_login',
-                'tbm_branch.branch_name',
-                'tbm_branch.branch_code'
-            )->first();
+                ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
+                ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
+                ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
+                ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
+                ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
+                ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
+                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
+                ->where('tbt_employee.deleted', 0)
+                ->where('tbt_employee.status_login', 1)
+                ->where('tbt_employee.ID', $empID)
+                ->select(
+                    'tbt_employee.ID',
+                    'tbt_employee.employee_code',
+                    'tbt_employee.email',
+                    DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
+                    'tbm_class_list.class_name',
+                    'tbt_employee.position_name',
+                    'tbm_company.company_name_th',
+                    'tbm_department.department_name',
+                    'tbm_group.group_name',
+                    'tbt_employee.user_class',
+                    'status_login',
+                    'tbm_branch.branch_name',
+                    'tbm_branch.branch_code'
+                )->first();
 
-        // dd($getEmployee);
-        return $getEmployee;
-        } catch(Exception $e) {
+            // dd($getEmployee);
+            return $getEmployee;
+        } catch (Exception $e) {
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
@@ -419,13 +417,13 @@ class getDataMasterModel extends Model
     {
         try {
             $query = DB::connection('mysql')->table('tbt_sub_manager AS subManager')->where('subManager.sub_emp_id', $empID)->where('subManager.deleted', 0)
-            ->leftJoin('tbt_manager AS manager', 'subManager.manager_id', '=', 'manager.id')
-            ->leftJoin('tbt_employee AS Manageremployee', 'manager.manager_emp_id', '=', 'Manageremployee.ID')
-            ->leftJoin('tbm_prefix_name', 'Manageremployee.prefix_id', '=', 'tbm_prefix_name.ID')
-            ->leftJoin('tbt_employee AS SubManagerEmployee', 'subManager.sub_emp_id', '=', 'SubManagerEmployee.ID')
-            ->leftJoin('tbm_prefix_name AS SubManagerPrefix', 'SubManagerEmployee.prefix_id', '=', 'SubManagerPrefix.ID')
-            ->select('subManager.sub_emp_id','manager.manager_emp_id',DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", Manageremployee.first_name, " ", Manageremployee.last_name) AS full_name_manager'),DB::raw('CONCAT(SubManagerPrefix.prefix_name, " ", SubManagerEmployee.first_name, " ", SubManagerEmployee.last_name) AS full_name_sub_manager'))
-            ->first();
+                ->leftJoin('tbt_manager AS manager', 'subManager.manager_id', '=', 'manager.id')
+                ->leftJoin('tbt_employee AS Manageremployee', 'manager.manager_emp_id', '=', 'Manageremployee.ID')
+                ->leftJoin('tbm_prefix_name', 'Manageremployee.prefix_id', '=', 'tbm_prefix_name.ID')
+                ->leftJoin('tbt_employee AS SubManagerEmployee', 'subManager.sub_emp_id', '=', 'SubManagerEmployee.ID')
+                ->leftJoin('tbm_prefix_name AS SubManagerPrefix', 'SubManagerEmployee.prefix_id', '=', 'SubManagerPrefix.ID')
+                ->select('subManager.sub_emp_id', 'manager.manager_emp_id', DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", Manageremployee.first_name, " ", Manageremployee.last_name) AS full_name_manager'), DB::raw('CONCAT(SubManagerPrefix.prefix_name, " ", SubManagerEmployee.first_name, " ", SubManagerEmployee.last_name) AS full_name_sub_manager'))
+                ->first();
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
@@ -444,12 +442,13 @@ class getDataMasterModel extends Model
         return $query;
     }
 
-    public function checkAccessManager($empID){
+    public function checkAccessManager($empID)
+    {
         try {
             $query = DB::connection('mysql')->table('tbt_manager AS manager')
-            ->leftJoin('tbt_sub_manager AS subManager', 'manager.id', '=', 'subManager.manager_id')
-            ->where('manager.manager_emp_id', $empID)
-            ->where('manager.deleted', 0)->get();
+                ->leftJoin('tbt_sub_manager AS subManager', 'manager.id', '=', 'subManager.manager_id')
+                ->where('manager.manager_emp_id', $empID)
+                ->where('manager.deleted', 0)->get();
             // dd($query);
             return $query;
         } catch (Exception $e) {
@@ -461,5 +460,21 @@ class getDataMasterModel extends Model
                 'message' => $e->getMessage()
             ];
         }
+    }
+
+    public function getFullNameEmp($mapEmployee, $tag)
+    {
+        $query = DB::connection('mysql')
+            ->table('tbt_employee AS empUser')
+            ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
+        if ($tag == 'mapEmpID') {
+            $query =  $query->where('empUser.ID', $mapEmployee);
+        } else if ($tag = 'mapEmpCode') {
+            $query =  $query->where('empUser.employee_code', $mapEmployee);
+        }
+        $query = $query->where('empUser.deleted', 0)
+            ->select(DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_name"))
+            ->first();
+        return $query->employee_name;
     }
 }

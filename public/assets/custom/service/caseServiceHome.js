@@ -4,7 +4,7 @@ var setURLApprove = setURLService + '/approve-case'
 $(function () {
     var dt_CaseITAll = $('.dt-case-it-all')
     dt_CaseITAll.DataTable({
-        processing: true,
+        processing: false,
         paging: true,
         pageLength: 50,
         deferRender: true,
@@ -115,7 +115,7 @@ $(function () {
 
     var dt_CaseMTAll = $('.dt-case-mt-all')
     dt_CaseMTAll.DataTable({
-        processing: true,
+        processing: false,
         paging: true,
         pageLength: 50,
         deferRender: true,

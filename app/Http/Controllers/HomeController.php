@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\CalculateDateHelper;
 use App\Models\Employee\EmployeeModel;
 use App\Models\Master\getDataMasterModel;
-use App\Models\Service\CaseModel;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Service\ApproveCaseModel;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -15,12 +13,12 @@ class HomeController extends Controller
 
     private $employeeModel;
     private $masterModel;
-    private $caseModel;
+    private $approveCaseModel;
     public function __construct()
     {
         $this->employeeModel = new EmployeeModel();
         $this->masterModel = new getDataMasterModel;
-        $this->caseModel = new CaseModel();
+        $this->approveCaseModel = new ApproveCaseModel();
     }
 
     /**
@@ -48,7 +46,7 @@ class HomeController extends Controller
         // dd(Auth::user()->map_employee);
         $getDataManager = $this->masterModel->getDataManager(Auth::user()->map_employee);
         $checkAccessManaget = $this->masterModel->checkAccessManager(Auth::user()->map_employee);
-        $countCaseApprove = $this->caseModel->countCaseApprove(Auth::user()->map_employee);
+        $countCaseApprove = $this->approveCaseModel->countCaseApprove(Auth::user()->map_employee);
         // dd($countCaseApprove);
         // dd(COUNT($checkAccessManaget));
         // dd($getCalWorking);

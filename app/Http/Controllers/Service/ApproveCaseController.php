@@ -71,8 +71,36 @@ class ApproveCaseController extends Controller
         }
     }
 
-    public function realtimeCaseApproveCount(){
-        $countCaseApprove = $this->caseModel->countCaseApprove(Auth::user()->map_employee);
+    public function realtimeCaseApproveCount()
+    {
+        $countCaseApprove = $this->approveCaseModel->countCaseApprove(Auth::user()->map_employee);
         return response()->json(['count' => $countCaseApprove]);
+    }
+
+    public function realtimeCaseApproveCountMT()
+    {
+        $countCaseApprove = $this->approveCaseModel->countCaseApproveMT();
+        // dd($countCaseApprove);
+        return response()->json(['count' => $countCaseApprove]);
+    }
+
+    public function getDataApproveMT(Request $request)
+    {
+        $getCaseMT = $this->approveCaseModel->getDataApproveMT($request);
+        return response()->json($getCaseMT);
+    }
+
+    public function realtimeCaseApproveCountFU()
+    {
+        $countCaseApprove = $this->approveCaseModel->countCaseApproveFU();
+        // dd($countCaseApprove);
+        return response()->json(['count' => $countCaseApprove]);
+    }
+
+    public function getDataApproveFU(Request $request)
+    {
+        $getCaseFU = $this->approveCaseModel->getDataApproveFU($request);
+        // dd($getCaseFU);
+        return response()->json($getCaseFU);
     }
 }

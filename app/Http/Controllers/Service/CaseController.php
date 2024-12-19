@@ -75,4 +75,45 @@ class CaseController extends Controller
             ];
         }
     }
+
+    public function getDataCaseDetailApprove($ticket)
+    {
+        try {
+            // dd($ticket);
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
+            // dd($getCaseDetail);
+            if($getCaseDetail['status'] == 200){
+                return view('app.caseService.detailApprove.caseDetail',[
+                    'data' => $getCaseDetail['message']['datadetail'],
+                    'image' => $getCaseDetail['message']['dataimage']
+                ]);
+            } else {
+                return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
+            }
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseDetailHistory(Request $request)
+    {
+        try {
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetailHistory($request);
+            return response()->json($getCaseDetail);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }
