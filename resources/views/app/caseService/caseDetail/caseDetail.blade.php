@@ -60,7 +60,7 @@
                     </div>
                     @if ($data['manager_name'] != null)
                         <div class="col-md-12 mb-4">
-                            <label class="form-label-md mb-2" for="manager_name">ผู้แจ้งปัญหา</label>
+                            <label class="form-label-md mb-2" for="manager_name">ผู้บังคับบัญชา</label>
                             <input type="text" id="manager_name" class="form-control" name="manager_name"
                                 value="{{ $data['manager_name'] }}" readonly>
                         </div>

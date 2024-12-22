@@ -83,7 +83,7 @@ class CaseController extends Controller
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
             if($getCaseDetail['status'] == 200){
-                return view('app.caseService.detailApprove.caseDetail',[
+                return view('app.caseService.caseDetail.caseDetail',[
                     'data' => $getCaseDetail['message']['datadetail'],
                     'image' => $getCaseDetail['message']['dataimage']
                 ]);

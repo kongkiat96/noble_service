@@ -21,7 +21,7 @@
                                 <h4 class="card-title mb-0 me-2">34</h4>
                             </div>
                             <figcaption class="blockquote-footer mb-0 text-muted mt-3">
-                                <cite title="Source Title">ข้อมูล ณ เดือน </cite>
+                                <cite title="Source Title">ข้อมูล ณ เดือน {{ $dateNow }}</cite>
                             </figcaption>
                         </div>
                         <div class="card-icon">
@@ -43,7 +43,7 @@
                                 <h4 class="card-title mb-0 me-2">333</h4>
                             </div>
                             <figcaption class="blockquote-footer mb-0 text-muted mt-3">
-                                <cite title="Source Title">ข้อมูล ณ เดือน </cite>
+                                <cite title="Source Title">ข้อมูล ณ เดือน {{ $dateNow }}</cite>
                             </figcaption>
                         </div>
                         <div class="card-icon">
@@ -65,7 +65,7 @@
                                 <h4 class="card-title mb-0 me-2">12</h4>
                             </div>
                             <figcaption class="blockquote-footer mb-0 text-muted mt-3">
-                                <cite title="Source Title">ข้อมูล ณ เดือน </cite>
+                                <cite title="Source Title">ข้อมูล ณ เดือน {{ $dateNow }}</cite>
                             </figcaption>
                         </div>
                         <div class="card-icon">
@@ -87,7 +87,7 @@
                                 <h4 class="card-title mb-0 me-2">12</h4>
                             </div>
                             <figcaption class="blockquote-footer mb-0 text-muted mt-3">
-                                <cite title="Source Title">ข้อมูล ณ เดือน </cite>
+                                <cite title="Source Title">ข้อมูล ณ เดือน {{ $dateNow }}</cite>
                             </figcaption>
                         </div>
                         <div class="card-icon">
@@ -167,7 +167,7 @@
         
                                         <div class="tab-pane fade" id="case-working" role="tabpanel">
                                             <div class="text-nowrap table-responsive">
-                                                <table class="dt-approve-fu table table-hover table-striped">
+                                                <table class=" table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>
@@ -186,7 +186,7 @@
                                         <div class="tab-pane fade" id="case-addprice" role="tabpanel">
         
                                             <div class="text-nowrap table-responsive">
-                                                <table class="dt-category-detail table table-hover table-striped">
+                                                <table class=" table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>
@@ -229,5 +229,5 @@
     </div>
 @endsection
 @section('script')
-    <script type="text/javascript" src="{{ asset('/assets/custom/caseService/mt/approveCase.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+    <script type="text/javascript" src="{{ asset('/assets/custom/caseService/mt/getCaseAll.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 @endsection

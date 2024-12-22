@@ -370,7 +370,7 @@ class CaseModel extends Model
                     'ID'    => encrypt($value->hId),
                     'CaseStatus'    => $value->hCaseStatus ?? '-',
                     'CaseDetail'    => wordwrap($value->hCaseDetail, 50, "<br>", true) ?? '-',
-                    'Price'         => $value->hPrice ?? '0.00',
+                    'CasePrice'         => $value->hPrice ?? '0.00',
                     'CreatedAt'     => $value->hCreatedAt ?? '-',
                     'CreatedUserName'    => $value->hCreatedUserName ?? '-',
                 ];

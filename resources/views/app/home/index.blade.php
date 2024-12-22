@@ -12,7 +12,7 @@
     <div class="container-p-y">
         <div class="row">
             <!-- User Sidebar -->
-            <div class="col-md-3 order-md-0">
+            <div class="col-md-4 order-md-0">
                 <!-- User Card -->
                 <div class="card mb-4">
                     <div class="card-body">
@@ -84,7 +84,7 @@
             <!--/ User Sidebar -->
 
             <!-- User Content -->
-            <div class="col-md-9 order-md-1">
+            <div class="col-md-8 order-md-1">
                 <div class="row">
                     <div class="col-12">
                         <div class="nav-align-top mb-4">
