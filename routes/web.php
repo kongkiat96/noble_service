@@ -296,6 +296,17 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/get-data-branch', 'Settings\BranchController@getDataBranch');
         });
+
+        Route::prefix('/worker')->group(function () {
+            Route::get('', 'Settings\WorkerController@index');
+            Route::get('/add-worker-modal', 'Settings\WorkerController@showAddWorkerModal');
+            Route::post('/save-worker', 'Settings\WorkerController@saveDataWorker');
+            Route::get('/show-edit-worker/{workerID}', 'Settings\WorkerController@showEditWorker');
+            Route::post('/edit-worker/{workerID}', 'Settings\WorkerController@saveEditWorker');
+            Route::post('/delete-worker/{workerID}', 'Settings\WorkerController@deleteWorker');
+
+            Route::post('/get-data-worker', 'Settings\WorkerController@getDataWorker');
+        });
     });
 
     Route::prefix('/service')->group(function () {
@@ -342,6 +353,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-tambon/{aumphoeID}', 'Master\getDataMasterController@getDataTambon');
         Route::get('/get-category-type/{categoryMainID}', 'Master\getDataMasterController@getDataCategoryType');
         Route::get('/get-category-detail/{categoryTypeID}', 'Master\getDataMasterController@getDataCategoryDetail');
+        Route::get('/get-category-list/{categoryItemID}', 'Master\getDataMasterController@getDataCategoryList');
 
         Route::get('/get-about-employee/{empID}', 'Master\getDataMasterController@getDataAboutEmployee');
         Route::get('/get-data-manager/{empID}', 'Master\getDataMasterController@getDataManager');

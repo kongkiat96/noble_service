@@ -8,9 +8,16 @@
         </li>
 
         <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#case-action"
+                aria-controls="#case-action" aria-selected="true">
+                บันทึกข้อมูลการดำเนินงาน
+            </button>
+        </li>
+
+        <li class="nav-item">
             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#detail-pic"
                 aria-controls="#detail-pic" aria-selected="true">
-                รูปภาพการแจ้งปัญหา
+                รายการรูปภาพ
             </button>
         </li>
 
@@ -26,91 +33,102 @@
     <div class="tab-content">
         <div class="tab-pane fade show active" id="detail-case" role="tabpanel">
             <div class="row g-1 form-block">
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="ticket">Ticket</label>
-                        <input type="text" id="ticket" class="form-control" name="ticket"
-                            value="{{ $data['ticket'] }}" readonly autofocus>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="category_main_name">รายการกลุ่มอุปกรณ์</label>
-                        <input type="text" id="category_main_name" class="form-control" name="category_main_name"
-                            value="{{ $data['category_main_name'] }}" readonly>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="category_type_name">รายการประเภทหมวดหมู่</label>
-                        <input type="text" id="category_type_name" class="form-control" name="category_type_name"
-                            value="{{ $data['category_type_name'] }}" readonly>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="category_detail_name">อาการที่ต้องการแจ้งปัญหา</label>
-                        <input type="text" id="category_detail_name" class="form-control" name="category_detail_name"
-                            value="{{ $data['category_detail_name'] }}" readonly>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="asset_number">หมายเลขครุภัณฑ์</label>
-                        <input type="text" id="asset_number" class="form-control" name="asset_number"
-                            value="{{ $data['asset_number'] }}" readonly>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="employee_other_case_name">ผู้แจ้งปัญหา</label>
-                        <input type="text" id="employee_other_case_name" class="form-control"
-                            name="employee_other_case_name" value="{{ $data['employee_other_case_name'] }}" readonly>
-                    </div>
-                    @if ($data['manager_name'] != null)
-                        <div class="col-md-12 mb-4">
-                            <label class="form-label-md mb-2" for="manager_name">ผู้บังคับบัญชา</label>
-                            <input type="text" id="manager_name" class="form-control" name="manager_name"
-                                value="{{ $data['manager_name'] }}" readonly>
-                        </div>
-                    @endif
-                    <div class="col-md-12 mb-2">
-                        <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
-                        <textarea id="case_detail" name="case_detail" rows="3" class="form-control" readonly>{{ $data['case_detail'] }}</textarea>
-                    </div>
-                    <div class="divider">
-                        <div class="divider-text font-weight-bold font-size-lg">ข้อมูลรายการแก้ไขปัญหา</div>
-                    </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="ticket">Ticket</label>
+                    <input type="text" id="ticket" class="form-control" name="ticket"
+                        value="{{ $data['ticket'] }}" readonly autofocus>
                 </div>
-                <div class="row">
 
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="category_main_name">รายการที่เสีย</label>
-                        <input type="text" id="category_main_name" class="form-control" name="category_main_name"
-                            value="{{ $data['category_main_name'] }}">
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label-md mb-2" for="category_type_name">รายการที่แก้ไขปัญหา</label>
-                        <input type="text" id="category_type_name" class="form-control" name="category_type_name"
-                            value="{{ $data['category_type_name'] }}" readonly>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        <label class="form-label-md mb-2" for="sla">SLA</label>
-                        <input type="text" id="sla" class="form-control" name="sla"
-                            value="{{ $data['asset_number'] }}" readonly>
-                    </div>
-                    <div class="col-md-9 mb-2">
-                        <label for="selectWorker" class="form-label-md mb-2">ผู้ปฏิบัติงาน</label>
-                        <input id="selectWorker" name="selectWorker" class="form-control" placeholder="&nbsp ผู้ปฏิบัติงาน" value="" />
-                            {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
-                    </div>
-                    <div class="col-md-12 mb-2">
-                        <label class="form-label-md mb-2" for="case_approve_detail">รายละเอียดการทำงาน</label>
-                        <textarea id="case_approve_detail" name="case_approve_detail" rows="3" class="form-control"></textarea>
-                    </div>
-                    <div class="divider">
-                        <div class="divider-text font-weight-bold font-size-lg">บันทึกสถานะการทำงาน</div>
-                    </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="category_main_name">รายการกลุ่มอุปกรณ์</label>
+                    <input type="text" id="category_main_name" class="form-control" name="category_main_name"
+                        value="{{ $data['category_main_name'] }}" readonly>
                 </div>
-                <form id="formApproveToPadding">
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="category_type_name">รายการประเภทหมวดหมู่</label>
+                    <input type="text" id="category_type_name" class="form-control" name="category_type_name"
+                        value="{{ $data['category_type_name'] }}" readonly>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="category_detail_name">อาการที่ต้องการแจ้งปัญหา</label>
+                    <input type="text" id="category_detail_name" class="form-control" name="category_detail_name"
+                        value="{{ $data['category_detail_name'] }}" readonly>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="asset_number">หมายเลขครุภัณฑ์</label>
+                    <input type="text" id="asset_number" class="form-control" name="asset_number"
+                        value="{{ $data['asset_number'] }}" readonly>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label-md mb-2" for="employee_other_case_name">ผู้แจ้งปัญหา</label>
+                    <input type="text" id="employee_other_case_name" class="form-control"
+                        name="employee_other_case_name" value="{{ $data['employee_other_case_name'] }}" readonly>
+                </div>
+                @if ($data['manager_name'] != null)
+                    <div class="col-md-12 mb-4">
+                        <label class="form-label-md mb-2" for="manager_name">ผู้บังคับบัญชา</label>
+                        <input type="text" id="manager_name" class="form-control" name="manager_name"
+                            value="{{ $data['manager_name'] }}" readonly>
+                    </div>
+                @endif
+                <div class="col-md-12 mb-2">
+                    <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
+                    <textarea id="case_detail" name="case_detail" rows="3" class="form-control" readonly>{{ $data['case_detail'] }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="case-action" role="tabpanel">
+            <div class="row g-1 form-block">
+                <form id="formAddCaseAction">
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="case_item">รายการที่เสีย</label>
+                            <select id="case_item" name="case_item" class="form-control select2" data-allow-clear="true">
+                                <option value="">เลือกรายการ</option>
+                                @foreach ($categoryItem as $item)
+                                    <option value="{{ $item->id }}">{{ $item->category_item_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="case_list">รายการที่แก้ไขปัญหา</label>
+                            <select id="case_list" name="case_list" class="form-control select2" data-allow-clear="true">
+                                <option value="">เลือกรายการ</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <label class="form-label-md mb-2" for="sla">SLA</label>
+                            <input type="text" id="sla" class="form-control" name="sla" readonly>
+                        </div>
+                        <div class="col-md-9 mb-4">
+                            <label class="form-label-md mb-2" for="case_price">ค่าใช้จ่าย</label>
+                            <input type="text" id="case_price" class="form-control" name="case_price"
+                                value="">
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label for="selectWorker" class="form-label-md mb-2">ผู้ปฏิบัติงาน</label>
+                            <input id="selectWorker" name="selectWorker" class="form-control"
+                                placeholder="&nbsp เลือกผู้ปฏิบัติงาน" value="" />
+                            {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label-md mb-2" for="case_approve_detail">รายละเอียดการทำงาน</label>
+                            <textarea id="case_approve_detail" name="case_approve_detail" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class="divider">
+                            <div class="divider-text font-weight-bold font-size-lg">สถานะการทำงาน</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
                             <label class="form-label-md mb-2" for="case_status">สถานะการการทำงาน</label>
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
-
+                                @foreach ($getStatusWork as $key)
+                                <option value="{{ $key->ID }}">{{ $key->status_name }}</option>                                    
+                                @endforeach
                             </select>
                         </div>
 
@@ -118,17 +136,34 @@
 
 
                     <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
+
+                    <div class="divider">
+                        <div class="divider-text font-weight-bold font-size-lg">รูปภาพการแก้ไขปัญหา</div>
+                    </div>
                 </form>
+                {{-- <div class="row"> --}}
+                <div class="col-12 text-center">
+                    <form action="/upload" class="dropzone needsclick" id="pic-case">
+                        <div class="dz-message needsclick">
+                            อัพโหลดรูปภาพในการแก้ไขปัญหา
+                            <span class="note needsclick">(สามารถแนบได้สูงสุด 5 รูป)</span>
+                        </div>
+                        <div class="fallback">
+                            <input name="file" id="pic-case" type="file" />
+                        </div>
+                    </form>
+                </div>
+                {{-- </div> --}}
+
                 <hr class="mt-4">
                 <div class="col-12 text-center">
                     {{-- <button type="button" class="btn btn-label-danger"><i
                             class='menu-icon tf-icons bx bx-reset' id="resetFormApproveManager"></i>
                         ล้างฟอร์ม</button> --}}
 
-                    <button type="submit" name="approveCaseToPadding" id="approveCaseToPadding"
-                        class="btn btn-warning btn-form-block-overlay"><i
-                            class='menu-icon tf-icons bx bxs-paper-plane'></i>
-                        อนุมัติดำเนินการ</button>
+                    <button type="submit" name="saveCaseAction" id="saveCaseAction"
+                        class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
+                        บันทึกข้อมูลดำเนินงาน</button>
                 </div>
 
 
@@ -136,21 +171,58 @@
         </div>
 
         <div class="tab-pane fade" id="detail-pic" role="tabpanel">
-            <div class="row g-1 form-block">
-                @if (!empty($image))
-                    @foreach ($image as $key => $value)
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <img class="card-img-top img-fluid w-150 h-150"
-                                    src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                    alt="{{ $value->file_name }}" />
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    ไม่พบข้อมูลรูปภาพ
-                @endif
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#before-pic" aria-controls="#before-pic" aria-selected="true">
+                        ก่อนแก้ไขปัญหา
+                    </button>
+                </li>
 
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#after-pic" aria-controls="#after-pic" aria-selected="true">
+                        หลังแก้ไขปัญหา
+                    </button>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="before-pic" role="tabpanel">
+                    <div class="row g-1 form-block">
+                        @if (!empty($image))
+                            @foreach ($image as $key => $value)
+                                <div class="col-md-6 mb-3">
+                                    <div class="card">
+                                        <img class="card-img-top img-fluid w-150 h-150"
+                                            src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                            alt="{{ $value->file_name }}" />
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            ไม่พบข้อมูลรูปภาพ
+                        @endif
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="after-pic" role="tabpanel">
+                    <div class="row g-1 form-block">
+                        {{-- @if (!empty($image))
+                            @foreach ($image as $key => $value)
+                                <div class="col-md-6 mb-3">
+                                    <div class="card">
+                                        <img class="card-img-top img-fluid w-150 h-150"
+                                            src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                            alt="{{ $value->file_name }}" />
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else --}}
+                        ไม่พบข้อมูลรูปภาพ
+                        {{-- @endif --}}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -177,73 +249,22 @@
         <input type="text" value="{{ $data['id'] }}" name="caseID" id="caseID" hidden>
     </div>
 </div>
+<script type="text/javascript"
+    src="{{ asset('/assets/custom/caseService/mt/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 <script type="text/javascript">
+    mapSelectedCategoryItem('#case_list', '#case_item', true)
+    AddPicMultiple('#pic-case');
     (function() {
         // Users List suggestion
         //------------------------------------------------------
         const TagifyUserListEl = document.querySelector('#selectWorker');
-
-        const usersList = [{
-                value: 1,
-                name: 'Justinian Hattersley',
-                avatar: 'https://i.pravatar.cc/80?img=1',
-                email: 'jhattersley0@ucsd.edu'
-            },
-            {
-                value: 2,
-                name: 'Antons Esson',
-                avatar: 'https://i.pravatar.cc/80?img=2',
-                email: 'aesson1@ning.com'
-            },
-            {
-                value: 3,
-                name: 'Ardeen Batisse',
-                avatar: 'https://i.pravatar.cc/80?img=3',
-                email: 'abatisse2@nih.gov'
-            },
-            {
-                value: 4,
-                name: 'Graeme Yellowley',
-                avatar: 'https://i.pravatar.cc/80?img=4',
-                email: 'gyellowley3@behance.net'
-            },
-            {
-                value: 5,
-                name: 'Dido Wilford',
-                avatar: 'https://i.pravatar.cc/80?img=5',
-                email: 'dwilford4@jugem.jp'
-            },
-            {
-                value: 6,
-                name: 'Celesta Orwin',
-                avatar: 'https://i.pravatar.cc/80?img=6',
-                email: 'corwin5@meetup.com'
-            },
-            {
-                value: 7,
-                name: 'Sally Main',
-                avatar: 'https://i.pravatar.cc/80?img=7',
-                email: 'smain6@techcrunch.com'
-            },
-            {
-                value: 8,
-                name: 'Grethel Haysman',
-                avatar: 'https://i.pravatar.cc/80?img=8',
-                email: 'ghaysman7@mashable.com'
-            },
-            {
-                value: 9,
-                name: 'Marvin Mandrake',
-                avatar: 'https://i.pravatar.cc/80?img=9',
-                email: 'mmandrake8@sourceforge.net'
-            },
-            {
-                value: 10,
-                name: 'Corrie Tidey',
-                avatar: 'https://i.pravatar.cc/80?img=10',
-                email: 'ctidey9@youtube.com'
-            }
-        ];
+        // สร้าง array สำหรับ usersList โดยใช้ข้อมูลจาก $getDataWorker
+        const usersList = @json($getDataWorker).map(worker => ({
+            value: worker.ID,
+            name: worker.employee_name,
+            // avatar: worker.img_base ? `data:image/png;base64,${worker.img_base}` : '', // ถ้าภาพเป็น base64
+            email: worker.employee_code
+        }));
 
         function tagTemplate(tagData) {
             return `
@@ -256,9 +277,6 @@
     >
       <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
       <div>
-        <div class='tagify__tag__avatar-wrap'>
-          <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-        </div>
         <span class='tagify__tag-text'>${tagData.name}</span>
       </div>
     </tag>
@@ -272,13 +290,7 @@
       tabindex="0"
       role="option"
     >
-      ${
-        tagData.avatar
-          ? `<div class='tagify__dropdown__item__avatar-wrap'>
-          <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
-        </div>`
-          : ''
-      }
+
       <strong>${tagData.name}</strong>
       <span>${tagData.email}</span>
     </div>
@@ -295,7 +307,8 @@
                 enabled: 0,
                 classname: 'users-list',
                 searchKeys: ['name',
-                    'email'] // very important to set by which keys to search for suggesttions when typing
+                    'email'
+                ] // very important to set by which keys to search for suggesttions when typing
             },
             templates: {
                 tag: tagTemplate,

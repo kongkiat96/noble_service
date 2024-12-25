@@ -312,7 +312,7 @@ class CaseModel extends Model
                     'category_main_name'    => $mainQuery->category_main_name,
                     'category_type_name'    => $mainQuery->category_type_name,
                     'category_detail_name'  => $mainQuery->category_detail_name,
-                    'employee_other_case_name' => $this->getDataMasterModel->getFullNameEmp($mainQuery->employee_other_case,'mapEmpID'),
+                    'employee_other_case_name' => $this->getDataMasterModel->getFullNameEmp($mainQuery->employee_other_case, 'mapEmpID'),
                     'manager_name'          => $mainQuery->manager_emp_id ? $this->getDataMasterModel->getFullNameEmp($mainQuery->manager_emp_id, 'mapEmpID') : null,
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
@@ -383,6 +383,31 @@ class CaseModel extends Model
             ];
             // dd($returnData);
             return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getCategoryItem($categoryMain, $categoryType, $categoryDetail)
+    {
+        // dd($categoryMain, $categoryType, $categoryDetail);
+        try{
+            $queryDataCategory = DB::connection('mysql')->table('tbm_category_item')->where('category_main_id', $categoryMain)
+            ->where('category_type_id', $categoryType)
+            ->where('category_detail_id', $categoryDetail)
+            ->where('status_tag', 1)
+            ->where('deleted',0)
+            ->get();
+
+            // dd($queryDataCategory);
+            return $queryDataCategory;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());

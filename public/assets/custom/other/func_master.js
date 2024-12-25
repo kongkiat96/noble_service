@@ -1,4 +1,4 @@
-var multiplePic; 
+var multiplePic;
 
 function handleAjaxSaveResponse(response) {
     let icon, text, timer;
@@ -303,6 +303,17 @@ function renderStatusWorkBadge(data, type, full, row) {
         all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
         mt: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-danger' },
+        // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
+    };
+    const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
+    return `<span class="badge ${status.className}">${status.title}</span>`;
+}
+
+function renderStatusWorkBadge(data, type, full, row) {
+    const statusMap = {
+        all: { title: 'ทั้งหมด', className: 'bg-label-success' },
+        it: { title: 'ฝ่าย IT', className: 'bg-label-info' },
+        mt: { title: 'ฝ่ายอาคาร', className: 'bg-label-warning' },
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -805,6 +816,51 @@ function mapSelectedCategoryDetail(disabledElement, selectElement, disableStatus
     });
 }
 
+function mapSelectedCategoryItem(disabledElement, selectElement, disableStatus) {
+    var originalContent = $(disabledElement).html();
+    $('#case_list').prop('disabled', true);
+
+    $(disabledElement).prop('disabled', disableStatus);
+    $(selectElement).on('change', function () {
+        var categoryItemID = $(this).val();
+        var $categoryDetailSelect = $(disabledElement);
+        $categoryDetailSelect.prop('disabled', !categoryItemID);
+
+        if (categoryItemID) {
+            $.ajax({
+                url: '/getMaster/get-category-list/' + categoryItemID,
+                type: 'GET',
+                dataType: 'json',
+                success: function (categoryListData) {
+                    $categoryDetailSelect.empty().append('<option value="">Select</option>');
+                    $('#sla').val('');
+                    categoryListData.forEach(function (categoryList) {
+                        var optionElement = $('<option>')
+                            .val(categoryList.id)
+                            .text(categoryList.category_list_name)
+                            .data('sla', categoryList.sla); // กำหนด data-sla
+                        $categoryDetailSelect.append(optionElement);
+                    });
+
+                    $categoryDetailSelect.on('change', function () {
+                        var sla = $(this).find('option:selected').data('sla'); // ดึงค่า data-sla
+                        $('#sla').val(sla);
+                    });
+                },
+                error: function () {
+                    $categoryDetailSelect.html(originalContent);
+                }
+            });
+        } else {
+            $categoryDetailSelect.html(originalContent);
+            $categoryDetailSelect.empty().append('<option value="">Select</option>');
+
+            $('#sla').val('');
+        }
+    });
+}
+
+
 function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
     var originalContent = $(disabledElement).html();
     $('#category_type').prop('disabled', true);
@@ -856,16 +912,16 @@ function badgeStatusTagWork(data, type, full, row) {
         wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
         wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
-        openCaseWaitApprove : { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
+        openCaseWaitApprove: { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
 
         manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
 
-        reject_manager_approve_MT : { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
-        reject_manager_approve_IT : { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+        reject_manager_approve_MT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+        reject_manager_approve_IT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
 
-        reject_manager_mt_approve : { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
-        reject_manager_it_approve : { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
+        reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
+        reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
     };
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;

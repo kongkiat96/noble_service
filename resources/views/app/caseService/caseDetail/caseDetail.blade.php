@@ -146,5 +146,4 @@
         <input type="text" value="{{ $data['id'] }}" name="caseID" id="caseID" hidden>
     </div>
 </div>
-<script type="text/javascript"
-    src="{{ asset('/assets/custom/caseService/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+<script type="text/javascript" src="{{ asset('/assets/custom/caseService/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>

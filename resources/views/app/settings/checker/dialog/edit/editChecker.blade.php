@@ -18,9 +18,9 @@
                         <label class="form-label-md mb-2" for="use_tag">การใช้งานของฝ่าย</label>
                         <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
-                            <option value="IT" @if ($dataChecker->use_tag == 'IT') selected @endif>ใช้งานเฉพาะ IT</option>
-                            <option value="MT" @if ($dataChecker->use_tag == 'MT') selected @endif>ใช้งานเฉพาะ MT</option>
-                            <option value="ALL" @if ($dataChecker->use_tag == 'ALL') selected @endif>ใช้งานทั้งหมด</option>
+                            <option value="it" @if ($dataChecker->use_tag == 'it') selected @endif>ใช้งานเฉพาะ ITs</option>
+                            <option value="mt" @if ($dataChecker->use_tag == 'mt') selected @endif>ใช้งานเฉพาะ MTs</option>
+                            <option value="all" @if ($dataChecker->use_tag == 'all') selected @endif>ใช้งานทั้งหมด</option>
                         </select>
                     </div>
 

@@ -18,9 +18,9 @@
                         <label class="form-label-md mb-2" for="use_tag">การใช้งานของฝ่าย</label>
                         <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
-                            <option value="IT">ใช้งานเฉพาะ IT</option>
-                            <option value="MT">ใช้งานเฉพาะ MT</option>
-                            <option value="ALL">ใช้งานทั้งหมด</option>
+                            <option value="it">ใช้งานเฉพาะ ITs</option>
+                            <option value="mt">ใช้งานเฉพาะ MTs</option>
+                            <option value="all">ใช้งานทั้งหมด</option>
                         </select>
                     </div>
 

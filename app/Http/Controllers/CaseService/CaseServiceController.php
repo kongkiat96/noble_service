@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CaseService;
 use App\Helpers\CalculateDateHelper;
 use App\Helpers\getAccessToMenu;
 use App\Http\Controllers\Controller;
+use App\Models\Master\getDataMasterModel;
 use App\Models\Service\CaseModel;
 use Carbon\Carbon;
 use Exception;
@@ -14,10 +15,12 @@ use Illuminate\Support\Facades\Log;
 class CaseServiceController extends Controller
 {
     private $caseModel;
+    private $getMaster;
 
     public function __construct()
     {
         $this->caseModel = new CaseModel();
+        $this->getMaster = new getDataMasterModel();
     }
     public function index_case_approve_mt()
     {
@@ -64,11 +67,21 @@ class CaseServiceController extends Controller
         try {
             // dd($ticket);
             $getCaseDetail = $this->caseModel->getDataCaseDetailApprove($ticket);
-            // dd($getCaseDetail);
+            $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+            $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+            $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+            $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+            
+            $getDataWorker = $this->getMaster->getDataWorker();
+            $getStatusWork = $this->getMaster->getDataStatusWork('mt');
+            // dd($getDataWorker);
             if($getCaseDetail['status'] == 200){
                 return view('app.caseService.caseDetail.caseDetail_MT',[
                     'data' => $getCaseDetail['message']['datadetail'],
-                    'image' => $getCaseDetail['message']['dataimage']
+                    'image' => $getCaseDetail['message']['dataimage'],
+                    'categoryItem' => $getCategoryItem,
+                    'getDataWorker' => $getDataWorker,
+                    'getStatusWork' => $getStatusWork
                 ]);
             } else {
                 return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
