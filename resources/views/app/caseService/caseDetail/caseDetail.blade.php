@@ -79,7 +79,7 @@
                         <select name="case_status" id="case_status" class="form-select select2"
                             data-allow-clear="true">
                             <option value=""></option>
-                            <option value="padding">อนุมัติดำเนินการแจ้งซ่อม</option>
+                            <option value="manager_mt_approve">อนุมัติดำเนินการแจ้งซ่อม</option>
                             <option value="reject_manager_mt_approve">ไม่อนุมัติดำเนินการแจ้งซ่อม</option>
                         </select>
                     </div>

@@ -85,8 +85,8 @@ $(function () {
         ],
     });
 
-    var dt_ApproveFU = $('.dt-approve-fu')
-    dt_ApproveFU.DataTable({
+    var dt_CaseWorking = $('.dt-case-working')
+    dt_CaseWorking.DataTable({
         processing: false,
         paging: true,
         pageLength: 50,
@@ -103,7 +103,7 @@ $(function () {
                 '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
         },
         ajax: {
-            url: setURLApprove + "/get-data-approve-fu",
+            url: setURLCaseService + "/get-data-case-doing-mt",
             type: 'POST',
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -132,6 +132,16 @@ $(function () {
                         <button type="button" class="btn btn-label-info btn-info btn-sm" onclick="getDetailCase('` + row.ticket + `')">
                             ` + row.ticket + `
                         </button>
+                    `;
+                }
+            },
+            {
+                data: 'case_status',
+                class: "text-center",
+                render: function (data, type, row) {
+                    // console.log(row)
+                    return `
+                        <span class="badge bg-label-primary">${row.case_status}</span>
                     `;
                 }
             },
@@ -179,7 +189,7 @@ $(function () {
 function reTable() {
     // $('.dt-approve-case-it').DataTable().ajax.reload();
     $('.dt-case-openCase').DataTable().ajax.reload(null, false);
-    $('.dt-approve-fu').DataTable().ajax.reload(null, false);
+    $('.dt-case-working').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
     // ฟังก์ชันทั่วไปสำหรับดึงข้อมูลจำนวนอนุมัติ
@@ -199,21 +209,21 @@ $(document).ready(function () {
 
     // เรียกข้อมูลสำหรับ MT
     function fetchCountMT() {
-        fetchCountApprove("/service/approve-case/realtime-case-approve-count-mt", "caseApproveCountMT");
+        fetchCountApprove("/case-service/realtime-case-new-count-mt", "caseNewCountMT");
     }
 
     // เรียกข้อมูลสำหรับ FU
-    function fetchCountFU() {
-        fetchCountApprove("/service/approve-case/realtime-case-approve-count-fu", "caseApproveCountFU");
+    function fetchCountDoing() {
+        fetchCountApprove("/case-service/realtime-case-doing-count-mt", "caseDoingCountMT");
     }
 
     // เรียกฟังก์ชันทันทีที่หน้าโหลด
     fetchCountMT();
-    fetchCountFU();
+    fetchCountDoing();
 
     // ตั้งเวลาเรียกฟังก์ชันทุก 1 นาที (60000 มิลลิวินาที)
     setInterval(fetchCountMT, 60000);
-    setInterval(fetchCountFU, 60000);
+    setInterval(fetchCountDoing, 60000);
 
     // setInterval(reTable, 60000);
 });
@@ -279,7 +289,7 @@ function getDetailCase(ticket) {
                 },
                 {
                     data: 'CaseDetail',
-                    class: "text-wrap",
+                    // class: "text-wrap",
                 },
                 {
                     data: 'CasePrice',

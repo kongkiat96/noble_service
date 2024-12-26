@@ -80,41 +80,63 @@
 
         <div class="tab-pane fade" id="case-action" role="tabpanel">
             <div class="row g-1 form-block">
-                <form id="formAddCaseAction">
+                <form id="formDoingCaseAction">
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <label class="form-label-md mb-2" for="case_item">รายการที่เสีย</label>
-                            <select id="case_item" name="case_item" class="form-control select2" data-allow-clear="true">
+                            <label class="form-label-md mb-2" for="case_item">รายการที่เสีย <span
+                                    class="text-danger">*</span></label>
+                            <select id="case_item" name="case_item" class="form-control select2"
+                                data-allow-clear="true">
                                 <option value="">เลือกรายการ</option>
                                 @foreach ($categoryItem as $item)
-                                    <option value="{{ $item->id }}">{{ $item->category_item_name }}</option>
+                                    <option value="{{ $item->id }}"
+                                        @if ($data['case_item'] == $item->id) selected @endif>
+                                        {{ $item->category_item_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <label class="form-label-md mb-2" for="case_list">รายการที่แก้ไขปัญหา</label>
-                            <select id="case_list" name="case_list" class="form-control select2" data-allow-clear="true">
+                            <label class="form-label-md mb-2" for="case_list">รายการที่แก้ไขปัญหา <span
+                                    class="text-danger">*</span></label>
+                            <select id="case_list" name="case_list" class="form-control select2"
+                                data-allow-clear="true">
                                 <option value="">เลือกรายการ</option>
+                                @foreach ($categoryList as $list)
+                                    <option value="{{ $list->id }}"
+                                        @if ($data['case_list'] == $list->id) selected @endif>
+                                        {{ $list->category_list_name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-3 mb-4">
                             <label class="form-label-md mb-2" for="sla">SLA</label>
-                            <input type="text" id="sla" class="form-control" name="sla" readonly>
+                            <input type="text" id="sla" class="form-control" name="sla" readonly value="{{ $data['sla'] }}">
                         </div>
                         <div class="col-md-9 mb-4">
                             <label class="form-label-md mb-2" for="case_price">ค่าใช้จ่าย</label>
-                            <input type="text" id="case_price" class="form-control" name="case_price"
-                                value="">
+                            {{-- <input type="text" id="case_price" class="form-control" name="case_price"
+                                value=""> --}}
+
+                            <div class="input-group">
+                                <input type="text" class="form-control numeral-mask text-end"
+                                    placeholder="ค่าใช้จ่าย" name="case_price" id="case_price"
+                                    oninput="formatAmount(this)" value="{{ $data['price'] }}"/>
+                                <span class="input-group-text">฿</span>
+                            </div>
+
+
+
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label for="selectWorker" class="form-label-md mb-2">ผู้ปฏิบัติงาน</label>
-                            <input id="selectWorker" name="selectWorker" class="form-control"
-                                placeholder="&nbsp เลือกผู้ปฏิบัติงาน" value="" />
+                            <label for="worker" class="form-label-md mb-2">ผู้ปฏิบัติงาน</label>
+                            <input id="worker" name="worker" class="form-control"
+                                placeholder="&nbsp เลือกผู้ปฏิบัติงาน" value="{{ $workerNames }}" />
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="form-label-md mb-2" for="case_approve_detail">รายละเอียดการทำงาน</label>
-                            <textarea id="case_approve_detail" name="case_approve_detail" rows="3" class="form-control"></textarea>
+                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span
+                                    class="text-danger">*</span></label>
+                            <textarea id="case_doing_detail" name="case_doing_detail" rows="3" class="form-control"></textarea>
                         </div>
                         <div class="divider">
                             <div class="divider-text font-weight-bold font-size-lg">สถานะการทำงาน</div>
@@ -122,12 +144,13 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="form-label-md mb-2" for="case_status">สถานะการการทำงาน</label>
+                            <label class="form-label-md mb-2" for="case_status">สถานะการการทำงาน <span
+                                    class="text-danger">*</span></label>
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
                                 @foreach ($getStatusWork as $key)
-                                <option value="{{ $key->ID }}">{{ $key->status_name }}</option>                                    
+                                    <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -160,7 +183,6 @@
                     {{-- <button type="button" class="btn btn-label-danger"><i
                             class='menu-icon tf-icons bx bx-reset' id="resetFormApproveManager"></i>
                         ล้างฟอร์ม</button> --}}
-
                     <button type="submit" name="saveCaseAction" id="saveCaseAction"
                         class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
                         บันทึกข้อมูลดำเนินงาน</button>
@@ -182,7 +204,7 @@
                 <li class="nav-item">
                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                         data-bs-target="#after-pic" aria-controls="#after-pic" aria-selected="true">
-                        หลังแก้ไขปัญหา
+                        หลังแก้ไขปัญหา <span class="text-danger">(แสดง 5 รายการล่าสุด)</span>
                     </button>
                 </li>
 
@@ -208,8 +230,8 @@
                 </div>
                 <div class="tab-pane fade" id="after-pic" role="tabpanel">
                     <div class="row g-1 form-block">
-                        {{-- @if (!empty($image))
-                            @foreach ($image as $key => $value)
+                        @if (!empty($imageDoing))
+                            @foreach ($imageDoing as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
                                         <img class="card-img-top img-fluid w-150 h-150"
@@ -218,9 +240,9 @@
                                     </div>
                                 </div>
                             @endforeach
-                        @else --}}
-                        ไม่พบข้อมูลรูปภาพ
-                        {{-- @endif --}}
+                        @else
+                            ไม่พบข้อมูลรูปภาพ
+                        @endif
                     </div>
                 </div>
             </div>
@@ -246,29 +268,28 @@
 
 
         </div>
-        <input type="text" value="{{ $data['id'] }}" name="caseID" id="caseID" hidden>
     </div>
 </div>
-<script type="text/javascript"
-    src="{{ asset('/assets/custom/caseService/mt/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+<script type="text/javascript" src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 <script type="text/javascript">
-    mapSelectedCategoryItem('#case_list', '#case_item', true)
+
+        mapSelectedCategoryItem('#case_list', '#case_item', true)
     AddPicMultiple('#pic-case');
     (function() {
         // Users List suggestion
         //------------------------------------------------------
-        const TagifyUserListEl = document.querySelector('#selectWorker');
+        const TagifyUserListEl = document.querySelector('#worker');
         // สร้าง array สำหรับ usersList โดยใช้ข้อมูลจาก $getDataWorker
         const usersList = @json($getDataWorker).map(worker => ({
             value: worker.ID,
             name: worker.employee_name,
             // avatar: worker.img_base ? `data:image/png;base64,${worker.img_base}` : '', // ถ้าภาพเป็น base64
-            email: worker.employee_code
+            emp_code: worker.employee_code
         }));
 
         function tagTemplate(tagData) {
             return `
-    <tag title="${tagData.title || tagData.email}"
+    <tag title="${tagData.title || tagData.emp_code}"
       contenteditable='false'
       spellcheck='false'
       tabIndex="-1"
@@ -292,7 +313,7 @@
     >
 
       <strong>${tagData.name}</strong>
-      <span>${tagData.email}</span>
+      <span>${tagData.emp_code}</span>
     </div>
   `;
         }
@@ -307,7 +328,7 @@
                 enabled: 0,
                 classname: 'users-list',
                 searchKeys: ['name',
-                    'email'
+                    'emp_code'
                 ] // very important to set by which keys to search for suggesttions when typing
             },
             templates: {
@@ -343,7 +364,8 @@
             return TagifyUserList.parseTemplate('dropdownItem', [{
                 class: 'addAll',
                 name: 'เลือกทั้งหมด',
-                email: TagifyUserList.settings.whitelist.reduce(function(remainingSuggestions, item) {
+                emp_code: TagifyUserList.settings.whitelist.reduce(function(remainingSuggestions,
+                item) {
                     return TagifyUserList.isTagDuplicate(item.value) ? remainingSuggestions :
                         remainingSuggestions + 1;
                 }, 0) + ' รายการ'

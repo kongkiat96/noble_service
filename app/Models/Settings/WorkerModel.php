@@ -182,4 +182,23 @@ class WorkerModel extends Model
             ];
         }
     }
+
+    public function deleteWorker($workerID)
+    {
+        try {
+            DB::connection('mysql')->table('tbm_worker')->where('id', $workerID)->update(['deleted' => 1]);
+            return [
+                'status' => 200,
+                'message' => 'Delete Success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

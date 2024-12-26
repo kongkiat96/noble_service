@@ -912,6 +912,7 @@ function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
 }
 
 function badgeStatusTagWork(data, type, full, row) {
+    // console.log(data)
     const statusTagWork = {
         wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
@@ -921,12 +922,25 @@ function badgeStatusTagWork(data, type, full, row) {
         manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
 
+        manager_mt_approve: { title: 'อนุมัติจากฝ่ายอาคาร / รอดำเนินงาน', className: 'bg-label-primary' },
+        manager_it_approve: { title: 'อนุมัติจากฝ่ายไอที / รอดำเนินงาน', className: 'bg-label-primary' },
+
         reject_manager_approve_MT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
         reject_manager_approve_IT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
 
         reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
     };
+
+    // ตรวจสอบว่าข้อมูลเป็นตัวเลข
+    // if (!isNaN(data)) {
+    //     return `<span class="badge bg-label-warning">${data}</span>`;
+    // }
+
+    if(!statusTagWork[data]) {
+        return `<span class="badge bg-label-primary">${data}</span>`;
+    }
+
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;
 }

@@ -97,7 +97,7 @@ class CaseModel extends Model
         if ($data['manager_emp_id'] == null) {
             if ($data['use_tag'] == 'MT') {
                 $data['case_start'] = now();
-                $data['case_status'] = 'padding';
+                $data['case_status'] = 'wait_manager_mt_approve';
                 $data['case_step'] = 'wait_manager_mt_approve';
                 $data['tag_manager_approve'] = 'NoManager';
                 $data['tag_work'] = 'wait_manager_mt_approve';
@@ -246,7 +246,7 @@ class CaseModel extends Model
                     'created_at'    => $value->created_at,
                     'case_status'   => $value->case_status,
                     'employee_other_case'   => $value->employee_other_case_name,
-                    'manager_name'   => $value->manager_name,
+                    'manager_name'   => $value->manager_name ?? '-',
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
                     'created_user'  => $this->getDataMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
                 ];
@@ -294,7 +294,17 @@ class CaseModel extends Model
             $imageQuery = DB::connection('mysql')
                 ->table('tbt_case_pic')
                 ->where('case_service_id', $mainQuery->id)
+                ->where('pic_tag', '!=', 'doing_case')
                 ->select('pic_name AS file_name')
+                ->get();
+
+            $imageQueryDoing = DB::connection('mysql')
+                ->table('tbt_case_pic')
+                ->where('case_service_id', $mainQuery->id)
+                ->where('pic_tag', 'doing_case')
+                ->select('pic_name AS file_name')
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
                 ->get();
 
             // สร้างโครงสร้างข้อมูลผลลัพธ์
@@ -314,8 +324,14 @@ class CaseModel extends Model
                     'category_detail_name'  => $mainQuery->category_detail_name,
                     'employee_other_case_name' => $this->getDataMasterModel->getFullNameEmp($mainQuery->employee_other_case, 'mapEmpID'),
                     'manager_name'          => $mainQuery->manager_emp_id ? $this->getDataMasterModel->getFullNameEmp($mainQuery->manager_emp_id, 'mapEmpID') : null,
+                    'case_item'             => $mainQuery->case_item,
+                    'case_list'             => $mainQuery->case_list,
+                    'worker'                => $mainQuery->worker,
+                    'sla'                   => $mainQuery->sla,
+                    'price'                 => number_format($mainQuery->price, 2),
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
+                'dataimageDoing' => $imageQueryDoing->toArray()
             ];
             // dd($data);
 
@@ -366,13 +382,19 @@ class CaseModel extends Model
 
             $newArr = [];
             foreach ($sql as $key => $value) {
+                if (is_numeric($value->hCaseStatus)) {
+                    $caseStatus = $this->getDataMasterModel->getStatusWork($value->hCaseStatus);
+                } else {
+                    $caseStatus = $value->hCaseStatus ?? '-';
+                }
+
                 $newArr[] = [
-                    'ID'    => encrypt($value->hId),
-                    'CaseStatus'    => $value->hCaseStatus ?? '-',
-                    'CaseDetail'    => wordwrap($value->hCaseDetail, 50, "<br>", true) ?? '-',
-                    'CasePrice'         => $value->hPrice ?? '0.00',
+                    'ID'            => encrypt($value->hId),
+                    'CaseStatus'    => $caseStatus,
+                    'CaseDetail'    => wordwrap($value->hCaseDetail, 300, "<br>", true) ?? '-',
+                    'CasePrice'     => number_format($value->hPrice, 2) ?? '0.00',
                     'CreatedAt'     => $value->hCreatedAt ?? '-',
-                    'CreatedUserName'    => $value->hCreatedUserName ?? '-',
+                    'CreatedUserName' => $value->hCreatedUserName ?? '-',
                 ];
             }
 
@@ -398,16 +420,160 @@ class CaseModel extends Model
     public function getCategoryItem($categoryMain, $categoryType, $categoryDetail)
     {
         // dd($categoryMain, $categoryType, $categoryDetail);
-        try{
+        try {
             $queryDataCategory = DB::connection('mysql')->table('tbm_category_item')->where('category_main_id', $categoryMain)
-            ->where('category_type_id', $categoryType)
-            ->where('category_detail_id', $categoryDetail)
+                ->where('category_type_id', $categoryType)
+                ->where('category_detail_id', $categoryDetail)
+                ->where('status_tag', 1)
+                ->where('deleted', 0)
+                ->get();
+
+            // dd($queryDataCategory);
+            return $queryDataCategory;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getCategoryList($categoryItem)
+    {
+        try {
+            $queryDataCategory = DB::connection('mysql')->table('tbm_category_list')
+            ->where('category_item_id', $categoryItem)
             ->where('status_tag', 1)
-            ->where('deleted',0)
+            ->where('deleted', 0)
             ->get();
 
             // dd($queryDataCategory);
             return $queryDataCategory;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    private function buildParamDoingCaseAction($request, $caseID)
+    {
+        // dd($request);
+        $searchData = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->where('deleted', 0)->first();
+        // dd($request->hasFile('file'));
+        if (!empty($searchData)) {
+            $data['case_item']      = $request->case_item;
+            $data['case_list']      = $request->case_list;
+            $data['sla']            = $request->sla;
+            $data['price']          =  empty($request->case_price) ? 0 : str_replace(',', '', $request->case_price);
+            $data['worker']         = $request->worker;
+            $data['case_status']    = $request->case_status;
+            $data['case_detail']    = $request->case_doing_detail;
+
+            if ($request->hasFile('file')) {
+                $files = $request->file('file');
+                if (is_array($files)) {
+                    foreach ($files as $file) {
+                        if ($file instanceof \Illuminate\Http\UploadedFile) {
+                            $filename = $searchData->ticket . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                            // บีบอัดและจัดเก็บไฟล์
+                            $this->compressAndStoreImage($file, $filename);
+
+                            $data['case_image'][] = $filename;
+                        }
+                    }
+                } else {
+                    if ($files instanceof \Illuminate\Http\UploadedFile) {
+                        $filename = $searchData->ticket . '_' . uniqid() . '.' . $files->getClientOriginalExtension();
+
+                        // บีบอัดและจัดเก็บไฟล์
+                        $this->compressAndStoreImage($files, $filename);
+
+                        $data['case_image'] = $filename;
+                    }
+                }
+            }
+            $data['case_tag'] = 'doing_case';
+        }
+        // dd($data);
+        return $data;
+    }
+
+    public function saveCaseDoingAction($dataRequest, $caseID)
+    {
+        try {
+            $caseID = decrypt($caseID);
+            // dd($caseID);
+            $searchData = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->where('deleted', 0)->first();
+
+            if ($searchData) {
+                $setParam = $this->buildParamDoingCaseAction($dataRequest, $caseID);
+                // dd($setParam);
+                $caseImages = isset($setParam['case_image']) ? $setParam['case_image'] : [];
+                unset($setParam['case_image']);
+                $saveData = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->update([
+                    'case_item' => $setParam['case_item'],
+                    'case_list' => empty($setParam['case_list']) ? $searchData->case_list : $setParam['case_list'],
+                    'sla' => $setParam['sla'],
+                    'price' => $setParam['price'],
+                    'worker' => $setParam['worker'],
+                    'updated_at' => now(),
+                    'updated_user' => Auth::user()->emp_code,
+                    'case_step' => $setParam['case_tag'],
+                    'tag_work' => $setParam['case_tag'],
+                    'case_status' => $setParam['case_status'],
+                ]);
+
+                DB::connection('mysql')->table('tbt_case_service_history')->insert([
+                    'case_service_id' => $searchData->id,
+                    'ticket' => $searchData->ticket,
+                    'case_step' => $setParam['case_tag'],
+                    'case_status' => $setParam['case_status'],
+                    'case_detail' => $setParam['case_detail'],
+                    'tag_work' => $setParam['case_tag'],
+                    'worker' => $setParam['worker'],
+                    'price' => $setParam['price'],
+                    'created_at' => now(),
+                    'created_user'  => Auth::user()->emp_code
+                ]);
+
+                // หากมี case_image ให้บันทึกลงใน tbt_case_pic
+                if (!empty($caseImages)) {
+                    $casePicData = [];
+                    foreach ($caseImages as $image) {
+                        $casePicData[] = [
+                            'case_service_id' => $searchData->id,
+                            'ticket' => $searchData->ticket,
+                            'pic_name'  => $image,
+                            'pic_tag'   => $setParam['case_tag'],
+                            'created_at' => now(),
+                            'created_user'  => Auth::user()->emp_code
+                        ];
+                    }
+
+                    // บันทึกข้อมูลทั้งหมดในตาราง tbt_case_pic
+                    DB::connection('mysql')->table('tbt_case_pic')->insert($casePicData);
+                }
+                return [
+                    'status' => 200,
+                    'message' => 'Update Success'
+                ];
+            } else {
+                return [
+                    'status' => 404,
+                    'message' => 'Data Not Found'
+                ];
+            }
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());

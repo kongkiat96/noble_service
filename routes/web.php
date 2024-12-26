@@ -339,8 +339,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/case-approve-mt', 'CaseService\CaseServiceController@index_case_approve_mt');
         Route::get('/case-all-mt', 'CaseService\CaseServiceController@index_case_all_mt');
         Route::post('/get-data-case-open-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseOpenMT');
+        Route::post('/get-data-case-doing-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseDoingMT');
+        Route::get('/realtime-case-new-count-mt', 'CaseService\mt\CaseServiceMTController@realtimeCaseNewCountMT');
+        Route::get('/realtime-case-doing-count-mt', 'CaseService\mt\CaseServiceMTController@realtimeCaseDoingCountMT');
+
 
         Route::get('/case-action/{ticket}', 'CaseService\CaseServiceController@getDatacaseAction');
+        Route::post('/case-doing-action/{caseID}', 'CaseService\CaseServiceController@caseDoingAction');
     });
 
     Route::prefix('getMaster')->group(function () {

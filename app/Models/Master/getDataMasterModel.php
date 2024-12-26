@@ -485,19 +485,33 @@ class getDataMasterModel extends Model
         return $query->employee_name;
     }
 
-    public function getDataWorker()
+    public function getDataWorker($useTag)
     {
         try {
-            $query = DB::connection('mysql')->table('tbt_employee AS employee')
+            // $query = DB::connection('mysql')->table('tbt_employee AS employee')
+            //     ->leftJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
+            //     ->where('employee.deleted', 0)
+            //     ->select(
+            //         DB::raw("CONCAT(tbm_prefix_name.prefix_name,' ',employee.first_name,' ',employee.last_name) as employee_name"),
+            //         'employee.ID',
+            //         'employee.employee_code',
+            //         'employee.img_base',
+            //     )
+            //     ->get();
+            $query = DB::connection('mysql')->table('tbm_worker AS worker')
+                ->leftJoin('tbt_employee AS employee', 'worker.employee_id', '=', 'employee.ID')
                 ->leftJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
-                ->where('employee.deleted', 0)
+                ->whereIn('worker.use_tag',[$useTag,'all'])
+                ->where('worker.deleted', 0)
+                ->where('worker.status_tag', 1)
                 ->select(
-                    DB::raw("CONCAT(tbm_prefix_name.prefix_name,' ',employee.first_name,' ',employee.last_name) as employee_name"),
                     'employee.ID',
+                    DB::raw("CONCAT(tbm_prefix_name.prefix_name,' ',employee.first_name,' ',employee.last_name) as employee_name"),
                     'employee.employee_code',
                     'employee.img_base',
                 )
                 ->get();
+                // dd($query);
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
@@ -515,5 +529,11 @@ class getDataMasterModel extends Model
         $query = DB::connection('mysql')->table('tbm_status_work')->where('deleted', 0)->where('status', 1)
         ->whereIn('status_use', ['all', $useTag])->orderBy('id')->get();
         return $query;
+    }
+
+    public function getStatusWork($statusID)
+    {
+        $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->first();
+        return $query->status_name;
     }
 }

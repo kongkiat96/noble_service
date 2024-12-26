@@ -115,7 +115,7 @@
                                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-openCase" aria-controls="#case-openCase" aria-selected="true"
                                                 id="reTabA">
-                                                รายการแจ้งปัญหาเข้ามาใหม่ <span class="badge bg-white text-primary ms-1" id="caseApproveCountMT">0</span>
+                                                รายการแจ้งปัญหาเข้ามาใหม่ <span class="badge bg-white text-primary ms-1" id="caseNewCountMT">0</span>
                                             </button>
                                         </li>
         
@@ -123,7 +123,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-working" aria-controls="#case-working" aria-selected="true"
                                                 id="reTabB">
-                                                รายการแจ้งปัญหาอยู่ระหว่างดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseApproveCountFU">0</span>
+                                                รายการแจ้งปัญหาอยู่ระหว่างดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
                                             </button>
                                         </li>
 
@@ -167,11 +167,12 @@
         
                                         <div class="tab-pane fade" id="case-working" role="tabpanel">
                                             <div class="text-nowrap table-responsive">
-                                                <table class=" table table-hover table-striped">
+                                                <table class="dt-case-working table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>
                                                             <th>Ticket</th>
+                                                            <th>สถานะดำเนินงาน</th>
                                                             <th>ผู้แจ้งปัญหา</th>
                                                             <th>วัน / เวลาที่แจ้งปัญหา</th>
                                                             <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>

@@ -85,4 +85,10 @@ class WorkerController extends Controller
         // dd($saveData);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
     }
+
+    public function deleteWorker($workerID)
+    {
+        $deleteData = $this->workerModel->deleteWorker($workerID);
+        return response()->json(['status' => $deleteData['status'], 'message' => $deleteData['message']]);
+    }
 }

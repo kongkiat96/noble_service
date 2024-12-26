@@ -160,6 +160,11 @@ function funcEditWorker(workerID) {
     showModalWithAjax('#editWorkerModal', setURLWorker + '/show-edit-worker/' + workerID, ['#employee_id', '#use_tag', '#status_tag']);
 }
 
+function funcDeleteWorker(workerID) {
+    // alert(workerID);
+    handleAjaxDeleteResponse(workerID, setURLWorker + "/delete-worker/" + workerID);
+}
+
 function setupFormValidationWorker(formElement) {
     const validators = {
         notEmpty: message => ({
