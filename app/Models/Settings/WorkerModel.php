@@ -148,4 +148,38 @@ class WorkerModel extends Model
             ];
         }
     }
+
+    public function saveEditWorker($dataEdit, $workerID)
+    {
+        try {
+            $searchData = DB::connection('mysql')->table('tbm_worker')
+                ->where('employee_id', $dataEdit['employee_id'])
+                ->where('id', '!=', $workerID)
+                ->where('deleted', 0)
+                ->first();
+
+            if ($searchData) {
+                return [
+                    'status' => '23000',
+                    'message' => 'Duplicate employee_id'
+                ];
+            } else {
+                $dataEdit['updated_at'] = now();
+                $dataEdit['updated_user'] = Auth::user()->emp_code;
+                DB::connection('mysql')->table('tbm_worker')->where('id', $workerID)->update($dataEdit);
+                return [
+                    'status' => 200,
+                    'message' => 'Update Success'
+                ];
+            }
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

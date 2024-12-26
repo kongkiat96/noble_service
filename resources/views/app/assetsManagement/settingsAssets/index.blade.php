@@ -11,37 +11,37 @@
     </nav>
     <hr>
 
-    <div class="modal fade" id="addAssetTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addAssetTypeModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editAssetTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editAssetTypeModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="viewAssetTypeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="viewAssetTypeModal"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addAssetTagModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addAssetTagModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editAssetTagModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editAssetTagModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="viewAssetTagModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="viewAssetTagModal"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>

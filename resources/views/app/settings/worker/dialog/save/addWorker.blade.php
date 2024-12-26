@@ -9,9 +9,9 @@
             <form id="formAddWorker" class="form-block">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="employee_id">รายชื่อพนักงาน</label>
+                        <label class="form-label-md mb-2" for="employee_id">รายชื่อพนักงาน <span class="text-danger">*</span></label>
                         <select id="employee_id" name="employee_id" class="form-select select2"
-                            data-allow-clear="true">
+                            data-allow-clear="true" data-modal-id="add">
                             <option value="">Select</option>
                             @foreach ($getDataEmployee as $key => $value)
                                 <option value="{{ $value->ID }}">{{ $value->full_name }}</option>
@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="use_tag">การปฏิบัติงานของฝ่าย</label>
+                        <label class="form-label-md mb-2" for="use_tag">การปฏิบัติงานของฝ่าย <span class="text-danger">*</span></label>
                         <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             <option value="it">ปฏิบัติงานเฉพาะ ITs</option>
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label-md mb-2" for="status_tag">สถานะการใช้งาน</label>
+                        <label class="form-label-md mb-2" for="status_tag">สถานะการใช้งาน <span class="text-danger">*</span></label>
                         <select id="status_tag" name="status_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             <option value="1">กำลังใช้งาน</option>

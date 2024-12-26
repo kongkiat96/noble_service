@@ -13,19 +13,19 @@
 
     
 
-    <div class="modal fade" id="addCheckerModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCheckerModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCheckerModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCheckerModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>

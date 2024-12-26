@@ -13,37 +13,37 @@
 
     
 
-    <div class="modal fade" id="addCategoryMainModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryMainModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryMainModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCategoryMainModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryTypeModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCategoryTypeModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryDetailModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addCategoryDetailModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryDetailModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCategoryDetailModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>

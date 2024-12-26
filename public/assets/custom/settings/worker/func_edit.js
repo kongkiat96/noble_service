@@ -1,29 +1,27 @@
 var setURLSetting = '/settings-system'
 var setURLWorker = setURLSetting + '/worker'
 
-
 $(document).ready(function () {
-    $('#saveWorker').on('click', function (e) {
+    $('#saveEditWorker').on('click', function (e) {
         e.preventDefault();
         removeValidationFeedback();
-        const form = $("#formAddWorker")[0];
+        const form = $("#formEditWorker")[0];
+        const workerID = $('#workerID').val();
         const fv = setupFormValidationWorker(form);
         const formData = new FormData(form);
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
-                postFormData(setURLWorker + "/save-worker", formData)
-                    .done(onSaveWorkerSuccess)
+                postFormData(setURLWorker + "/edit-worker/" + workerID, formData)
+                    .done(onSaveEditWorkerSuccess)
                     .fail(handleAjaxSaveError);
             }
         });
     })
-
-    
 });
 
-function onSaveWorkerSuccess(response) {
+function onSaveEditWorkerSuccess(response) {
     // console.log(response)
-    handleAjaxSaveResponse(response);
-    closeAndResetModal("#addWorkerModal", "#formAddWorker");
+    handleAjaxEditResponse(response);
+    closeAndResetModal("#editWorkerModal", "#formEditWorker");
 }

@@ -13,13 +13,13 @@
 
 
 
-    <div class="modal fade" id="addManagerModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addManagerModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editManagerModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editManagerModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>

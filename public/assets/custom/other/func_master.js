@@ -95,13 +95,17 @@ function handleAjaxSaveError(xhr, textStatus, errorThrown) {
     });
 }
 
-function closeAndResetModal(modalSelector, formSelector) {
+function closeAndResetModal(modalSelector, formSelector, delay = 3000) {
     setTimeout(function () {
-        console.log(modalSelector, formSelector)
         $(modalSelector).modal('hide');
-        $(formSelector).find('input, select').val('').trigger('change');
-    }, 3000);
+
+        $(modalSelector).on('hidden.bs.modal', function () {
+            $(formSelector).find('input, select').val('').trigger('change');
+            $(modalSelector).off('hidden.bs.modal');
+        });
+    }, delay);
 }
+
 
 function applyBlockUI(selector, options) {
     $(selector).block(options);
@@ -165,7 +169,7 @@ function showModalWithAjax(modalId, url, select2Selectors) {
                         autosize(textarea); // เรียกใช้ autosize
                     });
                 } else {
-                    console.log("No textareas found");
+                    // console.log("No textareas found");
                 }
             });
         },

@@ -78,4 +78,11 @@ class WorkerController extends Controller
         }
         return abort(404);
     }
+
+    public function saveEditWorker(Request $request, $workerID)
+    {
+        $saveData = $this->workerModel->saveEditWorker($request->input(), $workerID);
+        // dd($saveData);
+        return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
+    }
 }

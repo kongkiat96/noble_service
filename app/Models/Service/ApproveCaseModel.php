@@ -123,7 +123,6 @@ class ApproveCaseModel extends Model
                     ->orderBy('cs.created_at', 'desc')->get();
             }
             $dataCount = $sql->count();
-
             $newArr = [];
             foreach ($sql as $key => $value) {
                 $newArr[] = [

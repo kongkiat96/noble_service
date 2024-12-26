@@ -11,7 +11,7 @@
     </nav>
     <hr>
 
-    <div class="modal fade" id="addFormDepartmentModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addFormDepartmentModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>

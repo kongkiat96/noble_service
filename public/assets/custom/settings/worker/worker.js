@@ -103,6 +103,49 @@ $(function () {
     });
 });
 
+$(document).on('change', '#employee_id', function () {
+    let employee_id = $(this).val();
+    let modalId = $(this).data('modal-id');
+    let prefix = modalId === 'add' ? '' : '_edit'; // ใช้ prefix แยกระหว่างฟอร์ม add และ edit
+
+    const fields = [
+        'company_name_th', 
+        'class_name', 
+        'position_name', 
+        'department_name', 
+        'group_name', 
+        'branch_name', 
+        'branch_code'
+    ];
+
+    if (employee_id) {
+        $.ajax({
+            url: `/getMaster/get-about-employee/${employee_id}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                fields.forEach(field => {
+                    $(`#${field}${prefix}`).val(data[field] || '');
+                });
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'เกิดข้อผิดพลาดในการดึงข้อมูล',
+                    showConfirmButton: false
+                });
+            }
+        });
+    } else {
+        // Clear fields if no employee_id selected
+        fields.forEach(field => {
+            $(`#${field}${prefix}`).val('');
+        });
+    }
+});
+
+
+
 function reTable() {
     $('.dt-worker').DataTable().ajax.reload();
 }
