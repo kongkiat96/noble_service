@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <hr>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-body">
@@ -100,7 +100,7 @@
             </div>
         </div>
     </div>
-    <hr>
+    <hr> --}}
     <div class="container-p-y">
         <div class="row">
             <div class="col-md-6 order-md-0">
