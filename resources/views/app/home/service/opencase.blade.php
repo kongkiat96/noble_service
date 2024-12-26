@@ -2,7 +2,7 @@
     <form id="formOpenCaseService">
         <div class="row">
             <div class="col-md-6 mb-4">
-                <label class="form-label-md mb-2" for="use_tag">ฝ่ายที่ต้องการแจ้งปัญหา</label>
+                <label class="form-label-md mb-2" for="use_tag">ฝ่ายที่ต้องการแจ้งปัญหา <span class="text-danger">*</span></label>
                 <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                     <option value="">Select</option>
                     <option value="IT">ฝ่ายไอที</option>
@@ -12,19 +12,19 @@
             </div>
 
             <div class="col-md-6 mb-4">
-                <label class="form-label-md mb-2" for="category_main">รายการกลุ่มอุปกรณ์</label>
+                <label class="form-label-md mb-2" for="category_main">รายการกลุ่มอุปกรณ์ <span class="text-danger">*</span></label>
                 <select id="category_main" name="category_main" class="form-select select2" data-allow-clear="true">
                     <option value="">Select</option>
                 </select>
             </div>
             <div class="col-md-6 mb-4">
-                <label class="form-label-md mb-2" for="category_type">รายการประเภทหมวดหมู่</label>
+                <label class="form-label-md mb-2" for="category_type">รายการประเภทหมวดหมู่ <span class="text-danger">*</span></label>
                 <select id="category_type" name="category_type" class="form-select select2" data-allow-clear="true">
                     <option value="">Select</option>
                 </select>
             </div>
             <div class="col-md-6 mb-4">
-                <label class="form-label-md mb-2" for="category_detail">อาการที่ต้องการแจ้งปัญหา</label>
+                <label class="form-label-md mb-2" for="category_detail">อาการที่ต้องการแจ้งปัญหา <span class="text-danger">*</span></label>
                 <select id="category_detail" name="category_detail" class="form-select select2" data-allow-clear="true">
                     <option value="">Select</option>
                 </select>
@@ -51,7 +51,7 @@
                     value="{{ @$dataManager->full_name_manager }}" readonly>
             </div>
             <div class="col-md-12 mb-2">
-                <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
+                <label class="form-label-md mb-2" for="case_detail">รายละเอียด <span class="text-danger">*</span></label>
                 <textarea id="case_detail" name="case_detail" rows="3" class="form-control"></textarea>
             </div>
             <div class="divider">

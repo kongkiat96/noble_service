@@ -134,8 +134,7 @@
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span
-                                    class="text-danger">*</span></label>
+                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span class="text-danger">*</span></label>
                             <textarea id="case_doing_detail" name="case_doing_detail" rows="3" class="form-control"></textarea>
                         </div>
                         <div class="divider">
