@@ -192,40 +192,9 @@ function reTable() {
     $('.dt-case-working').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
-    // ฟังก์ชันทั่วไปสำหรับดึงข้อมูลจำนวนอนุมัติ
-    function fetchCountApprove(url, badgeId) {
-        $.ajax({
-            url: url, // URL ที่ใช้เรียกข้อมูล
-            type: "GET",
-            success: function (response) {
-                // อัปเดตจำนวนใน badge ที่ระบุ
-                $(`#${badgeId}`).text(response.count);
-            },
-            error: function (xhr, status, error) {
-                console.error(`Error fetching count from ${url}:`, error);
-            }
-        });
-    }
-
-    // เรียกข้อมูลสำหรับ MT
-    function fetchCountMT() {
-        fetchCountApprove("/case-service/realtime-case-new-count-mt", "caseNewCountMT");
-    }
-
-    // เรียกข้อมูลสำหรับ FU
-    function fetchCountDoing() {
-        fetchCountApprove("/case-service/realtime-case-doing-count-mt", "caseDoingCountMT");
-    }
-
-    // เรียกฟังก์ชันทันทีที่หน้าโหลด
-    fetchCountMT();
-    fetchCountDoing();
-
-    // ตั้งเวลาเรียกฟังก์ชันทุก 1 นาที (60000 มิลลิวินาที)
-    setInterval(fetchCountMT, 60000);
-    setInterval(fetchCountDoing, 60000);
-
-    // setInterval(reTable, 60000);
+    scheduleFetch("/case-service/realtime-case-new-count-mt", "caseNewCountMT", 60000); // สำหรับ MT
+    scheduleFetch("/case-service/realtime-case-doing-count-mt", "caseDoingCountMT", 60000); // สำหรับ FU
+    setInterval(reTable, 60000);
 });
 
 function getDetailCase(ticket) {

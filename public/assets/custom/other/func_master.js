@@ -430,6 +430,20 @@ function renderGroupActionButtonsPermission(data, type, row, useFunc, permission
     return returnButton;
 }
 
+function renderGroupActionButtonsCaseCheck(data, type, row, useFunc) {
+    // console.log(permission)
+    const functionRender = `func${useFunc}`;
+
+    let returnButton = '';
+    returnButton = `
+        <button type="button" class="btn btn-icon btn-label-success btn-success" onclick="${functionRender}(${row.ID})">
+            <span class="tf-icons bx bxs-calendar-check"></span>
+        </button>
+    `;
+
+    return returnButton;
+}
+
 function renderGroupActionButtonsSearchMonth(data, type, row, useFunc, tag_search, color, countTotal) {
     // console.log(row.SearchMonth)
     const ViewerFunction = `funcView${useFunc}`;
@@ -932,15 +946,28 @@ function badgeStatusTagWork(data, type, full, row) {
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
     };
 
-    // ตรวจสอบว่าข้อมูลเป็นตัวเลข
-    // if (!isNaN(data)) {
-    //     return `<span class="badge bg-label-warning">${data}</span>`;
-    // }
-
-    if(!statusTagWork[data]) {
+    if (!statusTagWork[data]) {
         return `<span class="badge bg-label-primary">${data}</span>`;
     }
 
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;
+}
+
+function fetchCountAndUpdateBadge(url, badgeId) {
+    $.ajax({
+        url: url, // URL ที่ใช้เรียกข้อมูล
+        type: "GET",
+        success: function (response) {
+            $(`#${badgeId}`).text(response.count);
+        },
+        error: function (xhr, status, error) {
+            console.error(`Error fetching count from ${url}:`, error);
+        }
+    });
+}
+
+function scheduleFetch(url, badgeId, interval) {
+    fetchCountAndUpdateBadge(url, badgeId);
+    setInterval(() => fetchCountAndUpdateBadge(url, badgeId), interval);
 }

@@ -528,10 +528,11 @@ class getDataMasterModel extends Model
     {
         $query = DB::connection('mysql')->table('tbm_status_work')->where('deleted', 0)->where('status', 1)
         ->whereIn('status_use', ['all', $useTag])->orderBy('id')->get();
+        // dd($query);
         return $query;
     }
 
-    public function getStatusWork($statusID)
+    public function getStatusWorkForByID($statusID)
     {
         $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->first();
         return $query->status_name;

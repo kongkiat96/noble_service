@@ -9,6 +9,11 @@
         </ol>
     </nav>
     <hr>
+    <div class="modal fade" id="checkWorkerModal" data-bs-backdrop="static"  >
+        <div class="modal-dialog modal-xl" role="document">
+
+        </div>
+    </div>
     <div class="container-p-y">
         <div class="row">
             <!-- User Sidebar -->
@@ -117,7 +122,7 @@
                                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                         data-bs-target="#service-user-check" aria-controls="#service-user-check"
                                         aria-selected="true" id="reTabC">
-                                        รายการตรวจสอบงานเสร็จสิ้น
+                                        รายการตรวจสอบงานเสร็จสิ้น <span class="badge bg-success text-white ms-1" id="caseCheckWorkByUserAllCount">0</span>
                                     </button>
                                 </li>
                             </ul>
@@ -141,23 +146,7 @@
                                 <div class="tab-pane fade" id="service-user-check" role="tabpanel">
 
                                     <div class="text-nowrap table-responsive">
-                                        <table class="dt-category-detail table table-hover table-striped">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
-                                                    <th>ข้อมูลรายการประเภทหมวดหมู่</th>
-                                                    <th>ข้อมูลอาการแจ้งซ่อม</th>
-                                                    <th>สถานะการใช้งาน</th>
-                                                    <th>วันที่บันทึกข้อมูล</th>
-                                                    <th>ผู้บันทึกข้อมูล</th>
-                                                    <th>วันที่แก้ไขข้อมูล</th>
-                                                    <th>ผู้แก้ไขข้อมูล</th>
-                                                    <th>กำหนดรายละเอียด</th>
-                                                    <th>จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                        @include('app.home.service.userCheck.tableCaseCheckWork')
                                     </div>
                                 </div>
                             </div>

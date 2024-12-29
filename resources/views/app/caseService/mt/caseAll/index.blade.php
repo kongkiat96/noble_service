@@ -123,15 +123,15 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-working" aria-controls="#case-working" aria-selected="true"
                                                 id="reTabB">
-                                                รายการแจ้งปัญหาอยู่ระหว่างดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
+                                                รายการแจ้งปัญหาที่ดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
                                             </button>
                                         </li>
 
                                         <li class="nav-item">
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-addprice" aria-controls="#case-addprice" aria-selected="true"
-                                                id="reTabB">
-                                                รายการรอบันทึกค่าใช้จ่าย <span class="badge bg-white text-primary ms-1" id="caseApproveCountFU">0</span>
+                                                id="reTabD">
+                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseApproveCountFU">0</span>
                                             </button>
                                         </li>
         
@@ -184,8 +184,8 @@
                                                 </table>
                                             </div>
                                         </div>
+                                        
                                         <div class="tab-pane fade" id="case-addprice" role="tabpanel">
-        
                                             <div class="text-nowrap table-responsive">
                                                 <table class=" table table-hover table-striped">
                                                     <thead class="table-light">

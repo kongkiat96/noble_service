@@ -39,8 +39,9 @@ class HomeController extends Controller
         $getCompany     = $this->masterModel->getDataCompany();
         $getClassList   = $this->masterModel->getClassList();
         $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
-        $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
         // dd($getDataEmployee);
+        $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
+        // dd($getDepartment);
         $getCalWorking = CalculateDateHelper::convertDateAndCalculateServicePeriod($getDataEmployee->date_start_work);
         $getDataSelectEmp = $this->masterModel->getEmployeeListByPosition('all');
         // dd(Auth::user()->map_employee);

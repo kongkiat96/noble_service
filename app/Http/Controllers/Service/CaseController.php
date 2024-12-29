@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Service\CaseModel;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CaseController extends Controller
@@ -48,6 +50,39 @@ class CaseController extends Controller
                 'message' => $e->getMessage()
             ];
         }
+    }
+
+    public function getDataCaseCheckWork(Request $request)
+    {
+        try {
+            // dd($request);
+            $getCaseCheckWork = $this->caseServiceModel->getDataCaseCheckWork($request);
+            return response()->json($getCaseCheckWork);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function showCaseCheckWork($caseID)
+    {
+        if (request()->ajax()) {
+            // dd($caseID);
+            $getTicket = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->select('ticket')->first();
+            // dd($getTicket);
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($getTicket->ticket);
+            // dd($getCaseDetail);
+
+            return view('app.home.service.userCheck.dialog.caseCheckWork', [
+                'getFlagType'        => '',
+            ]);
+        }
+        return abort(404);
     }
 
     public function getDataCaseDetail($ticket)
@@ -115,5 +150,11 @@ class CaseController extends Controller
                 'message' => $e->getMessage()
             ];
         }
+    }
+
+    public function realtimeCaseCheckWorkByUserCount()
+    {
+        $countCaseCheckWork = $this->caseServiceModel->realtimeCaseCheckWorkByUserCount();
+        return response()->json(['count' => $countCaseCheckWork]);
     }
 }

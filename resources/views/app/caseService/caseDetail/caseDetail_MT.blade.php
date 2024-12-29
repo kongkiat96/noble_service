@@ -149,7 +149,9 @@
                                 data-allow-clear="true">
                                 <option value=""></option>
                                 @foreach ($getStatusWork as $key)
-                                    <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
+                                    @if (!in_array($key->ID, [99999]))
+                                        <option value="{{ $key->ID }}" @if($data['case_status'] == $key->ID) selected @endif>{{ $key->status_name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -179,12 +181,15 @@
 
                 <hr class="mt-4">
                 <div class="col-12 text-center">
-                    {{-- <button type="button" class="btn btn-label-danger"><i
-                            class='menu-icon tf-icons bx bx-reset' id="resetFormApproveManager"></i>
-                        ล้างฟอร์ม</button> --}}
+                    @if(in_array($data['case_status'],['6']))
+                    <div class="alert alert-warning text-bold" role="alert">
+                        รายการนี้อยู่ระหว่างตรวจสอบงาน
+                      </div>
+                    @else
                     <button type="submit" name="saveCaseAction" id="saveCaseAction"
                         class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
                         บันทึกข้อมูลดำเนินงาน</button>
+                        @endif
                 </div>
 
 

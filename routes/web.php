@@ -313,11 +313,16 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/case')->group(function () {
             Route::post('/open-case-service', 'Service\CaseController@openCaseService');
             Route::post('/get-data-case-all', 'Service\CaseController@getDataCaseAll');
+            Route::post('/get-data-case-check-work', 'Service\CaseController@getDataCaseCheckWork');
+            Route::get('/show-case-check-work/{caseID}', 'Service\CaseController@showCaseCheckWork');
+
 
             Route::get('/get-detail-case/{ticket}', 'Service\CaseController@getDataCaseDetail');
 
             Route::post('/get-detail-case-history', 'Service\CaseController@getDataCaseDetailHistory');
             Route::get('/get-detail-case-approve/{ticket}', 'Service\CaseController@getDataCaseDetailApprove');
+            Route::get('/realtime-case-checkwork-byuser-count', 'Service\CaseController@realtimeCaseCheckWorkByUserCount');
+
         });
         Route::prefix('/approve-case')->group(function () {
             Route::get('/sub-manager', 'Service\ApproveCaseController@approveCaseSubManager');
