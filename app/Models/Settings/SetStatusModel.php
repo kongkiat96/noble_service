@@ -133,6 +133,29 @@ class SetStatusModel extends Model
         }
     }
 
+    public function saveDataGroupStatus($getData)
+    {
+        try {
+            $getData['created_at'] = Carbon::now();
+            $getData['created_user'] = Auth::user()->emp_code;
+            $saveToDB = $this->getDatabase->table('tbm_group_status')->insertGetId($getData);
+
+            return [
+                'status' => 200,
+                'message' => 'Success',
+                'ID' => $saveToDB
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function showEditStatus($statusID)
     {
         $getData = $this->getDatabase->table('tbm_status_work')->where('ID', $statusID)->get();

@@ -30,6 +30,22 @@ $(document).ready(function () {
             }
         })
     })
+
+    $("#saveGroupStatus").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formAddGroupStatus")[0];
+        const fv = setupFormValidationGroupStatus(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData("/settings-system/work-status/save-group-status", formData)
+                    .done(onSaveGroupStatusSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        })
+    })
 })
 
 function onSaveStatusSuccess(response) {
@@ -88,6 +104,11 @@ function setupFormValidationStatus(formElement){
 function onSaveFlagTypeSuccess(response) {
     handleAjaxSaveResponse(response);
     closeAndResetModal("#addFlagTypeModal", "#formAddFlagType");
+}
+
+function onSaveGroupStatusSuccess(response) {
+    handleAjaxSaveResponse(response);
+    closeAndResetModal("#addGroupStatusModal", "#formAddGroupStatus");
 }
 
 function setupFormValidationFlagType(formElement){

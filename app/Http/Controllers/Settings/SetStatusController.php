@@ -66,6 +66,14 @@ class SetStatusController extends Controller
         return abort(404);
     }
 
+    public function showGroupStatusModal()
+    {
+        if (request()->ajax()) {
+            return view('app.settings.work-status.dialog.save.addGroupStatus');
+        }
+        return abort(404);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -225,4 +233,11 @@ class SetStatusController extends Controller
     {
         //
     }
+
+    public function saveDataGroupStatus(Request $request)
+    {
+        $saveData = $this->setStatusModel->saveDataGroupStatus($request->input());
+        return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
+    }
+        
 }

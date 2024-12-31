@@ -143,7 +143,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="form-label-md mb-2" for="case_status">สถานะการการทำงาน <span
+                            <label class="form-label-md mb-2" for="case_status">สถานะการทำงาน <span
                                     class="text-danger">*</span></label>
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">

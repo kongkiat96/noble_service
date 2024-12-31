@@ -4,7 +4,7 @@ $(function () {
     dt_SearchEmployee.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,

@@ -8,7 +8,7 @@
         <div class="modal-body pt-0">
             <div class="row g-2">
                 <div class="col-md-6">
-                    <label class="form-label-md mb-2" for="flagName">ชื่อรายการรูปแบบสถานะง</label>
+                    <label class="form-label-md mb-2" for="flagName">ชื่อรายการรูปแบบสถานะงาน</label>
                     <input type="text" id="flagName" class="form-control" name="flagName"
                         autocomplete="off" />
                 </div>

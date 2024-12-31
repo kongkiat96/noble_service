@@ -83,7 +83,7 @@ class CaseServiceController extends Controller
             $workerArray = json_decode($setWorker['worker'], true);
             $workerNames = collect($workerArray)
                 ->pluck('name')
-                ->implode(',');
+                ->implode(', ');
 
             // dd($workerNames);
 

@@ -90,6 +90,25 @@ class ApproveCaseController extends Controller
         }
     }
 
+    public function caseCheckWork(Request $request, $caseID)
+    {
+        try {
+            dd($request);
+            $decryptCaseID = decrypt($caseID);
+            // dd($decryptCaseID);
+            $saveCase = $this->approveCaseModel->saveApproveCasePadding($request, $decryptCaseID);
+            return response()->json(['status' => $saveCase['status'], 'message' => $saveCase['message']]);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function realtimeCaseApproveCount()
     {
         $countCaseApprove = $this->approveCaseModel->countCaseApprove(Auth::user()->map_employee);

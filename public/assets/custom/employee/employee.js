@@ -5,7 +5,7 @@ $(function () {
     dt_employee_current_table.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -113,8 +113,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 })

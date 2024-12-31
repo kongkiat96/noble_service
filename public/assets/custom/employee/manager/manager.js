@@ -9,7 +9,7 @@ $(function () {
     dt_Manager.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -113,7 +113,7 @@ $(function () {
     dt_SubManager.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -211,7 +211,7 @@ $(function () {
     dt_SearchManager.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,

@@ -46,8 +46,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 
@@ -93,8 +93,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 
@@ -139,8 +139,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 
@@ -183,8 +183,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 
@@ -227,8 +227,8 @@ $(function () {
             },
             order: [[1, "desc"]],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 20,
-            lengthMenu: [20, 25, 50, 75, 100]
+            displayLength: 50,
+            lengthMenu: [50, 75, 100]
         });
     }
 });

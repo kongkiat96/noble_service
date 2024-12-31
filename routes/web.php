@@ -141,6 +141,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/status-modal', 'Settings\SetStatusController@showStatusModal');
             Route::get('/flag-type-modal', 'Settings\SetStatusController@showFlagTypeModal');
+            Route::get('/group-status-modal', 'Settings\SetStatusController@showGroupStatusModal');
 
             Route::get('/table-status', 'Settings\SetStatusController@showDataStatus');
             Route::get('/table-flag-type', 'Settings\SetStatusController@showDataFlagType');
@@ -154,6 +155,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/show-edit-flag-type/{flagTypeID}', 'Settings\SetStatusController@showEditFlagType');
             Route::post('/edit-flag-type/{flagTypeID}', 'Settings\SetStatusController@editFlagType');
             Route::post('/delete-flag-type/{flagTypeID}', 'Settings\SetStatusController@deleteFlagType');
+
+            Route::post('/save-group-status', 'Settings\SetStatusController@saveDataGroupStatus');
+            Route::get('/show-edit-group-status/{groupStatusID}', 'Settings\SetStatusController@showEditGroupStatus');
+            Route::post('/edit-group-status/{groupStatusID}', 'Settings\SetStatusController@editGroupStatus');
+            Route::post('/delete-group-status/{groupStatusID}', 'Settings\SetStatusController@deleteGroupStatus');
         });
 
         Route::prefix('/menu')->group(function () {
@@ -337,6 +343,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/approve-case-manager/{caseID}', 'Service\ApproveCaseController@approveCaseManager');
             Route::post('/approve-case-padding/{caseID}', 'Service\ApproveCaseController@approveCasePadding');
+            Route::post('/case-check-work/{caseID}', 'Service\ApproveCaseController@caseCheckWork');
         });
     });
 

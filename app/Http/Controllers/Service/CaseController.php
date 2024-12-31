@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\getDataMasterModel;
 use App\Models\Service\CaseModel;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Log;
 class CaseController extends Controller
 {
     private $caseServiceModel;
+    private $getMaster;
 
     public function __construct()
     {
-        $this->caseServiceModel = new CaseModel();   
+        $this->caseServiceModel = new CaseModel();
+        $this->getMaster = new getDataMasterModel();
     }
     public function openCaseService(Request $request)
     {
@@ -77,9 +80,32 @@ class CaseController extends Controller
             // dd($getTicket);
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($getTicket->ticket);
             // dd($getCaseDetail);
+            $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+            $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+            $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+            $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
+            $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+            $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
+
+            $getDataWorker = $this->getMaster->getDataWorker('mt');
+            // dd($getDataWorker);
+            $getStatusWork = $this->getMaster->getDataStatusWork('mt');
+            // dd($getStatusWork);
+            $setWorker = $getCaseDetail['message']['datadetail'];
+            $workerArray = json_decode($setWorker['worker'], true);
+            $workerNames = collect($workerArray)
+                ->pluck('name')
+                ->implode(', ');
 
             return view('app.home.service.userCheck.dialog.caseCheckWork', [
-                'getFlagType'        => '',
+                'data' => $getCaseDetail['message']['datadetail'],
+                'image' => $getCaseDetail['message']['dataimage'],
+                'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
+                'categoryItem' => $getCategoryItem,
+                'categoryList' => $getCategoryList,
+                'getDataWorker' => $getDataWorker,
+                'getStatusWork' => $getStatusWork,
+                'workerNames' => $workerNames,
             ]);
         }
         return abort(404);
@@ -92,8 +118,8 @@ class CaseController extends Controller
             // dd($ticket);
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
-            if($getCaseDetail['status'] == 200){
-                return view('app.home.approvecase.caseSubManager.caseDetail',[
+            if ($getCaseDetail['status'] == 200) {
+                return view('app.home.approvecase.caseSubManager.caseDetail', [
                     'data' => $getCaseDetail['message']['datadetail'],
                     'image' => $getCaseDetail['message']['dataimage']
                 ]);
@@ -117,8 +143,8 @@ class CaseController extends Controller
             // dd($ticket);
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
-            if($getCaseDetail['status'] == 200){
-                return view('app.caseService.caseDetail.caseDetail',[
+            if ($getCaseDetail['status'] == 200) {
+                return view('app.caseService.caseDetail.caseDetail', [
                     'data' => $getCaseDetail['message']['datadetail'],
                     'image' => $getCaseDetail['message']['dataimage']
                 ]);
@@ -139,6 +165,7 @@ class CaseController extends Controller
     public function getDataCaseDetailHistory(Request $request)
     {
         try {
+            // dd($request);
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailHistory($request);
             return response()->json($getCaseDetail);
         } catch (Exception $e) {

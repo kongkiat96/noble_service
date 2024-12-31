@@ -13,7 +13,7 @@ $(function () {
     dt_CategoryMain.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -83,7 +83,7 @@ $(function () {
     dt_CategoryType.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -157,7 +157,7 @@ $(function () {
     dt_CategoryDetail.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -245,7 +245,7 @@ $(function () {
     dt_CategoryItem.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -315,7 +315,7 @@ $(function () {
     dt_CategoryList.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,

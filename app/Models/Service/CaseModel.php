@@ -385,7 +385,7 @@ class CaseModel extends Model
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
-
+            
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             $data = [
                 'datadetail' => [
@@ -408,7 +408,8 @@ class CaseModel extends Model
                     'worker'                => $mainQuery->worker,
                     'sla'                   => $mainQuery->sla,
                     'price'                 => number_format($mainQuery->price, 2),
-                    'case_status'           => $mainQuery->case_status
+                    'case_status'           => $mainQuery->case_status,
+                    'use_tag'               => $mainQuery->use_tag == 'IT' ? 'ไอที' : 'ช่างซ่อมบำรุง / อาคาร',
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
                 'dataimageDoing' => $imageQueryDoing->toArray()

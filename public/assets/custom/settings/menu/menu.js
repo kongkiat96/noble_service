@@ -6,7 +6,7 @@ $(function () {
     dt_Menu_table.DataTable({
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 50,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -73,8 +73,8 @@ $(function () {
     dt_Menu_sub_table.DataTable({
         processing: true,
         paging: true,
-        pageLength: 20,
-        lengthMenu: [20, 25, 50, 75, 100],
+        pageLength: 50,
+        lengthMenu: [50, 75, 100],
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -151,8 +151,8 @@ $(function () {
     dt_user_access_menu_table.DataTable({
         processing: true,
         paging: true,
-        pageLength: 20,
-        lengthMenu: [20, 25, 50, 75, 100],
+        pageLength: 50,
+        lengthMenu: [50, 75, 100],
         deferRender: true,
         ordering: true,
         lengthChange: true,
