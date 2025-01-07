@@ -15,6 +15,23 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#saveEditGroupStatus").on("click", function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formEditGroupStatus")[0];
+        const groupStatusID = $('#groupStatusID').val();
+        const fv = setupFormValidationGroupStatus(form);
+        const formData = new FormData(form);
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData("/settings-system/work-status/edit-group-status/" + groupStatusID, formData)
+                    .done(onSaveEditGroupStatusSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    });
 });
 
 function setupFormValidationEditStatus(formElement) {
@@ -68,6 +85,11 @@ function setupFormValidationEditStatus(formElement) {
 function onSaveEditStatusSuccess(response) {
     handleAjaxEditResponse(response);
     closeAndResetModal("#editStatusModal", "#formEditStatus");
+}
+
+function onSaveEditGroupStatusSuccess(response) {
+    handleAjaxEditResponse(response);
+    closeAndResetModal("#editGroupStatusModal", "#formEditGroupStatus");
 }
 
 $(document).ready(function () {

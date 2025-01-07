@@ -49,10 +49,10 @@ class SetStatusController extends Controller
     public function showStatusModal()
     {
         if (request()->ajax()) {
-            $getFlagType     = $this->getMaster->getDataFlagType();
-
+            $getDataGroupStatus = $this->getMaster->getDataGroupStatus();
+            // dd($getDataGroupStatus);
             return view('app.settings.work-status.dialog.save.addStatus', [
-                'getFlagType'        => $getFlagType,
+                'dataGroupStatus'        => $getDataGroupStatus,
             ]);
         }
         return abort(404);
@@ -238,6 +238,39 @@ class SetStatusController extends Controller
     {
         $saveData = $this->setStatusModel->saveDataGroupStatus($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
+    }
+
+    public function showDataGroupStatus(Request $request)
+    {
+        $getDataToTable = $this->setStatusModel->gatDataGroupStatus($request);
+        return response()->json($getDataToTable);
+    }
+
+    public function showEditGroupStatus($groupStatusID)
+    {
+        if (request()->ajax()) {
+            // dd($groupStatusID);
+            $getDataGroupStatus = $this->setStatusModel->getDataGroupStatusByID($groupStatusID);
+
+            return view('app.settings.work-status.dialog.edit.editGroupStatus', [
+                'dataGroupStatus' => $getDataGroupStatus,
+                'id'    => encrypt($groupStatusID)
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function editGroupStatus(Request $request, $groupStatusID)
+    {
+        $editData = $this->setStatusModel->editGroupStatus($request->input(), $groupStatusID);
+        return response()->json(['status' => $editData['status'], 'message' => $editData['message']]);
+    }
+
+    public function deleteGroupStatus($groupStatusID)
+    {
+        $deleteData = $this->setStatusModel->deleteGroupStatus($groupStatusID);
+        // dd($deleteData);
+        return response()->json(['status' => $deleteData['status'], 'message' => $deleteData['message']]);
     }
         
 }

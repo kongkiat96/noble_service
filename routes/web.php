@@ -145,6 +145,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/table-status', 'Settings\SetStatusController@showDataStatus');
             Route::get('/table-flag-type', 'Settings\SetStatusController@showDataFlagType');
+            Route::post('/table-group-status', 'Settings\SetStatusController@showDataGroupStatus');
 
             Route::post('/save-status', 'Settings\SetStatusController@saveDataStatus');
             Route::get('/show-edit-status/{statusID}', 'Settings\SetStatusController@showEditStatus');

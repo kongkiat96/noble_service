@@ -104,7 +104,7 @@ $(function () {
                 '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
         },
         ajax: {
-            url: setURLWorker + "/get-data-worker",
+            url: '/settings-system/work-status/table-group-status',
             type: 'POST',
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -120,35 +120,11 @@ $(function () {
                 },
             },
             {
-                data: 'full_name',
+                data: 'group_status_th',
                 class: "text-center",
             },
             {
-                data: 'company_name_th',
-                class: "text-center",
-            },
-            {
-                data: 'class_name',
-                class: "text-center",
-            },
-            {
-                data: 'position_name',
-                class: "text-center",
-            },
-            {
-                data: 'department_name',
-                class: "text-center",
-            },
-            {
-                data: 'group_name',
-                class: "text-center",
-            },
-            {
-                data: 'branch_name',
-                class: "text-center",
-            },
-            {
-                data: 'branch_code',
+                data: 'group_status_en',
                 class: "text-center",
             },
             {
@@ -157,13 +133,6 @@ $(function () {
                 searchable: false,
                 class: "text-center",
                 render: renderStatusBadge
-            },
-            {
-                data: "use_tag",
-                orderable: true,
-                searchable: false,
-                class: "text-center",
-                render: renderStatusWorkBadge
             },
             { data: 'created_at', class: "text-center" },
             { data: 'created_user', class: "text-center" },
@@ -176,7 +145,7 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     const Permission = (row.Permission);
-                    return renderGroupActionButtonsPermission(data, type, row, 'Worker', Permission);
+                    return renderGroupActionButtonsPermission(data, type, row, 'GroupStatus', Permission);
                 }
             }
         ],
@@ -196,7 +165,7 @@ function reTable() {
 
 $(document).ready(function () {
     $('#addStatus').click(function () {
-        showModalWithAjax('#addStatusModal', '/settings-system/work-status/status-modal', ['#statusUse', '#flagType', '#statusOfStatus']);
+        showModalWithAjax('#addStatusModal', '/settings-system/work-status/status-modal', ['#status_use', '#group_status', '#status']);
     });
 
     $('#addFlagType').click(function () {
@@ -222,6 +191,14 @@ function funcEditFlagType(flagTypeID) {
 
 function funcDeleteFlagType(flagTypeID) {
     handleAjaxDeleteResponse(flagTypeID, "/settings-system/work-status/delete-flag-type/" + flagTypeID);
+}
+
+function funcEditGroupStatus(groupStatisID) {
+    showModalWithAjax('#editGroupStatusModal', '/settings-system/work-status/show-edit-group-status/' + groupStatisID, ['#status_tag']);
+}
+
+function funcDeleteGroupStatus(groupStatisID) {
+    handleAjaxDeleteResponse(groupStatisID, "/settings-system/work-status/delete-group-status/" + groupStatisID);
 }
 
 function setupFormValidationGroupStatus(formElement) {

@@ -136,15 +136,30 @@ class SetStatusModel extends Model
     public function saveDataGroupStatus($getData)
     {
         try {
-            $getData['created_at'] = Carbon::now();
-            $getData['created_user'] = Auth::user()->emp_code;
-            $saveToDB = $this->getDatabase->table('tbm_group_status')->insertGetId($getData);
+            $searchData = $this->getDatabase->table('tbm_group_status')
+                ->where(function ($query) use ($getData) {
+                    $query->where('group_status_th', $getData['group_status_th'])
+                        ->orWhere('group_status_en', $getData['group_status_en']);
+                })
+                ->where('deleted', 0)->first();
+            // dd($searchData);
 
-            return [
-                'status' => 200,
-                'message' => 'Success',
-                'ID' => $saveToDB
-            ];
+            if (empty($searchData)) {
+                $getData['created_at'] = Carbon::now();
+                $getData['created_user'] = Auth::user()->emp_code;
+                $saveToDB = $this->getDatabase->table('tbm_group_status')->insertGetId($getData);
+
+                return [
+                    'status' => 200,
+                    'message' => 'Success',
+                    'ID' => $saveToDB
+                ];
+            } else {
+                return [
+                    'status' => '23000',
+                    'message' => 'Duplicate Data'
+                ];
+            }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
             Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
@@ -289,6 +304,133 @@ class SetStatusModel extends Model
             ];
         } finally {
             return $returnStatus;
+        }
+    }
+
+    public function gatDataGroupStatus($param)
+    {
+        try {
+            $query = $this->getDatabase->table('tbm_group_status')->where('deleted', 0);
+            if ($param['start'] == 0) {
+                $query = $query->limit($param['length'])->orderBy('created_at', 'desc')->orderBy('status_tag', 'desc')->get();
+            } else {
+                $query = $query->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('created_at', 'desc')->orderBy('status_tag', 'desc')->get();
+            }
+
+            $dataCount = $query->count();
+
+            // dd($query);
+            $newArr = [];
+            foreach ($query as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->id,
+                    'group_status_th' => $value->group_status_th,
+                    'group_status_en' => $value->group_status_en,
+                    'status_tag' => $value->status_tag,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
+                    'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
+                    'Permission' => Auth::user()->user_system
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataGroupStatusByID($groupStatusID)
+    {
+        try {
+            // dd($groupStatusID);
+            $getData = $this->getDatabase->table('tbm_group_status')->where('id', $groupStatusID)->first();
+            // dd($getData);
+            return $getData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function editGroupStatus($getData, $groupStatusID)
+    {
+        try {
+            $groupStatusID = decrypt($groupStatusID);
+            // dd($groupStatusID);
+            $searchDuplicate = $this->getDatabase->table('tbm_group_status')->where(function ($query) use ($getData, $groupStatusID) {
+                $query->where('group_status_th', $getData['group_status_th'])
+                    ->orWhere('group_status_en', $getData['group_status_en']);
+            })->where('id', '!=', $groupStatusID)->first();
+
+            if ($searchDuplicate) {
+                return [
+                    'status' => '23000',
+                    'message' => 'Duplicate Data'
+                ];
+            } else {
+                $getData['updated_at'] = Carbon::now();
+                $getData['updated_user'] = Auth::user()->emp_code;
+                unset($getData['groupStatusID']);
+                $this->getDatabase->table('tbm_group_status')->where('id', $groupStatusID)->update($getData);
+
+                return [
+                    'status' => 200,
+                    'message' => 'Edit Success'
+                ];
+            }
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function deleteGroupStatus($groupStatusID)
+    {
+        try {
+            // dd($groupStatusID);
+            $this->getDatabase->table('tbm_group_status')->where('id', $groupStatusID)->update([
+                'deleted'      => 1,
+                'updated_user'       => Auth::user()->emp_code,
+                'updated_at'         => Carbon::now()
+            ]);
+            return [
+                'status' => 200,
+                'message' => 'Delete Success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
         }
     }
 }

@@ -86,6 +86,17 @@ class getDataMasterModel extends Model
         return $getFlagType;
     }
 
+    public function getDataGroupStatus()
+    {
+        $getDataGroupStatus = DB::connection('mysql')->table('tbm_group_status')
+        ->select('id',DB::raw('CONCAT(group_status_th," (",group_status_en,")") as group_status_name'))
+        ->where('status_tag', 1)
+        ->where('deleted', 0)
+        ->get();
+
+        return $getDataGroupStatus;
+    }
+
     public function getDataCompany()
     {
         Log::info('getDataCompany: Retrieving companies from the database.');
@@ -535,6 +546,6 @@ class getDataMasterModel extends Model
     public function getStatusWorkForByID($statusID)
     {
         $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->first();
-        return $query->status_name;
+        return $query->status_name ?? '-';
     }
 }

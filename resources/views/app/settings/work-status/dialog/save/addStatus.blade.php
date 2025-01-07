@@ -7,15 +7,15 @@
             <form id="formAddStatus" class="form-block">
                 <div class="modal-body pt-0">
                     <div class="row g-2">
-                        <div class="col-md-6">
-                            <label class="form-label-md mb-2" for="statusName">รายการสถานะ</label>
-                            <input type="text" id="statusName" class="form-control" name="statusName"
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="status_name">รายการสถานะ</label>
+                            <input type="text" id="status_name" class="form-control" name="status_name"
                                 autocomplete="off" />
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label-md mb-2" for="statusUse">รูปแบบการใช้งาน</label>
-                            <select id="statusUse" name="statusUse" class="form-select select2" data-allow-clear="true">
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="status_use">รูปแบบการใช้งาน</label>
+                            <select id="status_use" name="status_use" class="form-select select2" data-allow-clear="true">
                                 <option value="">Select</option>
                                 <option value="it">ใช้งานฝ่าย IT</option>
                                 <option value="mt">ใช้งานฝ่ายอาคาร</option>
@@ -23,21 +23,20 @@
                                 <option value="all">ใช้งานทุกระบบ</option>
                             </select>
                         </div>
-                        {{-- {{ dd($flagType) }} --}}
-                        <div class="col-md-6">
-                            <label class="form-label-md mb-2" for="flagType">รูปแบบสถานะทำงาน</label>
-                            <select id="flagType" name="flagType" class="form-select select2" data-allow-clear="true">
+                        {{-- {{ dd($group_status) }} --}}
+                        <div class="col-md-12 mt-2">
+                            <label class="form-label-md mb-2" for="group_status">รูปแบบสถานะทำงาน</label>
+                            <select id="group_status" name="group_status" class="form-select select2" data-allow-clear="true">
                                 <option value="">Select</option>
-                                @foreach ($getFlagType as $key => $value)
-                                    <option value="{{ $value->ID }}">
-                                        {{ $value->flag_name }} / {{ $value->type_work }}</option>
+                                @foreach ($dataGroupStatus as $key => $value)
+                                    <option value="{{ $value->id }}">{{ $value->group_status_name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label-md mb-2" for="statusOfStatus">สถานะการใช้งาน</label>
-                            <select id="statusOfStatus" name="statusOfStatus" class="form-select select2"
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="status">สถานะการใช้งาน</label>
+                            <select id="status" name="status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value="">Select</option>
                                 <option value="1">กำลังใช้งาน</option>

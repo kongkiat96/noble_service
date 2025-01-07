@@ -31,6 +31,12 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editGroupStatusModal" data-bs-backdrop="static"  >
+        <div class="modal-dialog modal-lg" role="document">
+
+        </div>
+    </div>
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -46,20 +52,20 @@
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#set-status" aria-controls="set-status" aria-selected="true">
+                            data-bs-target="#set-status" aria-controls="set-status" aria-selected="true" id="reTabA">
                             รายการชื่อสถานะ
                         </button>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#flag-type" aria-controls="flag-type" aria-selected="false">
+                            data-bs-target="#flag-type" aria-controls="flag-type" aria-selected="false" id="reTabB">
                             รายการรูปแบบสถานะ
                         </button>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#group-status" aria-controls="group-status" aria-selected="false">
+                            data-bs-target="#group-status" aria-controls="group-status" aria-selected="false" id="reTabC">
                             รายการกลุ่มสถานะ
                         </button>
                     </li>
@@ -86,7 +92,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="flag-type" role="tabpanel">
+                    {{-- <div class="tab-pane fade" id="flag-type" role="tabpanel">
                         <div class="inline-spacing text-end">
 
                             <button type="button" class="btn btn-info" id="addFlagType">
@@ -94,7 +100,7 @@
                             </button>
                         </div>
                         <div class="text-nowrap">
-                            <table class="dt-settingFlagType table table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th class="text-center">ลำดับ</th>
@@ -105,7 +111,7 @@
                                 </thead>
                             </table>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="tab-pane fade" id="group-status" role="tabpanel">
                         <div class="inline-spacing text-end">
@@ -118,10 +124,15 @@
                             <table class="dt-settingGroupStatus table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">ลำดับ</th>
-                                        <th class="text-center">รายการสถานะ</th>
-                                        <th class="text-center">รูปแบบของสถานะ</th>
-                                        <th class="text-center">จัดการ</th>
+                                        <th>ลำดับ</th>
+                                        <th>กลุ่มสถานะ (ภาษาไทย)</th>
+                                        <th>กลุ่มสถานะ (ภาษาอังกฤษ)</th>
+                                        <th>สถานะการใช้งาน</th>
+                                        <th>วันที่บันทึกข้อมูล</th>
+                                        <th>ผู้บันทึกข้อมูล</th>
+                                        <th>วันที่แก้ไขข้อมูล</th>
+                                        <th>ผู้แก้ไขข้อมูล</th>
+                                        <th>จัดการ</th>
                                     </tr>
                                 </thead>
                             </table>
