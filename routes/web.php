@@ -143,7 +143,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/flag-type-modal', 'Settings\SetStatusController@showFlagTypeModal');
             Route::get('/group-status-modal', 'Settings\SetStatusController@showGroupStatusModal');
 
-            Route::get('/table-status', 'Settings\SetStatusController@showDataStatus');
+            Route::post('/table-status', 'Settings\SetStatusController@showDataStatus');
             Route::get('/table-flag-type', 'Settings\SetStatusController@showDataFlagType');
             Route::post('/table-group-status', 'Settings\SetStatusController@showDataGroupStatus');
 
@@ -322,6 +322,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/get-data-case-all', 'Service\CaseController@getDataCaseAll');
             Route::post('/get-data-case-check-work', 'Service\CaseController@getDataCaseCheckWork');
             Route::get('/show-case-check-work/{caseID}', 'Service\CaseController@showCaseCheckWork');
+            Route::get('/show-case-history/{caseID}', 'Service\CaseController@showCaseCheckHistory');
 
 
             Route::get('/get-detail-case/{ticket}', 'Service\CaseController@getDataCaseDetail');

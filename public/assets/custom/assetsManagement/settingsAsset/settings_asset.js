@@ -42,7 +42,7 @@ $(function () {
                 class: "text-center",
                 render: function(data, type, row) {
                     const color = row.asset_tag_color || '#FFFFFF'; // กำหนดสีเริ่มต้นหากไม่มีค่า
-                    return renderAssetsTagBadge(color, data);
+                    return renderColorTagBadge(color, data);
                 }
             },
             {
@@ -113,7 +113,7 @@ $(function () {
                 render: function(data, type, row) {
                     // console.log(row.asset_tag_color)
                     const color = row.asset_tag_color || '#FFFFFF'; // กำหนดสีเริ่มต้นหากไม่มีค่า
-                    return renderAssetsTagBadge(color, data);
+                    return renderColorTagBadge(color, data);
                 }
             },
             {

@@ -97,12 +97,12 @@ class SetStatusController extends Controller
 
     public function saveDataStatus(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingWorkStatus($request->input(), 'funcAddStatus');
+        // $validator = $this->funcValidator->validateSettingWorkStatus($request->input(), 'funcAddStatus');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
-
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
+        // dd($request->input());
         $saveData = $this->setStatusModel->saveDataStatus($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
     }
@@ -110,11 +110,12 @@ class SetStatusController extends Controller
     public function showEditStatus($statusID)
     {
         if (request()->ajax()) {
-            $getFlagType     = $this->getMaster->getDataFlagType();
+            $getDataGroupStatus = $this->getMaster->getDataGroupStatus();
             $returnData = $this->setStatusModel->showEditStatus($statusID);
+            // dd($returnData);
             return view('app.settings.work-status.dialog.edit.editStatus', [
-                'getFlagType'        => $getFlagType,
-                'dataStatus'     => $returnData
+                'dataGroupStatus'       => $getDataGroupStatus,
+                'dataStatus'            => $returnData
             ]);
         }
         return abort(404);
@@ -122,10 +123,10 @@ class SetStatusController extends Controller
 
     public function editStatus(Request $request, $statusID)
     {
-        $validator = $this->funcValidator->validateSettingWorkStatus($request->input(), 'funcEditStatus');
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // $validator = $this->funcValidator->validateSettingWorkStatus($request->input(), 'funcEditStatus');
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->setStatusModel->editStatus($request->input(), $statusID);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);

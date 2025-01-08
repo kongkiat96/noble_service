@@ -74,19 +74,22 @@ class CaseServiceController extends Controller
             $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
             $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
             $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
+            $getStatusWork = $this->getMaster->getDataStatusWork('mt','admin');
 
             $getDataWorker = $this->getMaster->getDataWorker('mt');
-            // dd($getDataWorker);
-            $getStatusWork = $this->getMaster->getDataStatusWork('mt');
-            // dd($getStatusWork);
             $setWorker = $getCaseDetail['message']['datadetail'];
             $workerArray = json_decode($setWorker['worker'], true);
             $workerNames = collect($workerArray)
                 ->pluck('name')
                 ->implode(', ');
-
             // dd($workerNames);
 
+            $getDataChecker = $this->getMaster->getChecker('mt');
+            $setChecker = $getCaseDetail['message']['datadetail'];
+            $checkerArray = json_decode($setChecker['checker'], true);
+            $checkerNames = collect($checkerArray)
+                ->pluck('name')
+                ->implode(', ');
 
             if ($getCaseDetail['status'] == 200) {
                 return view('app.caseService.caseDetail.caseDetail_MT', [
@@ -97,7 +100,9 @@ class CaseServiceController extends Controller
                     'categoryList' => $getCategoryList,
                     'getDataWorker' => $getDataWorker,
                     'getStatusWork' => $getStatusWork,
-                    'workerNames' => $workerNames
+                    'workerNames' => $workerNames,
+                    'getDataChecker' => $getDataChecker,
+                    'checkerNames' => $checkerNames
                 ]);
             } else {
                 return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);

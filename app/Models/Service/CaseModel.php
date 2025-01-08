@@ -243,7 +243,7 @@ class CaseModel extends Model
                 }
 
                 $newArr[] = [
-                    'ID'    => encrypt($value->id),
+                    'ID'    => $value->id,
                     'ticket'    => $value->ticket,
                     'category_main_name'    => $value->category_main_name,
                     'category_type_name'    => $value->category_type_name,
@@ -286,6 +286,7 @@ class CaseModel extends Model
                         // ->orWhere('cs.manager_emp_id', Auth::user()->map_employee)
                         ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
                 })
+                // set case status getDataStatusWork
                 ->whereIn('cs.case_status', [6])
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
@@ -406,6 +407,7 @@ class CaseModel extends Model
                     'case_item'             => $mainQuery->case_item,
                     'case_list'             => $mainQuery->case_list,
                     'worker'                => $mainQuery->worker,
+                    'checker'               => $mainQuery->checker,
                     'sla'                   => $mainQuery->sla,
                     'price'                 => number_format($mainQuery->price, 2),
                     'case_status'           => $mainQuery->case_status,
@@ -550,7 +552,7 @@ class CaseModel extends Model
     {
         // dd($request);
         $searchData = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->where('deleted', 0)->first();
-        // $searchCaseStep = 
+        
         // dd($request->hasFile('file'));
         if (!empty($searchData)) {
             $data['case_item']      = $request->case_item;
@@ -560,6 +562,7 @@ class CaseModel extends Model
             $data['worker']         = $request->worker;
             $data['case_status']    = $request->case_status;
             $data['case_detail']    = $request->case_doing_detail;
+            $data['checker']         = $request->checker;
 
             if ($request->hasFile('file')) {
                 $files = $request->file('file');
@@ -614,6 +617,7 @@ class CaseModel extends Model
                     'case_step' => $setParam['case_tag'],
                     'tag_work' => $setParam['case_tag'],
                     'case_status' => $setParam['case_status'],
+                    'checker' => $setParam['checker'],
                 ]);
 
                 DB::connection('mysql')->table('tbt_case_service_history')->insert([
@@ -626,7 +630,8 @@ class CaseModel extends Model
                     'worker' => $setParam['worker'],
                     'price' => $setParam['price'],
                     'created_at' => now(),
-                    'created_user'  => Auth::user()->emp_code
+                    'created_user'  => Auth::user()->emp_code,
+                    'checker' => $setParam['checker'],
                 ]);
 
                 // หากมี case_image ให้บันทึกลงใน tbt_case_pic

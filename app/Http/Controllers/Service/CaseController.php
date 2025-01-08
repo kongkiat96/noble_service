@@ -89,11 +89,18 @@ class CaseController extends Controller
 
             $getDataWorker = $this->getMaster->getDataWorker('mt');
             // dd($getDataWorker);
-            $getStatusWork = $this->getMaster->getDataStatusWork('mt');
+            $getStatusWork = $this->getMaster->getDataStatusWork('mt', 'user');
             // dd($getStatusWork);
             $setWorker = $getCaseDetail['message']['datadetail'];
             $workerArray = json_decode($setWorker['worker'], true);
             $workerNames = collect($workerArray)
+                ->pluck('name')
+                ->implode(', ');
+
+            $getDataChecker = $this->getMaster->getChecker('mt');
+            $setChecker = $getCaseDetail['message']['datadetail'];
+            $checkerArray = json_decode($setChecker['checker'], true);
+            $checkerNames = collect($checkerArray)
                 ->pluck('name')
                 ->implode(', ');
 
@@ -106,6 +113,56 @@ class CaseController extends Controller
                 'getDataWorker' => $getDataWorker,
                 'getStatusWork' => $getStatusWork,
                 'workerNames' => $workerNames,
+                'getDataChecker' => $getDataChecker,
+                'checkerNames' => $checkerNames
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function showCaseCheckHistory($caseID)
+    {
+        if (request()->ajax()) {
+            // dd($caseID);
+            $getTicket = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->select('ticket')->first();
+            // dd($getTicket);
+            $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($getTicket->ticket);
+            // dd($getCaseDetail);
+            $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+            $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+            $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+            $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
+            $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+            $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
+
+            $getDataWorker = $this->getMaster->getDataWorker('mt');
+            // dd($getDataWorker);
+            $getStatusWork = $this->getMaster->getDataStatusWork('mt', 'user');
+            // dd($getStatusWork);
+            $setWorker = $getCaseDetail['message']['datadetail'];
+            $workerArray = json_decode($setWorker['worker'], true);
+            $workerNames = collect($workerArray)
+                ->pluck('name')
+                ->implode(', ');
+
+            $getDataChecker = $this->getMaster->getChecker('mt');
+            $setChecker = $getCaseDetail['message']['datadetail'];
+            $checkerArray = json_decode($setChecker['checker'], true);
+            $checkerNames = collect($checkerArray)
+                ->pluck('name')
+                ->implode(', ');
+
+            return view('app.home.service.userCheck.dialog.caseCheckHistory', [
+                'data' => $getCaseDetail['message']['datadetail'],
+                'image' => $getCaseDetail['message']['dataimage'],
+                'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
+                'categoryItem' => $getCategoryItem,
+                'categoryList' => $getCategoryList,
+                'getDataWorker' => $getDataWorker,
+                'getStatusWork' => $getStatusWork,
+                'workerNames' => $workerNames,
+                'getDataChecker' => $getDataChecker,
+                'checkerNames' => $checkerNames
             ]);
         }
         return abort(404);

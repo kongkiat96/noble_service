@@ -4,71 +4,71 @@ var setURLApprove = setURLService + '/approve-case'
 
 $(function () {
     var dt_History = $('.dt-approve-history')
-        dt_History.DataTable({
-            processing: true,
-            searching: false,
-            paging: false,
-            pageLength: 50,
-            deferRender: true,
-            ordering: true,
-            lengthChange: false,
-            bDestroy: true, // เปลี่ยนเป็น true
-            scrollX: false,
+    dt_History.DataTable({
+        processing: true,
+        searching: false,
+        paging: false,
+        pageLength: 50,
+        deferRender: true,
+        ordering: true,
+        lengthChange: false,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: false,
 
-            language: {
-                processing:
-                    '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: setURLCase + "/get-detail-case-history",
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
             },
-            ajax: {
-                url: setURLCase + "/get-detail-case-history",
-                type: 'POST',
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
-                data: function (d) {
-                    return $.extend({}, d, {
-                        "caseID": $("#caseID").val(),
+            data: function (d) {
+                return $.extend({}, d, {
+                    "caseID": $("#caseID").val(),
 
-                    });
-                }
+                });
+            }
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                },
             },
-            columns: [
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    },
-                },
-                {
-                    data: 'CaseStatus',
-                    class: "text-center",
-                    render: badgeStatusTagWork
-                },
-                {
-                    data: 'CaseDetail',
-                    // class: "text-wrap",
-                },
-                {
-                    data: 'CasePrice',
-                    class: "text-center",
-                },
-                {
-                    data: 'CreatedAt',
-                    class: "text-center",
-                },
-                {
-                    data: 'CreatedUserName',
-                    class: "text-center",
-                },
-            ],
-            columnDefs: [
-                {
-                    targets: 0,
-                },
-            ],
-        });
+            {
+                data: 'CaseStatus',
+                class: "text-center",
+                render: badgeStatusTagWork
+            },
+            {
+                data: 'CaseDetail',
+                // class: "text-wrap",
+            },
+            {
+                data: 'CasePrice',
+                class: "text-center",
+            },
+            {
+                data: 'CreatedAt',
+                class: "text-center",
+            },
+            {
+                data: 'CreatedUserName',
+                class: "text-center",
+            },
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+    });
 })
 $(document).ready(function () {
     $('#approveCaseManager').on('click', function (e) {
@@ -95,7 +95,7 @@ $(document).ready(function () {
         const caseID = $('#caseID').val();
         const fv = setupFormValidationApproveCase(form);
         const formData = new FormData(form);
-
+        console.log(formData)
         fv.validate().then(function (status) {
             if (status === 'Valid') {
                 postFormData(setURLApprove + "/case-check-work/" + caseID, formData)
@@ -107,7 +107,7 @@ $(document).ready(function () {
 
 
 
-    
+
 });
 
 

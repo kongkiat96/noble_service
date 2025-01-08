@@ -93,7 +93,7 @@ class ApproveCaseController extends Controller
     public function caseCheckWork(Request $request, $caseID)
     {
         try {
-            dd($request);
+            dd($request->input());
             $decryptCaseID = decrypt($caseID);
             // dd($decryptCaseID);
             $saveCase = $this->approveCaseModel->saveApproveCasePadding($request, $decryptCaseID);

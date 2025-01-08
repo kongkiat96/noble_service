@@ -81,12 +81,17 @@
                             <table class="dt-settingStatus table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">ลำดับ</th>
-                                        <th class="text-center">รายการสถานะ</th>
-                                        <th class="text-center">สถานะการทำงาน</th>
-                                        <th class="text-center">การใช้งานระบบ</th>
-                                        <th class="text-center">รูปแบบสถานะงาน</th>
-                                        <th class="text-center">จัดการ</th>
+                                        <th>ลำดับ</th>
+                                        <th>รายการสถานะ</th>
+                                        <th>การใช้งานสำหรับฝ่าย</th>
+                                        <th>การแสดงผลสถานะ</th>
+                                        <th>กลุ่มสถานะ</th>
+                                        <th>สถานะการใช้งาน</th>
+                                        <th>วันที่บันทึกข้อมูล</th>
+                                        <th>ผู้บันทึกข้อมูล</th>
+                                        <th>วันที่แก้ไขข้อมูล</th>
+                                        <th>ผู้แก้ไขข้อมูล</th>
+                                        <th>จัดการ</th>
                                     </tr>
                                 </thead>
                             </table>

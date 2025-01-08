@@ -86,25 +86,6 @@
                                     <textarea rows="3" class="form-control" readonly>{{ $data['case_detail'] }}</textarea>
                                 </div>
 
-                                <div class="divider">
-                                    <div class="divider-text font-weight-bold font-size-lg">สถานะตรวจสอบการทำงาน</div>
-                                </div>
-                                <form id="formCaseCheckWork" class="form-block">
-                                    <div class="col-md-12 mb-2">
-                                        <label class="form-label-md mb-2" for="case_status">สถานะตรวจสอบการทำงาน <span
-                                                class="text-danger">*</span></label>
-                                        <select name="case_status" id="case_status" class="form-select select2"
-                                            data-allow-clear="true">
-                                            <option value=""></option>
-                                            @foreach ($getStatusWork as $key)
-                                                @if (!in_array($key->ID, [99999]))
-                                                    <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </form>
-
                             </div>
                         </div>
                         <div class="col-md-6" style="border-left: 2px solid #e0e0e0">
@@ -259,10 +240,6 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-label-danger" data-bs-dismiss="modal"><i
                 class='menu-icon tf-icons bx bx-window-close'></i> ปิด</button>
-
-        <button type="submit" name="saveCaseCheckWork" id="saveCaseCheckWork"
-            class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
-            บันทึกข้อมูล</button>
     </div>
 
     <script src="{{ asset('/assets/custom/service/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>

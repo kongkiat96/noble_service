@@ -8,24 +8,39 @@
                 <div class="modal-body pt-0">
                     <div class="row g-2">
                         <div class="col-md-6 mt-2">
-                            <label class="form-label-md mb-2" for="status_name">รายการสถานะ</label>
+                            <label class="form-label-md mb-2" for="status_name">รายการสถานะ <span class="text-danger">*</span></label>
                             <input type="text" id="status_name" class="form-control" name="status_name"
                                 autocomplete="off" />
                         </div>
 
                         <div class="col-md-6 mt-2">
-                            <label class="form-label-md mb-2" for="status_use">รูปแบบการใช้งาน</label>
+                            <label class="form-label-md mb-2" for="status_color">สีรายการสถานะ <span class="text-danger">*</span></label>
+                            <input type="color" id="status_color" class="form-control" name="status_color"
+                                autocomplete="off" style="height: 40px"/>
+                        </div>
+
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="status_use">การใช้งานสำหรับฝ่าย <span class="text-danger">*</span></label>
                             <select id="status_use" name="status_use" class="form-select select2" data-allow-clear="true">
                                 <option value="">Select</option>
                                 <option value="it">ใช้งานฝ่าย IT</option>
                                 <option value="mt">ใช้งานฝ่ายอาคาร</option>
-                                {{-- <option value="hr">ใช้งานฝ่าย HR</option> --}}
                                 <option value="all">ใช้งานทุกระบบ</option>
                             </select>
                         </div>
+
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="status_show">การแสดงผลสถานะ <span class="text-danger">*</span></label>
+                            <select id="status_show" name="status_show" class="form-select select2" data-allow-clear="true">
+                                <option value="">Select</option>
+                                <option value="admin">แสดงสำหรับเจ้าหน้าที่</option>
+                                <option value="user">แสดงสำหรับผู้แจ้ง</option>
+                                <option value="all">แสดงทั้งหมด</option>
+                            </select>
+                        </div>
                         {{-- {{ dd($group_status) }} --}}
-                        <div class="col-md-12 mt-2">
-                            <label class="form-label-md mb-2" for="group_status">รูปแบบสถานะทำงาน</label>
+                        <div class="col-md-6 mt-2">
+                            <label class="form-label-md mb-2" for="group_status">กลุ่มสถานะ <span class="text-danger">*</span></label>
                             <select id="group_status" name="group_status" class="form-select select2" data-allow-clear="true">
                                 <option value="">Select</option>
                                 @foreach ($dataGroupStatus as $key => $value)
@@ -35,7 +50,7 @@
                         </div>
 
                         <div class="col-md-6 mt-2">
-                            <label class="form-label-md mb-2" for="status">สถานะการใช้งาน</label>
+                            <label class="form-label-md mb-2" for="status">สถานะการใช้งาน <span class="text-danger">*</span></label>
                             <select id="status" name="status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value="">Select</option>

@@ -127,13 +127,21 @@
 
 
                         </div>
-                        <div class="col-md-12 mb-2">
-                            <label for="worker" class="form-label-md mb-2">ผู้ปฏิบัติงาน</label>
+                        <div class="col-md-12 mb-4">
+                            <label for="worker" class="form-label-md mb-2">ช่างผู้ปฏิบัติงาน / รับผิดชอบ</label>
                             <input id="worker" name="worker" class="form-control"
-                                placeholder="&nbsp เลือกผู้ปฏิบัติงาน" value="{{ $workerNames }}" />
+                                placeholder="&nbsp ช่างผู้ปฏิบัติงาน / รับผิดชอบ" value="{{ $workerNames }}" />
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
-                        <div class="col-md-12 mb-2">
+
+                        <div class="col-md-12 mb-4">
+                            <label for="checker" class="form-label-md mb-2">ผู้รับเหมา / ซัพนอก</label>
+                            <input id="checker" name="checker" class="form-control"
+                                placeholder="&nbsp ผู้รับเหมา / ซัพนอก" value="{{ $checkerNames }}" />
+                            {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
+                        </div>
+
+                        <div class="col-md-12 mb-4">
                             <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span class="text-danger">*</span></label>
                             <textarea id="case_doing_detail" name="case_doing_detail" rows="3" class="form-control"></textarea>
                         </div>
@@ -142,16 +150,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-12 mb-4">
                             <label class="form-label-md mb-2" for="case_status">สถานะการทำงาน <span
                                     class="text-danger">*</span></label>
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
                                 @foreach ($getStatusWork as $key)
-                                    @if (!in_array($key->ID, [99999]))
+                                    {{-- @if (!in_array($key->ID, [99999])) --}}
                                         <option value="{{ $key->ID }}" @if($data['case_status'] == $key->ID) selected @endif>{{ $key->status_name }}</option>
-                                    @endif
+                                    {{-- @endif --}}
                                 @endforeach
                             </select>
                         </div>
@@ -181,6 +189,7 @@
 
                 <hr class="mt-4">
                 <div class="col-12 text-center">
+                    {{-- set case status getDataStatusWork --}}
                     @if(in_array($data['case_status'],['6']))
                     <div class="alert alert-warning text-bold" role="alert">
                         รายการนี้อยู่ระหว่างตรวจสอบงาน
@@ -277,80 +286,82 @@
 <script type="text/javascript" src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 <script type="text/javascript">
 
-        mapSelectedCategoryItem('#case_list', '#case_item', true)
+    mapSelectedCategoryItem('#case_list', '#case_item', true)
     AddPicMultiple('#pic-case');
+
     (function() {
-        // Users List suggestion
-        //------------------------------------------------------
-        const TagifyUserListEl = document.querySelector('#worker');
-        // สร้าง array สำหรับ usersList โดยใช้ข้อมูลจาก $getDataWorker
-        const usersList = @json($getDataWorker).map(worker => ({
-            value: worker.ID,
-            name: worker.employee_name,
-            // avatar: worker.img_base ? `data:image/png;base64,${worker.img_base}` : '', // ถ้าภาพเป็น base64
-            emp_code: worker.employee_code
-        }));
+    // ดึงข้อมูลจาก API หรือ View
+    const TagifyWorkerEl = document.querySelector('#worker');
+    const TagifyCheckerEl = document.querySelector('#checker');
 
-        function tagTemplate(tagData) {
-            return `
-    <tag title="${tagData.title || tagData.emp_code}"
-      contenteditable='false'
-      spellcheck='false'
-      tabIndex="-1"
-      class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ''}"
-      ${this.getAttributes(tagData)}
-    >
-      <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-      <div>
-        <span class='tagify__tag-text'>${tagData.name}</span>
-      </div>
-    </tag>
-  `;
-        }
+    const workerList = @json($getDataWorker).map(worker => ({
+        value: worker.ID,
+        name: worker.employee_name,
+        emp_code: worker.employee_code
+    }));
 
-        function suggestionItemTemplate(tagData) {
-            return `
-    <div ${this.getAttributes(tagData)}
-      class='tagify__dropdown__item align-items-center ${tagData.class ? tagData.class : ''}'
-      tabindex="0"
-      role="option"
-    >
+    const checkerList = @json($getDataChecker).map(checker => ({
+        value: checker.id,
+        name: checker.checker_name,
+        emp_code: ' '
+    }));
 
-      <strong>${tagData.name}</strong>
-      <span>${tagData.emp_code}</span>
-    </div>
-  `;
-        }
+    // รวมข้อมูล Worker และ Checker
+    const combinedList = [workerList, checkerList];
 
-        // initialize Tagify on the above input node reference
-        let TagifyUserList = new Tagify(TagifyUserListEl, {
-            tagTextProp: 'name', // very important since a custom template is used with this property as text. allows typing a "value" or a "name" to match input with whitelist
+    function tagTemplate(tagData) {
+        return `
+            <tag title="${tagData.title || tagData.emp_code}" contenteditable='false' spellcheck='false' tabIndex="-1" class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ''}" ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <span class='tagify__tag-text'>${tagData.name}</span>
+                </div>
+            </tag>
+        `;
+    }
+
+    function suggestionItemTemplate(tagData) {
+        return `
+            <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item align-items-center ${tagData.class ? tagData.class : ''}'
+            tabindex="0"
+            role="option"
+            >
+                <strong>${tagData.name}</strong>
+                <span>${tagData.emp_code}</span>
+            </div>
+        `;
+    }
+
+    function initializeTagify(element, list) {
+        if (!element) return;
+
+        let tagifyInstance = new Tagify(element, {
+            tagTextProp: 'name',
             enforceWhitelist: true,
-            skipInvalid: true, // do not remporarily add invalid tags
+            skipInvalid: true,
             dropdown: {
                 closeOnSelect: false,
                 enabled: 0,
                 classname: 'users-list',
-                searchKeys: ['name',
-                    'emp_code'
-                ] // very important to set by which keys to search for suggesttions when typing
+                searchKeys: ['name', 'emp_code']
             },
             templates: {
                 tag: tagTemplate,
                 dropdownItem: suggestionItemTemplate
             },
-            whitelist: usersList
+            whitelist: list
         });
 
-        TagifyUserList.on('dropdown:show dropdown:updated', onDropdownShow);
-        TagifyUserList.on('dropdown:select', onSelectSuggestion);
+        tagifyInstance.on('dropdown:show dropdown:updated', onDropdownShow);
+        tagifyInstance.on('dropdown:select', onSelectSuggestion);
 
         let addAllSuggestionsEl;
 
         function onDropdownShow(e) {
             let dropdownContentEl = e.detail.tagify.DOM.dropdown.content;
 
-            if (TagifyUserList.suggestedListItems.length > 1) {
+            if (tagifyInstance.suggestedListItems.length > 1) {
                 addAllSuggestionsEl = getAddAllSuggestionsEl();
 
                 // insert "addAllSuggestionsEl" as the first element in the suggestions list
@@ -359,21 +370,25 @@
         }
 
         function onSelectSuggestion(e) {
-            if (e.detail.elm == addAllSuggestionsEl) TagifyUserList.dropdown.selectAll.call(TagifyUserList);
+            if (e.detail.elm == addAllSuggestionsEl) tagifyInstance.dropdown.selectAll.call(tagifyInstance);
         }
 
-        // create an "add all" custom suggestion element every time the dropdown changes
         function getAddAllSuggestionsEl() {
-            // suggestions items should be based on "dropdownItem" template
-            return TagifyUserList.parseTemplate('dropdownItem', [{
+            return tagifyInstance.parseTemplate('dropdownItem', [{
                 class: 'addAll',
                 name: 'เลือกทั้งหมด',
-                emp_code: TagifyUserList.settings.whitelist.reduce(function(remainingSuggestions,
+                emp_code: tagifyInstance.settings.whitelist.reduce(function(remainingSuggestions,
                 item) {
-                    return TagifyUserList.isTagDuplicate(item.value) ? remainingSuggestions :
+                    return tagifyInstance.isTagDuplicate(item.value) ? remainingSuggestions :
                         remainingSuggestions + 1;
                 }, 0) + ' รายการ'
             }]);
         }
-    })();
+    }
+
+    // สร้าง Tagify สำหรับ Worker และ Checker
+    initializeTagify(TagifyWorkerEl, workerList);
+    initializeTagify(TagifyCheckerEl, checkerList);
+})();
+
 </script>

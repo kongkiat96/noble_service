@@ -53,53 +53,6 @@ function onSaveStatusSuccess(response) {
     closeAndResetModal("#addStatusModal", "#formAddStatus");
 }
 
-function setupFormValidationStatus(formElement){
-    return FormValidation.formValidation(formElement, {
-        fields: {
-            statusName: {
-                validators: {
-                    notEmpty: {
-                        message: 'ระบุ ชื่อสถานะ'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s./]+$/u,
-                        message: 'ข้อมูลไม่ถูกต้อง'
-                    }
-                }
-            },
-            statusUse: {
-                validators: {
-                    notEmpty: {
-                        message: 'เลือกข้อมูล รูปแบบการใช้งาน'
-                    }
-                }
-            },
-            flagType: {
-                validators: {
-                    notEmpty: {
-                        message: 'เลือกข้อมูล ประเภทสถานะ'
-                    }
-                }
-            },
-            statusOfStatus: {
-                validators: {
-                    notEmpty: {
-                        message: 'เลือกข้อมูล สถานะการใช้งาน'
-                    }
-                }
-            },
-        },
-        plugins: {
-            trigger: new FormValidation.plugins.Trigger(),
-            bootstrap5: new FormValidation.plugins.Bootstrap5({
-                eleValidClass: '',
-                rowSelector: '.col-md-6'
-            }),
-            submitButton: new FormValidation.plugins.SubmitButton(),
-            autoFocus: new FormValidation.plugins.AutoFocus()
-        }
-    })
-}
 
 function onSaveFlagTypeSuccess(response) {
     handleAjaxSaveResponse(response);

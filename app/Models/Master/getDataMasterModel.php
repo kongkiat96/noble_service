@@ -341,7 +341,7 @@ class getDataMasterModel extends Model
 
     public function getChecker($tag)
     {
-        $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag, 'ALL'])->orderBy('id')->get();
+        $getChecker = DB::connection('mysql')->table('tbm_checker')->where('deleted', 0)->where('status_tag', 1)->whereIn('use_tag', [$tag, 'all'])->orderBy('id')->get();
         return $getChecker;
     }
 
@@ -535,10 +535,12 @@ class getDataMasterModel extends Model
         }
     }
 
-    public function getDataStatusWork($useTag)
+    public function getDataStatusWork($useTag,$statusShow)
     {
         $query = DB::connection('mysql')->table('tbm_status_work')->where('deleted', 0)->where('status', 1)
-        ->whereIn('status_use', ['all', $useTag])->orderBy('id')->get();
+        ->whereIn('status_use', ['all', $useTag])
+        ->whereIn('status_show',['all',$statusShow])
+        ->orderBy('id')->get();
         // dd($query);
         return $query;
     }

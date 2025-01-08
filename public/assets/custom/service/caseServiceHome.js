@@ -213,9 +213,10 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     // console.log(row)
-                    return 'asd'
+                    return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
                 }
             }
+
         ],
         columnDefs: [
             {
@@ -354,4 +355,9 @@ $(document).ready(function () {
 function funcCheckCaseWork(caseID) {
     // alert(caseID);
     showModalWithAjax('#checkWorkerModal', setURLCase + '/show-case-check-work/' + caseID, ['#case_status']);
+}
+
+function funcViewHistory(caseID) {
+    // alert(caseID);
+    showModalWithAjax('#checkWorkerModal', setURLCase + '/show-case-history/' + caseID);
 }

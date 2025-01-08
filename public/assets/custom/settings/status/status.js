@@ -1,90 +1,127 @@
 'use strict';
 $(function () {
     var dt_status_table = $('.dt-settingStatus')
-    var dt_flay_type_table = $('.dt-settingFlagType')
-    if (dt_status_table.length) {
-        dt_status_table.DataTable({
-            serverSide: true,
-            searching: true,
-            processing: true,
-            ajax: {
-                url: '/settings-system/work-status/table-status'
+    dt_status_table.DataTable({
+        processing: true,
+        paging: true,
+        pageLength: 50,
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: '/settings-system/work-status/table-status',
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
             },
-            columns: [
-                { data: null, orderable: false, searchable: false, class: "text-center" },
-                { data: "status_name", class: "text-nowrap" },
-                { data: "type_work", class: "text-nowrap", render: renderStatusWorkTypeBadge },
-                { data: "status_use", class: "text-nowrap", render: renderStatusWorkBadge },
-                {
-                    data: "status",
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: renderStatusBadge
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
                 },
-                {
-                    data: 'id',
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: (data, type, row) => renderGroupActionButtons(data, type, row, 'Status')
+            },
+            { 
+                data: 'status_name', 
+                class: "text-center",
+                render: function(data, type, row) {
+                    const color = row.status_color || '#FFFFFF'; // กำหนดสีเริ่มต้นหากไม่มีค่า
+                    return renderColorTagBadge(color, data);
                 }
-            ],
-            fnCreatedRow: (nRow, aData, iDisplayIndex) => {
-                $('td:first', nRow).text(iDisplayIndex + 1);
             },
-            pagingType: 'full_numbers',
-            drawCallback: function (settings) {
-                const dataTableApi = this.api();
-                const startIndexOfPage = dataTableApi.page.info().start;
-                dataTableApi.column(0).nodes().each((cell, index) => {
-                    cell.textContent = startIndexOfPage + index + 1;
-                });
+            {
+                data: "status_use",
+                orderable: true,
+                class: "text-center",
+                render: renderStatusWorkBadge
             },
-            order: [[1, "desc"]],
-            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 50,
-            lengthMenu: [50, 75, 100]
-        });
-    }
+            {
+                data: "status_show",
+                orderable: true,
+                class: "text-center",
+                render: renderStatusShowBadge
+            },
+            { data: 'group_status', class: "text-center" },
+            {
+                data: "status",
+                orderable: true,
+                searchable: false,
+                class: "text-center",
+                render: renderStatusBadge
+            },
 
-    if (dt_flay_type_table.length) {
-        dt_flay_type_table.DataTable({
-            serverSide: true,
-            searching: true,
-            processing: true,
-            ajax: {
-                url: '/settings-system/work-status/table-flag-type'
-            },
-            columns: [
-                { data: null, orderable: false, searchable: false, class: "text-center" },
-                { data: "flag_name", class: "text-nowrap" },
-                { data: "type_work", class: "text-nowrap", render: renderStatusWorkTypeBadge },
-                {
-                    data: 'id',
-                    orderable: false,
-                    searchable: false,
-                    class: "text-center",
-                    render: (data, type, row) => renderGroupActionButtons(data, type, row, 'FlagType')
+            { data: 'created_at', class: "text-center" },
+            { data: 'created_user', class: "text-center" },
+            { data: 'update_at', class: "text-center" },
+            { data: 'update_user', class: "text-center" },
+            {
+                data: 'ID',
+                orderable: false,
+                searchable: false,
+                class: "text-center",
+                render: function (data, type, row) {
+                    const Permission = (row.Permission);
+                    return renderGroupActionButtonsPermission(data, type, row, 'Status', Permission);
                 }
-            ],
-            fnCreatedRow: (nRow, aData, iDisplayIndex) => {
-                $('td:first', nRow).text(iDisplayIndex + 1);
+            }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
             },
-            pagingType: 'full_numbers',
-            drawCallback: function (settings) {
-                const dataTableApi = this.api();
-                const startIndexOfPage = dataTableApi.page.info().start;
-                dataTableApi.column(0).nodes().each((cell, index) => {
-                    cell.textContent = startIndexOfPage + index + 1;
-                });
-            },
-            order: [[1, "desc"]],
-            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            displayLength: 50,
-            lengthMenu: [50, 75, 100]
-        });
-    }
+        ],
+    });
+
+    // var dt_flay_type_table = $('.dt-settingFlagType')
+    // if (dt_flay_type_table.length) {
+    //     dt_flay_type_table.DataTable({
+    //         serverSide: true,
+    //         searching: true,
+    //         processing: true,
+    //         ajax: {
+    //             url: '/settings-system/work-status/table-flag-type'
+    //         },
+    //         columns: [
+    //             { data: null, orderable: false, searchable: false, class: "text-center" },
+    //             { data: "flag_name", class: "text-nowrap" },
+    //             { data: "type_work", class: "text-nowrap", render: renderStatusWorkTypeBadge },
+    //             {
+    //                 data: 'id',
+    //                 orderable: false,
+    //                 searchable: false,
+    //                 class: "text-center",
+    //                 render: (data, type, row) => renderGroupActionButtons(data, type, row, 'FlagType')
+    //             }
+    //         ],
+    //         fnCreatedRow: (nRow, aData, iDisplayIndex) => {
+    //             $('td:first', nRow).text(iDisplayIndex + 1);
+    //         },
+    //         pagingType: 'full_numbers',
+    //         drawCallback: function (settings) {
+    //             const dataTableApi = this.api();
+    //             const startIndexOfPage = dataTableApi.page.info().start;
+    //             dataTableApi.column(0).nodes().each((cell, index) => {
+    //                 cell.textContent = startIndexOfPage + index + 1;
+    //             });
+    //         },
+    //         order: [[1, "desc"]],
+    //         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    //         displayLength: 50,
+    //         lengthMenu: [50, 75, 100]
+    //     });
+    // }
 
     var dt_GroupStatus = $('.dt-settingGroupStatus')
     dt_GroupStatus.DataTable({
@@ -165,7 +202,7 @@ function reTable() {
 
 $(document).ready(function () {
     $('#addStatus').click(function () {
-        showModalWithAjax('#addStatusModal', '/settings-system/work-status/status-modal', ['#status_use', '#group_status', '#status']);
+        showModalWithAjax('#addStatusModal', '/settings-system/work-status/status-modal', ['#status_use', '#status_show','#group_status', '#status']);
     });
 
     $('#addFlagType').click(function () {
@@ -178,7 +215,7 @@ $(document).ready(function () {
 });
 
 function funcEditStatus(statusID) {
-    showModalWithAjax('#editStatusModal', '/settings-system/work-status/show-edit-status/' + statusID, ['#edit_statusUse', '#edit_flagType', '#edit_statusOfStatus']);
+    showModalWithAjax('#editStatusModal', '/settings-system/work-status/show-edit-status/' + statusID, ['#status_use', '#status_show','#group_status', '#status']);
 }
 
 function funcDeleteStatus(statusID) {
@@ -235,5 +272,50 @@ function setupFormValidationGroupStatus(formElement) {
     });
 }
 
+function setupFormValidationStatus(formElement){
+    const validators = {
+        notEmpty: message => ({
+            validators: {
+                notEmpty: { message }
+            }
+        }),
+        notEmptyAndRegexp: (message, regexp) => ({
+            validators: {
+                notEmpty: { message },
+                regexp: { regexp, message: 'ข้อมูลไม่ถูกต้อง' }
+            }
+        }),
+        colorFormat: message => ({
+            validators: {
+                notEmpty: { message },
+                regexp: {
+                    regexp: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+                    message: 'กรุณาระบุสีในรูปแบบ #RRGGBB หรือ #RGB'
+                }
+            }
+        })
+    };
 
+    const validationRules = {
+        status_name: validators.notEmptyAndRegexp('ระบุชื่อ รายการสินทรัพย์', /^[a-zA-Z0-9ก-๏\s]+$/u),
+        status_color: validators.colorFormat('ระบุค่าสีที่ถูกต้อง'),
+        status_use: validators.notEmpty('เลือกข้อมูล การใช้งานสำหรับฝ่าย'),
+        status_show: validators.notEmpty('เลือกข้อมูล การแสดงผลสถานะ'),
+        group_status: validators.notEmpty('เลือกข้อมูล กลุ่มสถานะ'),
+        status: validators.notEmpty('เลือกข้อมูล สถานะการใช้งาน'),
+    };
+
+    return FormValidation.formValidation(formElement, {
+        fields: validationRules,
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: '',
+                rowSelector: '.col-md-6'
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+    });
+}
 

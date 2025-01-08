@@ -19,50 +19,73 @@ class SetStatusModel extends Model
         $this->getDatabase = DB::connection('mysql');
     }
 
-    public function gatDataStatus($request)
+    public function gatDataStatus($param)
     {
-        $query = $this->getDatabase->table('tbm_status_work AS statusWork')
-            ->leftJoin('tbm_flag_type AS flag', 'statusWork.flag_type', '=', 'flag.ID')
-            ->select('statusWork.ID', 'statusWork.status_name', 'statusWork.status_use', 'statusWork.status', 'flag.type_work')
-            ->where('statusWork.deleted', 0)
-            ->where('flag.deleted', 0);
-        // คำสั่งเรียงลำดับ (Sorting)
-        $columns = ['statusWork.ID', 'statusWork.status_name', 'statusWork.status_use', 'statusWork.status', 'flag.type_work'];
-        $orderColumn = $columns[$request->input('order.0.column')];
-        $orderDirection = $request->input('order.0.dir');
-        $query->orderBy($orderColumn, $orderDirection);
+        try {
+            $query = $this->getDatabase->table('tbm_status_work AS sw')
+            ->leftJoin('tbm_group_status AS gs', 'gs.id', '=', 'sw.group_status')
+            ->where('sw.deleted', 0)
+            ->select([
+                'sw.ID',
+                'sw.status_name',
+                'sw.status_color',
+                'sw.status_use',
+                'sw.status_show',
+                'gs.group_status_th',
+                'gs.group_status_en',
+                'sw.status',
+                'sw.created_at',
+                'sw.created_user',
+                'sw.update_at',
+                'sw.update_user'
+            ]);
 
-        // คำสั่งค้นหา (Searching)
-        $searchValue = $request->input('search.value');
-        if (!empty($searchValue)) {
-            $query->where(function ($query) use ($columns, $searchValue) {
-                foreach ($columns as $column) {
-                    $query->orWhere('status_name', 'like', '%' . $searchValue . '%');
-                }
-            });
+
+            if ($param['start'] == 0) {
+                $query = $query->limit($param['length'])->orderBy('sw.created_at', 'desc')->orderBy('sw.status', 'desc')->get();
+            } else {
+                $query = $query->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('sw.created_at', 'desc')->orderBy('sw.status', 'desc')->get();
+            }
+
+            $dataCount = $query->count();
+
+            // dd($query);
+            $newArr = [];
+            foreach ($query as $key => $value) {
+                $newArr[] = [
+                    'ID' => $value->ID,
+                    'status_name' => $value->status_name,
+                    'status_color' => $value->status_color,
+                    'status_use' => $value->status_use,
+                    'status_show' => $value->status_show,
+                    'group_status' => $value->group_status_th .' ('.$value->group_status_en.')',
+                    'status' => $value->status,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'update_at' => !empty($value->update_at) ? $value->update_at : '-',
+                    'update_user' => !empty($value->update_user) ? $value->update_user : '-',
+                    'Permission' => Auth::user()->user_system
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
         }
-
-        $recordsTotal = $query->count();
-        // รับค่าที่ส่งมาจาก DataTables
-        $start = $request->input('start');
-        $length = $request->input('length');
-
-        $data = $query->offset($start)
-            ->limit($length)
-            ->orderBy('status', 'DESC')
-            ->orderBy('flag_type', 'DESC')
-            ->get();
-
-        $output = [
-            'draw' => $request->input('draw'),
-            'recordsTotal' => $recordsTotal,
-            'recordsFiltered' => $recordsTotal, // หรือจำนวนรายการที่ผ่านการค้นหา
-            'data' => $data,
-        ];
-
-        // dd($output);
-
-        return $output;
     }
 
     public function gatDataFlagType($request)
@@ -108,28 +131,23 @@ class SetStatusModel extends Model
     public function saveDataStatus($getData)
     {
         try {
-            // dd(Auth::user()->emp_code);
-            $saveToDB = $this->getDatabase->table('tbm_status_work')->insertGetId([
-                'status_name'   => $getData['statusName'],
-                'status_use'    => $getData['statusUse'],
-                'flag_type'     => $getData['flagType'],
-                'status'        => $getData['statusOfStatus'],
-                'created_user'  => Auth::user()->emp_code,
-                'created_at'    => Carbon::now()
-            ]);
-            // dd($saveToDB);
-            $returnStatus = [
-                'status'    => 200,
-                'message'   => 'Success',
-                // 'ID'        => $saveToDB
+            // dd($getData);
+            $getData['created_at'] = Carbon::now();
+            $getData['created_user'] = Auth::user()->emp_code;
+            $saveData = $this->getDatabase->table('tbm_status_work')->insertGetId($getData);
+
+            return [
+                'status' => 200,
+                'message' => 'Save Success'
             ];
         } catch (Exception $e) {
-            $returnStatus = [
-                'status'    => intval($e->getCode()),
-                'message'   => $e->getMessage()
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
             ];
-        } finally {
-            return $returnStatus;
         }
     }
 
@@ -173,7 +191,7 @@ class SetStatusModel extends Model
 
     public function showEditStatus($statusID)
     {
-        $getData = $this->getDatabase->table('tbm_status_work')->where('ID', $statusID)->get();
+        $getData = $this->getDatabase->table('tbm_status_work')->where('ID', $statusID)->first();
         // dd($getData);
         return $getData;
     }
@@ -181,26 +199,23 @@ class SetStatusModel extends Model
     public function editStatus($dataEdit, $statusID)
     {
         try {
-            $this->getDatabase->table('tbm_status_work')->where('ID', $statusID)->update([
-                'status_name'   => $dataEdit['edit_statusName'],
-                'status_use'    => $dataEdit['edit_statusUse'],
-                'status'        => $dataEdit['edit_statusOfStatus'],
-                'flag_type'     => $dataEdit['edit_flagType'],
-                'update_user'  => Auth::user()->emp_code,
-                'update_at'    => Carbon::now()
-            ]);
+            $dataEdit['update_user'] = Auth::user()->emp_code;
+            $dataEdit['update_at'] = Carbon::now();
+            unset($dataEdit['statusID']);
+            $this->getDatabase->table('tbm_status_work')->where('ID', $statusID)->update($dataEdit);
 
-            $returnStatus = [
-                'status'    => 200,
-                'message'   => 'Edit Success'
+            return [
+                'status' => 200,
+                'message' => 'Update Success'
             ];
         } catch (Exception $e) {
-            $returnStatus = [
-                'status'    => intval($e->getCode()),
-                'message'   => $e->getMessage()
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
             ];
-        } finally {
-            return $returnStatus;
         }
     }
 

@@ -4,7 +4,7 @@ $(document).ready(function () {
         removeValidationFeedback();
         const form = $("#formEditStatus")[0];
         const statusID = $('#statusID').val();
-        const fv = setupFormValidationEditStatus(form);
+        const fv = setupFormValidationStatus(form);
         const formData = new FormData(form);
 
         fv.validate().then(function (status) {

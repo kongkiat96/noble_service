@@ -289,8 +289,8 @@ function renderStatusBadge(data, type, full, row) {
     return `<span class="badge ${status.className}">${status.title}</span>`;
 }
 
-function renderAssetsTagBadge(color, data) {
-    return `<span class="badge" style="background-color: ${color}; width: 100px">${data}</span>`;
+function renderColorTagBadge(color, data) {
+    return `<span class="badge" style="background-color: ${color};">${data}</span>`;
 }
 
 function renderDeletedBadge(data, type, full, row) {
@@ -307,6 +307,17 @@ function renderStatusWorkBadge(data, type, full, row) {
         all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
         mt: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-danger' },
+        // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
+    };
+    const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
+    return `<span class="badge ${status.className}">${status.title}</span>`;
+}
+
+function renderStatusShowBadge(data, type, full, row) {
+    const statusMap = {
+        all: { title: 'แสดงทั้งหมด', className: 'bg-label-success' },
+        admin: { title: 'แสดงสําหรับเจ้าหน้าที่', className: 'bg-label-primary' },
+        user: { title: 'แสดงสําหรับผู้แจ้ง', className: 'bg-label-warning' },
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
