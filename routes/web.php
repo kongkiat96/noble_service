@@ -342,6 +342,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/realtime-case-approve-count-mt', 'Service\ApproveCaseController@realtimeCaseApproveCountMT');
             Route::post('/get-data-approve-fu', 'Service\ApproveCaseController@getDataApproveFU');
             Route::get('/realtime-case-approve-count-fu', 'Service\ApproveCaseController@realtimeCaseApproveCountFU');
+            Route::post('/get-data-caseCheckWork', 'Service\ApproveCaseController@getDataCaseCheckWork');
+            Route::get('/realtime-case-checkwork-count', 'Service\ApproveCaseController@realtimeCaseCheckWorkCount');
 
             Route::post('/approve-case-manager/{caseID}', 'Service\ApproveCaseController@approveCaseManager');
             Route::post('/approve-case-padding/{caseID}', 'Service\ApproveCaseController@approveCasePadding');

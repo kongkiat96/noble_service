@@ -201,10 +201,48 @@ class CaseController extends Controller
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
             if ($getCaseDetail['status'] == 200) {
-                return view('app.caseService.caseDetail.caseDetail', [
-                    'data' => $getCaseDetail['message']['datadetail'],
-                    'image' => $getCaseDetail['message']['dataimage']
-                ]);
+                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'user_check_work') {
+                    $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+                    $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+                    $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+                    $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
+                    $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+                    $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
+                    $getStatusWork = $this->getMaster->getDataStatusWork('mt', 'admin');
+
+                    $getDataWorker = $this->getMaster->getDataWorker('mt');
+                    $setWorker = $getCaseDetail['message']['datadetail'];
+                    $workerArray = json_decode($setWorker['worker'], true);
+                    $workerNames = collect($workerArray)
+                        ->pluck('name')
+                        ->implode(', ');
+                    // dd($workerNames);
+
+                    $getDataChecker = $this->getMaster->getChecker('mt');
+                    $setChecker = $getCaseDetail['message']['datadetail'];
+                    $checkerArray = json_decode($setChecker['checker'], true);
+                    $checkerNames = collect($checkerArray)
+                        ->pluck('name')
+                        ->implode(', ');
+
+                    return view('app.caseService.caseDetail.caseDetailCheckWork', [
+                        'data' => $getCaseDetail['message']['datadetail'],
+                        'image' => $getCaseDetail['message']['dataimage'],
+                        'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
+                        'categoryItem' => $getCategoryItem,
+                        'categoryList' => $getCategoryList,
+                        'getDataWorker' => $getDataWorker,
+                        'getStatusWork' => $getStatusWork,
+                        'workerNames' => $workerNames,
+                        'getDataChecker' => $getDataChecker,
+                        'checkerNames' => $checkerNames
+                    ]);
+                } else {
+                    return view('app.caseService.caseDetail.caseDetail', [
+                        'data' => $getCaseDetail['message']['datadetail'],
+                        'image' => $getCaseDetail['message']['dataimage']
+                    ]);
+                }
             } else {
                 return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
             }

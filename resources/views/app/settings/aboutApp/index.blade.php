@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('stylesheets')
-<style>
-.progress{
-    display: none;
-}
+    <style>
+
     </style>
 @endsection
 @section('content')
@@ -16,17 +14,60 @@
         </ol>
     </nav>
     <hr>
-    <div class="modal fade" id="addBankModal" data-bs-backdrop="static"  >
-        <div class="modal-dialog modal-lg" role="document">
-
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-info">
+                        <p class="card-text">ข้อมูลพื้นที่จัดเก็บข้อมูล <i class="bx bx-layer bx-sm "></i></p>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="progress w-100" style="height: 10px">
+                                    <div class="progress-bar 
+                                                @if ($totalStorage['percent'] <= 59) bg-success
+                                                @elseif ($totalStorage['percent'] <= 95) bg-warning
+                                                @else bg-danger @endif"
+                                        role="progressbar" style="width: {{ $totalStorage['percent'] }}%"
+                                        aria-valuenow="{{ $totalStorage['percent'] }}" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small class="fw-semibold">&nbsp;{{ $totalStorage['percent'] }}%</small>
+                            </div>
+                        </div>
+                        <figcaption class="blockquote-footer mb-0 text-muted mt-3">
+                            <cite title="Source Title">ข้อมูลขณะนี้ {{ $totalStorage['use'] }} จำกัดข้อมูลไว้ที่
+                                {{ $totalStorage['limit'] }}</cite>
+                        </figcaption>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-info">
+                        <p class="card-text">ข้อมูลพื้นที่จัดเก็บข้อมูล <i class="bx bx-layer bx-sm "></i></p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                พื้นที่ใช้ไป : {{ $totalStorage['use'] }}
+                            </div>
+                            <div class="col-md-4">
+                                พื้นที่จำกัด : {{ $totalStorage['limit'] }}
+                            </div>
+                            <div class="col-md-4">
+                                คงเหลือ : {{ $totalStorage['remaining'] }}
+                            </div>
+                        </div>
+                        <figcaption class="blockquote-footer mb-0 text-muted mt-3">
+                            <cite title="Source Title">ข้อมูลคำนวณจากพื้นที่จัดเก็บรูปภาพ</cite>
+                        </figcaption>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="modal fade" id="editBankModal" data-bs-backdrop="static"  >
-        <div class="modal-dialog modal-lg" role="document">
-
-        </div>
-    </div>
     <div class="row">
         <div class="col-12">
             <div class="nav-align-top mb-4">
@@ -92,7 +133,8 @@
                                                         <textarea class="form-control" name="company_address" id="company_address" cols="3" placeholder="ที่อยู่">{{ !$dataAboutApp ? '' : $dataAboutApp->company_address }}</textarea>
                                                     </div>
                                                     <div class="col-md-12 mb-3">
-                                                        <label class="form-label-md mt-2" for="company_email">อีเมล</label>
+                                                        <label class="form-label-md mt-2"
+                                                            for="company_email">อีเมล</label>
                                                         <input type="text" class="form-control" id="company_email"
                                                             name="company_email" placeholder="อีเมล"
                                                             value="{{ !$dataAboutApp ? '' : $dataAboutApp->company_email }}">
@@ -102,7 +144,8 @@
                                             <div class="card-footer text-center">
                                                 <button type="submit" name="saveAboutApp" id="saveAboutApp"
                                                     class="btn btn-warning btn-form-block-overlay"><i
-                                                        class='menu-icon tf-icons bx bxs-save'></i> เปลี่ยนแปลงข้อมูล</button>
+                                                        class='menu-icon tf-icons bx bxs-save'></i>
+                                                    เปลี่ยนแปลงข้อมูล</button>
                                             </div>
                                         </div>
                                     </div>
@@ -128,5 +171,9 @@
                 "{{ $dataAboutApp->about_app_img ? asset('storage/uploads/aboutApp/' . $dataAboutApp->about_app_img) : asset('storage/uploads/not-found.jpg') }}",
                 '#pic-app', '#delete_about_app_img');
         @endif
+
+        function reTable() {
+
+        }
     </script>
 @endsection

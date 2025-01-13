@@ -547,7 +547,11 @@ class getDataMasterModel extends Model
 
     public function getStatusWorkForByID($statusID)
     {
-        $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->first();
-        return $query->status_name ?? '-';
+        $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->select('status_name','status_color')->first();
+        $responseData = [
+            'status_name' => $query->status_name,
+            'status_color' => $query->status_color
+        ];
+        return $responseData ?? '-';
     }
 }

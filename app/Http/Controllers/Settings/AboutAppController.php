@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Settings\AboutAppModel;
 use Generator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AboutAppController extends Controller
 {
@@ -27,15 +28,17 @@ class AboutAppController extends Controller
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
         }
         $getAccessMenus = getAccessToMenu::getAccessMenus();
-        
-        $getDataAboutApp = $this->aboutAppModel->getDataAboutApp();
 
+        $getDataAboutApp = $this->aboutAppModel->getDataAboutApp();
+        $totalStorage = $this->getPublicFolderSize();
+        // dd($totalStorage);
         return view('app.settings.aboutApp.index', [
             'url'           => $url,
             'urlName'       => $urlName,
             'urlSubLink'    => $urlSubLink,
             'listMenus'     => $getAccessMenus,
-            'dataAboutApp' => $getDataAboutApp
+            'dataAboutApp' => $getDataAboutApp,
+            'totalStorage' => $totalStorage
         ]);
     }
 
@@ -72,5 +75,65 @@ class AboutAppController extends Controller
         // dd($data);
         $saveData = $this->aboutAppModel->saveAboutAppData($data);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
+    }
+
+    public function getPublicFolderSize()
+    {
+        $folderPath = 'uploads/caseService'; // โฟลเดอร์ที่ต้องการตรวจสอบ
+        $limitMB = 500; // ขนาดสูงสุดที่กำหนด (MB)
+
+        // คำนวณขนาดโฟลเดอร์
+        $folderSizeBytes = $this->calculateFolderSize($folderPath);
+        $folderSizeMB = $folderSizeBytes / 1048576; // แปลงเป็น MB
+
+        // คำนวณเปอร์เซ็นต์
+        $percentUsed = ($folderSizeMB / $limitMB) * 100;
+
+        // จำกัดเปอร์เซ็นต์ให้ไม่เกิน 100
+        $percentUsed = $percentUsed > 100 ? 100 : $percentUsed;
+
+        // แปลง limit จาก MB เป็นหน่วยที่เหมาะสม
+        $limitBytes = $limitMB * 1048576; // แปลง MB เป็น Bytes
+
+        // คำนวณพื้นที่คงเหลือ
+        $remainingBytes = $limitBytes - $folderSizeBytes; // คงเหลือใน bytes
+
+        $returnData = [
+            'folder' => $folderPath,
+            'percent' => number_format($percentUsed, 2),
+            'use' => $this->formatSizeUnits($folderSizeBytes),
+            'limit' => $this->formatSizeUnits($limitBytes), // แปลง limit เป็นข้อความ
+            'remaining' => $this->formatSizeUnits($remainingBytes),
+        ];
+        return $returnData;
+    }
+
+    private function calculateFolderSize($folderPath)
+    {
+        $totalSize = 0;
+
+        if (Storage::exists($folderPath)) {
+            $files = Storage::allFiles($folderPath);
+            foreach ($files as $file) {
+                $totalSize += Storage::size($file);
+            }
+        }
+
+        return $totalSize; // ส่งคืนขนาดเป็น bytes
+    }
+
+    private function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        } elseif ($bytes >= 1048576) {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        } else {
+            $bytes = $bytes . ' bytes';
+        }
+
+        return $bytes;
     }
 }

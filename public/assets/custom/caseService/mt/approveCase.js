@@ -173,22 +173,112 @@ $(function () {
         ],
     });
 
-    
+    var dt_caseCheckWork = $('.dt-caseCheckWork')
+    dt_caseCheckWork.DataTable({
+        processing: false,
+        paging: true,
+        pageLength: 50,
+        deferRender: true,
+        ordering: true,
+        lengthChange: true,
+        bDestroy: true, // เปลี่ยนเป็น true
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 2
+        },
+        language: {
+            processing:
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
+        },
+        ajax: {
+            url: setURLApprove + "/get-data-caseCheckWork",
+            type: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                    "content"
+                ),
+            },
+            data: function (d) {
+                return $.extend({}, d, {
+                    "use_tag": "MT",
+                });
+            }
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                },
+            },
+            {
+                data: 'ticket',
+                class: "text-center",
+                render: function (data, type, row) {
+                    // console.log(row)
+                    return `
+                        <button type="button" class="btn btn-label-info btn-info btn-sm" onclick="getDetailCase('` + row.ticket + `')">
+                            ` + row.ticket + `
+                        </button>
+                    `;
+                }
+            },
+            {
+                data: 'employee_other_case',
+                class: "text-center",
+            },
+            {
+                data: 'created_at',
+                class: "text-center",
+            },
+
+            {
+                data: 'category_main_name',
+                class: "text-center",
+            },
+            {
+                data: 'category_type_name',
+                class: "text-center",
+            },
+            {
+                data: 'category_detail_name',
+                class: "text-center",
+            },
+            {
+                data: 'created_user',
+                class: "text-center",
+            },
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+            },
+        ],
+    });
+
+
 })
 
 function reTable() {
     // $('.dt-approve-case-it').DataTable().ajax.reload();
     $('.dt-approve-mt').DataTable().ajax.reload(null, false);
     $('.dt-approve-fu').DataTable().ajax.reload(null, false);
+    $('.dt-caseCheckWork').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
     scheduleFetch("/service/approve-case/realtime-case-approve-count-mt", "caseApproveCountMT", 60000); // สำหรับ MT
     scheduleFetch("/service/approve-case/realtime-case-approve-count-fu", "caseApproveCountFU", 60000); // สำหรับ FU
+    scheduleFetch("/service/approve-case/realtime-case-checkwork-count", "caseCheckWorkCount", 60000); // สำหรับ FU
     setInterval(reTable, 60000);
 });
 
 function getDetailCase(ticket) {
-        $('.dt-approve-history').DataTable().ajax.reload();
+    // $('.dt-approve-history').DataTable().ajax.reload();
 
     $.ajax({
         type: 'GET',
@@ -215,7 +305,7 @@ function getDetailCase(ticket) {
             lengthChange: false,
             bDestroy: true, // เปลี่ยนเป็น true
             scrollX: false,
-            
+
             language: {
                 processing:
                     '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
@@ -248,7 +338,10 @@ function getDetailCase(ticket) {
                 },
                 {
                     data: 'CaseDetail',
-                    class: "text-wrap",
+                },
+                {
+                    data: 'CasePrice',
+                    class: "text-center",
                 },
                 {
                     data: 'CreatedAt',

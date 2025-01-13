@@ -80,13 +80,13 @@
 
         <div class="tab-pane fade" id="case-action" role="tabpanel">
             <div class="row g-1 form-block">
-                <form id="formDoingCaseAction">
+                <form id="formManagerCaseCheckWork">
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label class="form-label-md mb-2" for="case_item">รายการที่เสีย <span
                                     class="text-danger">*</span></label>
                             <select id="case_item" name="case_item" class="form-control select2"
-                                data-allow-clear="true">
+                                data-allow-clear="true" disabled>
                                 <option value="">เลือกรายการ</option>
                                 @foreach ($categoryItem as $item)
                                     <option value="{{ $item->id }}"
@@ -99,7 +99,7 @@
                             <label class="form-label-md mb-2" for="case_list">รายการที่แก้ไขปัญหา <span
                                     class="text-danger">*</span></label>
                             <select id="case_list" name="case_list" class="form-control select2"
-                                data-allow-clear="true">
+                                data-allow-clear="true" disabled>
                                 <option value="">เลือกรายการ</option>
                                 @foreach ($categoryList as $list)
                                     <option value="{{ $list->id }}"
@@ -120,7 +120,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control numeral-mask text-end"
                                     placeholder="ค่าใช้จ่าย" name="case_price" id="case_price"
-                                    oninput="formatAmount(this)" value="{{ $data['price'] }}"/>
+                                    oninput="formatAmount(this)" value="{{ $data['price'] }}" disabled/>
                                 <span class="input-group-text">฿</span>
                             </div>
 
@@ -130,51 +130,52 @@
                         <div class="col-md-12 mb-4">
                             <label for="worker" class="form-label-md mb-2">ช่างผู้ปฏิบัติงาน / รับผิดชอบ</label>
                             <input id="worker" name="worker" class="form-control"
-                                placeholder="&nbsp ช่างผู้ปฏิบัติงาน / รับผิดชอบ" value="{{ $workerNames }}" />
+                                placeholder="&nbsp ช่างผู้ปฏิบัติงาน / รับผิดชอบ" value="{{ $workerNames }}" disabled/>
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
 
                         <div class="col-md-12 mb-4">
                             <label for="checker" class="form-label-md mb-2">ผู้รับเหมา / ซัพนอก</label>
                             <input id="checker" name="checker" class="form-control"
-                                placeholder="&nbsp ผู้รับเหมา / ซัพนอก" value="{{ $checkerNames }}" />
+                                placeholder="&nbsp ผู้รับเหมา / ซัพนอก" value="{{ $checkerNames }}" disabled/>
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
 
-                        <div class="col-md-12 mb-4">
-                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span class="text-danger">*</span></label>
-                            <textarea id="case_doing_detail" name="case_doing_detail" rows="3" class="form-control"></textarea>
-                        </div>
+                        
                         <div class="divider">
-                            <div class="divider-text font-weight-bold font-size-lg">สถานะการทำงาน</div>
+                            <div class="divider-text font-weight-bold font-size-lg">สถานะการตรวจสอบการทำงาน</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <label class="form-label-md mb-2" for="case_status">สถานะการทำงาน <span
+                            <label class="form-label-md mb-2" for="case_status">สถานะการตรวจสอบการทำงาน <span
                                     class="text-danger">*</span></label>
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
-                                @foreach ($getStatusWork as $key)
-                                    {{-- @if (!in_array($key->ID, [99999])) --}}
-                                        <option value="{{ $key->ID }}" @if($data['case_status'] == $key->ID) selected @endif>{{ $key->status_name }}</option>
-                                    {{-- @endif --}}
-                                @endforeach
+                                <option value="manager_mt_checkwork_success">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
+                                <option value="reject_manager_mt_checkwork_success">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
                             </select>
                         </div>
 
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label-md mb-2" for="case_detail">หมายเหตุเพิ่มเติม </label>
+                            <textarea id="case_detail" name="case_detail" rows="3" class="form-control"></textarea>
+                        </div>
+                    </div>
+
 
                     <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
 
-                    <div class="divider">
+                    {{-- <div class="divider">
                         <div class="divider-text font-weight-bold font-size-lg">รูปภาพการแก้ไขปัญหา</div>
-                    </div>
+                    </div> --}}
                 </form>
                 {{-- <div class="row"> --}}
-                <div class="col-12 text-center">
+                {{-- <div class="col-12 text-center">
                     <form action="/upload" class="dropzone needsclick" id="pic-case">
                         <div class="dz-message needsclick">
                             อัพโหลดรูปภาพในการแก้ไขปัญหา
@@ -184,7 +185,7 @@
                             <input name="file" id="pic-case" type="file" />
                         </div>
                     </form>
-                </div>
+                </div> --}}
                 {{-- </div> --}}
 
                 <hr class="mt-4">
@@ -195,7 +196,7 @@
                         รายการนี้อยู่ระหว่างตรวจสอบงาน
                       </div>
                     @else
-                    <button type="submit" name="saveCaseAction" id="saveCaseAction"
+                    <button type="submit" name="saveManagerCaseCheckWork" id="saveManagerCaseCheckWork"
                         class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
                         บันทึกข้อมูลดำเนินงาน</button>
                         @endif
@@ -283,112 +284,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
-<script type="text/javascript">
-
-    mapSelectedCategoryItem('#case_list', '#case_item', true)
-    AddPicMultiple('#pic-case');
-
-    (function() {
-    // ดึงข้อมูลจาก API หรือ View
-    const TagifyWorkerEl = document.querySelector('#worker');
-    const TagifyCheckerEl = document.querySelector('#checker');
-
-    const workerList = @json($getDataWorker).map(worker => ({
-        value: worker.ID,
-        name: worker.employee_name,
-        emp_code: worker.employee_code
-    }));
-
-    const checkerList = @json($getDataChecker).map(checker => ({
-        value: checker.id,
-        name: checker.checker_name,
-        emp_code: ' '
-    }));
-
-    // รวมข้อมูล Worker และ Checker
-    const combinedList = [workerList, checkerList];
-
-    function tagTemplate(tagData) {
-        return `
-            <tag title="${tagData.title || tagData.emp_code}" contenteditable='false' spellcheck='false' tabIndex="-1" class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ''}" ${this.getAttributes(tagData)}>
-                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-                <div>
-                    <span class='tagify__tag-text'>${tagData.name}</span>
-                </div>
-            </tag>
-        `;
-    }
-
-    function suggestionItemTemplate(tagData) {
-        return `
-            <div ${this.getAttributes(tagData)}
-            class='tagify__dropdown__item align-items-center ${tagData.class ? tagData.class : ''}'
-            tabindex="0"
-            role="option"
-            >
-                <strong>${tagData.name}</strong>
-                <span>${tagData.emp_code}</span>
-            </div>
-        `;
-    }
-
-    function initializeTagify(element, list) {
-        if (!element) return;
-
-        let tagifyInstance = new Tagify(element, {
-            tagTextProp: 'name',
-            enforceWhitelist: true,
-            skipInvalid: true,
-            dropdown: {
-                closeOnSelect: false,
-                enabled: 0,
-                classname: 'users-list',
-                searchKeys: ['name', 'emp_code']
-            },
-            templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate
-            },
-            whitelist: list
-        });
-
-        tagifyInstance.on('dropdown:show dropdown:updated', onDropdownShow);
-        tagifyInstance.on('dropdown:select', onSelectSuggestion);
-
-        let addAllSuggestionsEl;
-
-        function onDropdownShow(e) {
-            let dropdownContentEl = e.detail.tagify.DOM.dropdown.content;
-
-            if (tagifyInstance.suggestedListItems.length > 1) {
-                addAllSuggestionsEl = getAddAllSuggestionsEl();
-
-                // insert "addAllSuggestionsEl" as the first element in the suggestions list
-                dropdownContentEl.insertBefore(addAllSuggestionsEl, dropdownContentEl.firstChild);
-            }
-        }
-
-        function onSelectSuggestion(e) {
-            if (e.detail.elm == addAllSuggestionsEl) tagifyInstance.dropdown.selectAll.call(tagifyInstance);
-        }
-
-        function getAddAllSuggestionsEl() {
-            return tagifyInstance.parseTemplate('dropdownItem', [{
-                class: 'addAll',
-                name: 'เลือกทั้งหมด',
-                emp_code: tagifyInstance.settings.whitelist.reduce(function(remainingSuggestions,
-                item) {
-                    return tagifyInstance.isTagDuplicate(item.value) ? remainingSuggestions :
-                        remainingSuggestions + 1;
-                }, 0) + ' รายการ'
-            }]);
-        }
-    }
-
-    // สร้าง Tagify สำหรับ Worker และ Checker
-    initializeTagify(TagifyWorkerEl, workerList);
-    initializeTagify(TagifyCheckerEl, checkerList);
-})();
-
-</script>
+<script type="text/javascript" src="{{ asset('/assets/custom/caseService/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>

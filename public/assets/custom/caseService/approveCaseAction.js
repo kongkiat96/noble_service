@@ -18,6 +18,25 @@ $(document).ready(function () {
             }
         });
     })
+
+    $('#saveManagerCaseCheckWork').on('click', function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formManagerCaseCheckWork")[0];
+        const caseID = $('#caseID').val();
+        const fv = setupFormValidationApproveCase(form);
+        const formData = new FormData(form);
+        console.log(formData)
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData(setURLApprove + "/case-check-work/" + caseID, formData)
+                    .done(onSaveApproveCaseSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    })
+
+
 });
 
 

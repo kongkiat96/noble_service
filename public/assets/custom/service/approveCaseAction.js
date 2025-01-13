@@ -104,10 +104,6 @@ $(document).ready(function () {
             }
         });
     })
-
-
-
-
 });
 
 

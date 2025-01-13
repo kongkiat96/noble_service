@@ -937,7 +937,6 @@ function mapCategoryUseTag(disabledElement, selectElement, disableStatus) {
 }
 
 function badgeStatusTagWork(data, type, full, row) {
-    // console.log(data)
     const statusTagWork = {
         wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
@@ -955,10 +954,14 @@ function badgeStatusTagWork(data, type, full, row) {
 
         reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
+
+        case_success: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบ', className: 'bg-label-success' },
+        case_reject: { title: 'งานไม่เรียบร้อย / ไม่ผ่านการตรวจสอบ', className: 'bg-label-danger' }
     };
 
     if (!statusTagWork[data]) {
         return `<span class="badge bg-label-primary">${data}</span>`;
+        // return `<span class="badge" style="background-color: ${statusColor};">${data}</span>`;
     }
 
     const status = statusTagWork[data] || { title: 'Undefined', className: 'bg-label-secondary' };

@@ -233,15 +233,18 @@ class CaseModel extends Model
                     ->orderBy('cs.created_at', 'desc')->get();
             }
             $dataCount = $sql->count();
-
             $newArr = [];
             foreach ($sql as $key => $value) {
                 if (is_numeric($value->case_status)) {
                     $caseStatus = $this->getDataMasterModel->getStatusWorkForByID($value->case_status);
+                    $mapStatus = $caseStatus['status_name'];
+                    $mapColor = $caseStatus['status_color'];
                 } else {
                     $caseStatus = $value->case_status ?? '-';
+                    $mapStatus = $caseStatus;
+                    $mapColor = '#e7e7ff';
                 }
-
+                // dd($mapStatus);
                 $newArr[] = [
                     'ID'    => $value->id,
                     'ticket'    => $value->ticket,
@@ -250,13 +253,14 @@ class CaseModel extends Model
                     'category_detail_name'    => $value->category_detail_name,
                     'case_detail'    => $value->case_detail,
                     'created_at'    => $value->created_at,
-                    'case_status'   => $caseStatus,
+                    'case_status'   => $mapStatus,
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name ?? '-',
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
                     'created_user'  => $this->getDataMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
                 ];
             }
+            // dd($newArr);
 
             $returnData = [
                 "recordsTotal" => $dataCount,
@@ -287,7 +291,7 @@ class CaseModel extends Model
                         ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
                 })
                 // set case status getDataStatusWork
-                ->whereIn('cs.case_status', [6])
+                ->whereIn('cs.case_status', [1])
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -310,12 +314,21 @@ class CaseModel extends Model
 
             $newArr = [];
             foreach ($sql as $key => $value) {
+                // if (is_numeric($value->case_status)) {d
+                //     $caseStatus = $this->getDataMasterModel->getStatusWorkForByID($value->case_status);
+                // } else {
+                //     $caseStatus = $value->case_status ?? '-';
+                // }
+
                 if (is_numeric($value->case_status)) {
                     $caseStatus = $this->getDataMasterModel->getStatusWorkForByID($value->case_status);
+                    $mapStatus = $caseStatus['status_name'];
+                    $mapColor = $caseStatus['status_color'];
                 } else {
                     $caseStatus = $value->case_status ?? '-';
+                    $mapStatus = $caseStatus;
+                    $mapColor = '#e7e7ff';
                 }
-
                 $newArr[] = [
                     'ID'    => $value->id,
                     'ticket'    => $value->ticket,
@@ -324,7 +337,7 @@ class CaseModel extends Model
                     'category_detail_name'    => $value->category_detail_name,
                     'case_detail'    => $value->case_detail,
                     'created_at'    => $value->created_at,
-                    'case_status'   => $caseStatus,
+                    'case_status'   => $mapStatus,
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name ?? '-',
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
@@ -386,7 +399,7 @@ class CaseModel extends Model
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
-            
+
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             $data = [
                 'datadetail' => [
@@ -412,6 +425,7 @@ class CaseModel extends Model
                     'price'                 => number_format($mainQuery->price, 2),
                     'case_status'           => $mainQuery->case_status,
                     'use_tag'               => $mainQuery->use_tag == 'IT' ? 'ไอที' : 'ช่างซ่อมบำรุง / อาคาร',
+                    'tag_work'              => $mainQuery->tag_work,
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
                 'dataimageDoing' => $imageQueryDoing->toArray()
@@ -467,20 +481,26 @@ class CaseModel extends Model
             foreach ($sql as $key => $value) {
                 if (is_numeric($value->hCaseStatus)) {
                     $caseStatus = $this->getDataMasterModel->getStatusWorkForByID($value->hCaseStatus);
+                    $mapStatus = $caseStatus['status_name'];
+                    $mapColor = $caseStatus['status_color'];
                 } else {
                     $caseStatus = $value->hCaseStatus ?? '-';
+                    $mapStatus = $caseStatus;
+                    $mapColor = '#e7e7ff';
                 }
 
+                // dd($caseStatus['status_name']);
                 $newArr[] = [
                     'ID'            => encrypt($value->hId),
-                    'CaseStatus'    => $caseStatus,
+                    'CaseStatus'    => $mapStatus,
+                    'statusColor'   => $mapColor,
                     'CaseDetail'    => wordwrap($value->hCaseDetail, 300, "<br>", true) ?? '-',
                     'CasePrice'     => number_format($value->hPrice, 2) ?? '0.00',
                     'CreatedAt'     => $value->hCreatedAt ?? '-',
                     'CreatedUserName' => $value->hCreatedUserName ?? '-',
                 ];
             }
-
+            // dd($newArr);
             $returnData = [
                 "recordsTotal" => $dataCount,
                 "recordsFiltered" => $dataCount,
@@ -529,10 +549,10 @@ class CaseModel extends Model
     {
         try {
             $queryDataCategory = DB::connection('mysql')->table('tbm_category_list')
-            ->where('category_item_id', $categoryItem)
-            ->where('status_tag', 1)
-            ->where('deleted', 0)
-            ->get();
+                ->where('category_item_id', $categoryItem)
+                ->where('status_tag', 1)
+                ->where('deleted', 0)
+                ->get();
 
             // dd($queryDataCategory);
             return $queryDataCategory;
@@ -552,7 +572,7 @@ class CaseModel extends Model
     {
         // dd($request);
         $searchData = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->where('deleted', 0)->first();
-        
+
         // dd($request->hasFile('file'));
         if (!empty($searchData)) {
             $data['case_item']      = $request->case_item;
@@ -682,9 +702,10 @@ class CaseModel extends Model
                     $query->where('cs.case_user_open', Auth::user()->emp_code)
                         ->orWhere('cs.employee_other_case', Auth::user()->map_employee);
                 })
-                ->whereIn('cs.case_status',[6])
+                // set case status getDataStatusWork
+                ->whereIn('cs.case_status', [1])
                 ->count();
-                // dd($query);
+            // dd($query);
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log

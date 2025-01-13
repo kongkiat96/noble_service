@@ -3,6 +3,7 @@
 namespace App\Models\Service;
 
 use App\Models\Master\getDataMasterModel;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -231,6 +232,76 @@ class ApproveCaseModel extends Model
         }
     }
 
+    public function getDataCaseCheckWork($param)
+    {
+        try {
+            $sql = DB::connection('mysql')->table('tbt_case_service AS cs')
+                // ->where(function ($query) use ($param) {
+                //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
+                // })
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
+                // ->whereNotIn('cs.category_main', $this->setWhereIn())
+                ->where('cs.tag_work', 'user_check_work')
+                ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
+                ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
+                ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
+                ->leftJoin('tbt_employee AS em', 'cs.manager_emp_id', '=', 'em.ID')
+                ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
+                ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
+                ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
+            if ($param['use_tag'] == 'IT') {
+                $sql = $sql->where('cs.use_tag', 'IT');
+            } else if ($param['use_tag'] == 'MT') {
+                $sql = $sql->where('cs.use_tag', 'MT');
+            }
+            $sql = $sql->where('cs.deleted', 0)
+                ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
+
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('cs.created_at', 'desc')->get();
+            }
+            $dataCount = $sql->count();
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID'    => encrypt($value->id),
+                    'ticket'    => $value->ticket,
+                    'category_main_name'    => $value->category_main_name,
+                    'category_type_name'    => $value->category_type_name,
+                    'category_detail_name'    => $value->category_detail_name,
+                    'case_detail'    => $value->case_detail,
+                    'created_at'    => $value->created_at,
+                    'case_status'   => $value->case_status,
+                    'employee_other_case'   => $value->employee_other_case_name,
+                    'manager_name'   => $value->manager_name,
+                    'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
+                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
+                ];
+            }
+
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
+            ];
+            // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function saveApproveCaseManager($data, $caseID)
     {
         try {
@@ -409,10 +480,102 @@ class ApproveCaseModel extends Model
             ];
         }
     }
+    public function countCaseCheckWork()
+    {
+        try {
+            $query = DB::connection('mysql')->table('tbt_case_service AS cs')
+                ->where('cs.deleted', 0)
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
+                // ->whereIn('cs.category_main', $this->setWhereIn())
+                ->where('cs.tag_work', 'user_check_work')
+                ->where('cs.use_tag', 'MT')->count();
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
     private function setWhereIn()
     {
         $forCategoryMainFU = [433];
         return $forCategoryMainFU;
+    }
+
+    public function saveCaseCheckWork($saveStatus, $caseID)
+    {
+        try {
+            $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
+            // dd($saveStatus, $caseID);
+            $caseStatus = $saveStatus['case_status'];
+            // dd($caseStatus);
+            if (in_array($caseStatus, ['manager_mt_checkwork_success', 'reject_manager_mt_checkwork_success'])) {
+                $mapStatus = $caseStatus == 'manager_mt_checkwork_success' ? 'case_success' : 'case_reject';
+                $setUpdate = [
+                    'caseStatus' => $mapStatus,
+                    'caseStep' => $mapStatus,
+                    'tagWork' => $mapStatus,
+                    'userApprove' => 'Y',
+                    'caseDetail' => !empty($saveStatus['case_detail'])
+                        ? $saveStatus['case_detail']
+                        : ($caseStatus == 'manager_mt_checkwork_success'
+                            ? 'ผ่านการตรวจสอบจากผู้จัดการฝ่าย'
+                            : 'ไม่ผ่านการตรวจสอบจากผู้จัดการฝ่าย'),
+                ];
+            } else {
+                $setUpdate = [
+                    'caseStatus' => $caseStatus,
+                    'caseStep' => $caseStatus == 4 ? 'user_check_work' : 'reject_case',
+                    'tagWork' => $caseStatus == 4 ? 'user_check_work' : 'reject_case',
+                    'userApprove' => $caseStatus == 4 ? 'Y' : 'N',
+                    'caseDetail'    => $caseStatus == 4 ? 'ผ่านการตรวจสอบจากผู้แจ้ง' : 'ไม่ผ่านการตรวจสอบจากผู้แจ้ง'
+                ];
+            }
+
+            // dd($setUpdate);
+            $setUpdateTime = Carbon::now();
+            $setUpdateUSer = Auth::user()->emp_code;
+            if ($getDataCase) {
+                $updateCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->update([
+                    'case_status' => $setUpdate['caseStatus'],
+                    'case_step' => $setUpdate['caseStep'],
+                    'tag_user_approve'   =>  $setUpdate['userApprove'],
+                    'tag_work'   => $setUpdate['tagWork'],
+                    'case_end' => now(),
+                    'updated_at' => $setUpdateTime,
+                    'updated_user' => $setUpdateUSer
+                ]);
+
+                $insertHistory = DB::connection('mysql')->table('tbt_case_service_history')->insert([
+                    'case_service_id' => $caseID,
+                    'ticket' => $getDataCase->ticket,
+                    'case_status' => $setUpdate['caseStatus'],
+                    'case_step' => $setUpdate['caseStep'],
+                    'tag_work' => $setUpdate['tagWork'],
+                    'case_detail'   => $setUpdate['caseDetail'],
+                    'created_at' => now(),
+                    'created_user'  => Auth::user()->emp_code
+                ]);
+            }
+
+            return [
+                'status' => 200,
+                'message' => 'success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
     }
 }

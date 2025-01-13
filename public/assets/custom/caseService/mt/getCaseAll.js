@@ -198,7 +198,7 @@ $(document).ready(function () {
 });
 
 function getDetailCase(ticket) {
-    $('.dt-approve-history').DataTable().ajax.reload();
+    // $('.dt-approve-history').DataTable().ajax.reload();
 
     $.ajax({
         type: 'GET',
@@ -254,7 +254,10 @@ function getDetailCase(ticket) {
                 {
                     data: 'CaseStatus',
                     class: "text-center",
-                    render: badgeStatusTagWork
+                    // render: badgeStatusTagWork
+                    render: function(data, type, row) {
+                        return badgeStatusTagWork(data);
+                    }
                 },
                 {
                     data: 'CaseDetail',

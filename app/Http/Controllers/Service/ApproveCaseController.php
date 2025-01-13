@@ -93,10 +93,10 @@ class ApproveCaseController extends Controller
     public function caseCheckWork(Request $request, $caseID)
     {
         try {
-            dd($request->input());
+            // dd($request->input());
             $decryptCaseID = decrypt($caseID);
             // dd($decryptCaseID);
-            $saveCase = $this->approveCaseModel->saveApproveCasePadding($request, $decryptCaseID);
+            $saveCase = $this->approveCaseModel->saveCaseCheckWork($request->input(), $decryptCaseID);
             return response()->json(['status' => $saveCase['status'], 'message' => $saveCase['message']]);
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
@@ -135,10 +135,23 @@ class ApproveCaseController extends Controller
         return response()->json(['count' => $countCaseApprove]);
     }
 
+    public function realtimeCaseCheckWorkCount()
+    {
+        $countCaseApprove = $this->approveCaseModel->countCaseCheckWork();
+        // dd($countCaseApprove);
+        return response()->json(['count' => $countCaseApprove]);
+    }
+
     public function getDataApproveFU(Request $request)
     {
         $getCaseFU = $this->approveCaseModel->getDataApproveFU($request);
         // dd($getCaseFU);
         return response()->json($getCaseFU);
+    }
+
+    public function getDataCaseCheckWork(Request $request)
+    {
+        $getCaseMT = $this->approveCaseModel->getDataCaseCheckWork($request);
+        return response()->json($getCaseMT);
     }
 }
