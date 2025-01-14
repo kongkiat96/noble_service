@@ -55,9 +55,9 @@
             <div>
                 <a href="https://www.servicesystemit.com/" class="footer-link me-4" target="_blank">License</a>
 
-                <a href="#" target="_blank" class="footer-link me-4">Documentation</a>
+                <a href="#" class="footer-link me-4" onclick="popup()">Documentation</a>
 
-                <a href="#" target="_blank" class="footer-link d-none d-sm-inline-block">Support</a>
+                <a href="#" class="footer-link d-none d-sm-inline-block" onclick="popup()">Support</a>
             </div>
         </div>
     </footer>
@@ -65,5 +65,4 @@
     @include('layouts.inc-script')
     @yield('script')
 </body>
-
 </html>
