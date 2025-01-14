@@ -92,7 +92,13 @@ class CaseServiceController extends Controller
                 ->implode(', ');
 
             if ($getCaseDetail['status'] == 200) {
-                return view('app.caseService.caseDetail.caseDetail_MT', [
+                if($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success'){
+                    $setView = 'caseDetailAddPrice';
+                } else {
+                    $setView = 'caseDetail_'.$getCaseDetail['message']['datadetail']['use_tag_code'];
+                }
+                // dd($setView);
+                return view('app.caseService.caseDetail.'.$setView, [
                     'data' => $getCaseDetail['message']['datadetail'],
                     'image' => $getCaseDetail['message']['dataimage'],
                     'imageDoing' => $getCaseDetail['message']['dataimageDoing'],

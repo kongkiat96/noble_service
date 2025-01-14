@@ -9,7 +9,7 @@
             <form id="formAddCategoryList" class="form-block">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="category_item_id">สาเหตุที่เสีย</label>
+                        <label class="form-label-md mb-2" for="category_item_id">สาเหตุที่เสีย <span class="text-danger">*</span></label>
                         <select id="category_item_id" name="category_item_id" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             @foreach ($dataCategoryItem as $key => $item)
@@ -19,7 +19,7 @@
                     </div>
                     
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="category_list_name">การแก้ใข</label>
+                        <label class="form-label-md mb-2" for="category_list_name">การแก้ใข <span class="text-danger">*</span></label>
                         <input type="text" id="category_list_name" class="form-control" name="category_list_name"
                             autocomplete="off" />
                     </div>
@@ -55,17 +55,26 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="sla">SLA</label>
                         <input type="text" id="sla" class="form-control" name="sla"
-                            autocomplete="off" />
+                            autocomplete="off" placeholder="Ex. D3"/>
+                        <label class="form-label-md mb-2 text-danger mt-1" for="sla">(D = วัน, H = ชั่วโมง)</label>
+
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label-md mb-2" for="status_tag">สถานะการใช้งาน</label>
+                        <label class="form-label-md mb-2" for="status_tag">สถานะการใช้งาน <span class="text-danger">*</span></label>
                         <select id="status_tag" name="status_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             <option value="1">กำลังใช้งาน</option>
                             <option value="0">ปิดการใช้งาน</option>
                         </select>
                     </div>
+                </div>
+                <div class="divider">
+                    <div class="divider-text font-weight-bold font-size-lg">หมายเหตุ</div>
+                </div>
+                <div class="col-12">
+                    <h5><span class="text-danger">*** หากระบุ SLA ผิด ระบบจะไม่คำนวณอัตโนมัติ ***</span></h5>
+
                 </div>
                 <input type="text" name="categoryAllID" id="categoryAllID" value="{{ $categoryDetailID }}" hidden>
             </form>

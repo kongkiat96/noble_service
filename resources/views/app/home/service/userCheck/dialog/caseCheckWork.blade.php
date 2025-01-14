@@ -96,13 +96,16 @@
                                         <select name="case_status" id="case_status" class="form-select select2"
                                             data-allow-clear="true">
                                             <option value=""></option>
-                                            @foreach ($getStatusWork as $key)
+                                            {{-- @foreach ($getStatusWork as $key)
                                                 @if (!in_array($key->ID, [99999]))
                                                     <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
                                                 @endif
-                                            @endforeach
+                                            @endforeach --}}
+                                            <option value="case_success_user">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
+                                            <option value="case_reject">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
                                         </select>
                                     </div>
+                                    <input type="text" name="tagStep" id="tagStep" value="userCheckWork" hidden>
                                 </form>
 
                             </div>

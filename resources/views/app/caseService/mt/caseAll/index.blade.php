@@ -129,9 +129,9 @@
 
                                         <li class="nav-item">
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                                data-bs-target="#case-addprice" aria-controls="#case-addprice" aria-selected="true"
+                                                data-bs-target="#case-success" aria-controls="#case-success" aria-selected="true"
                                                 id="reTabD">
-                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseApproveCountFU">0</span>
+                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseSuccessCountMT">0</span>
                                             </button>
                                         </li>
         
@@ -185,22 +185,21 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="tab-pane fade" id="case-addprice" role="tabpanel">
+                                        <div class="tab-pane fade" id="case-success" role="tabpanel">
                                             <div class="text-nowrap table-responsive">
-                                                <table class=" table table-hover table-striped">
+                                                <table class="dt-case-success table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>
+                                                            <th>Ticket</th>
+                                                            <th>สถานะดำเนินงาน</th>
+                                                            <th>หมายเหตุ</th>
+                                                            <th>ผู้แจ้งปัญหา</th>
+                                                            <th>วัน / เวลาที่แจ้งปัญหา</th>
                                                             <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
                                                             <th>ข้อมูลรายการประเภทหมวดหมู่</th>
-                                                            <th>ข้อมูลอาการแจ้งซ่อม</th>
-                                                            <th>สถานะการใช้งาน</th>
-                                                            <th>วันที่บันทึกข้อมูล</th>
+                                                            <th>ข้อมูลอาการแจ้งปัญหา</th>
                                                             <th>ผู้บันทึกข้อมูล</th>
-                                                            <th>วันที่แก้ไขข้อมูล</th>
-                                                            <th>ผู้แก้ไขข้อมูล</th>
-                                                            <th>กำหนดรายละเอียด</th>
-                                                            <th>จัดการ</th>
                                                         </tr>
                                                     </thead>
                                                 </table>

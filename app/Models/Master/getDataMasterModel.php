@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -553,5 +554,73 @@ class getDataMasterModel extends Model
             'status_color' => $query->status_color
         ];
         return $responseData ?? '-';
+    }
+
+    public function getGroupStatus($statusID)
+    {
+        // dd($statusID);
+        if (is_numeric($statusID)) {
+            $query = DB::connection('mysql')->table('tbm_status_work AS sw')
+            ->leftJoin('tbm_group_status AS gs', 'gs.id', '=', 'sw.group_status')
+            ->where('sw.ID', $statusID)
+            ->select([
+                'group_status_en',
+            ])
+            ->first();
+            // dd($query);
+            $setText = [
+                'groupName' => $query->group_status_en
+            ];
+        } else {
+            $setText = [
+                'groupName' => 'other'
+            ];
+        }
+        // dd($setText);
+        return $setText;
+    }
+
+    public function calculateSLA($sla, $case_start, $case_end)
+    {
+        $data = [
+            'sla' => $sla, // ตัวอย่าง sla
+            'case_start' => $case_start,
+            'case_end' => $case_end,
+        ];
+
+        // dd($data);
+        
+        // แปลงวันที่เริ่มต้นและสิ้นสุดเป็น Carbon
+        $start = Carbon::parse($data['case_start']);
+        $end = Carbon::parse($data['case_end']);
+        
+        // ดึงประเภทและจำนวนจาก sla
+        $type = substr($data['sla'], 0, 1); // ตัวอักษรแรก เช่น 'D' หรือ 'H'
+        $amount = (int) substr($data['sla'], 1); // ตัวเลข เช่น 3
+        
+        // คำนวณความแตกต่างระหว่าง case_start และ case_end
+        if ($type === 'D') {
+            // คำนวณเป็นวัน
+            $diffInDays = $start->diffInDays($end);
+            $isExceeded = $diffInDays > $amount;
+            $message = $isExceeded 
+                ? "เกินระยะเวลา $amount วัน ($diffInDays วัน)" 
+                : "ไม่เกินระยะเวลา $amount วัน ($diffInDays วัน)";
+        } elseif ($type === 'H') {
+            // คำนวณเป็นชั่วโมง
+            $diffInHours = $start->diffInHours($end);
+            $isExceeded = $diffInHours > $amount;
+            $message = $isExceeded 
+                ? "เกินระยะเวลา $amount ชั่วโมง ($diffInHours ชั่วโมง)" 
+                : "ไม่เกินระยะเวลา $amount ชั่วโมง ($diffInHours ชั่วโมง)";
+        } else {
+            $message = "ประเภท $type ไม่รองรับ";
+        }
+        
+        // ผลลัพธ์
+        return [
+            'message' => $message,
+            'isExceeded' => $isExceeded ?? false,
+        ];
     }
 }

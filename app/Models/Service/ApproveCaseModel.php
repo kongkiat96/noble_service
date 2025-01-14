@@ -241,7 +241,8 @@ class ApproveCaseModel extends Model
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
                 // ->whereNotIn('cs.category_main', $this->setWhereIn())
-                ->where('cs.tag_work', 'user_check_work')
+                ->where('cs.tag_work', 'case_success_user')
+                ->where('cs.tag_user_approve', 'Y')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -487,7 +488,8 @@ class ApproveCaseModel extends Model
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
                 // ->whereIn('cs.category_main', $this->setWhereIn())
-                ->where('cs.tag_work', 'user_check_work')
+                ->where('cs.tag_work', 'case_success_user')
+                ->where('cs.tag_user_approve', 'Y')
                 ->where('cs.use_tag', 'MT')->count();
             return $query;
         } catch (Exception $e) {
@@ -510,30 +512,49 @@ class ApproveCaseModel extends Model
     public function saveCaseCheckWork($saveStatus, $caseID)
     {
         try {
+            // dd($saveStatus);
             $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
             // dd($saveStatus, $caseID);
-            $caseStatus = $saveStatus['case_status'];
-            // dd($caseStatus);
-            if (in_array($caseStatus, ['manager_mt_checkwork_success', 'reject_manager_mt_checkwork_success'])) {
+            // dd($getDataCase);
+            if ($saveStatus['tagStep'] == 'userCheckWork') {
+                $caseStatus = $saveStatus['case_status'];
+
+                $setUpdate = [
+                    'caseStatus' => $caseStatus,
+                    'caseStep' => $caseStatus,
+                    'tagWork' => $caseStatus,
+                    'userApprove' => $caseStatus == 'case_success_user' ? 'Y' : 'N',
+                    'dateEnd' => $caseStatus == 'case_success_user' ? now() : null,
+                    'caseDetail'    => $caseStatus == 'case_success_user' ? 'ผ่านการตรวจสอบจากผู้แจ้ง' : 'ไม่ผ่านการตรวจสอบจากผู้แจ้ง',
+                    'casePrice' => $getDataCase->price
+                ];
+            } else if ($saveStatus['tagStep'] == 'managerCheckWork') {
+                $caseStatus = $saveStatus['case_status'];
+
                 $mapStatus = $caseStatus == 'manager_mt_checkwork_success' ? 'case_success' : 'case_reject';
                 $setUpdate = [
                     'caseStatus' => $mapStatus,
                     'caseStep' => $mapStatus,
                     'tagWork' => $mapStatus,
-                    'userApprove' => 'Y',
+                    'userApprove' => $mapStatus == 'case_success' ? 'Y' : 'N',
+                    'dateEnd' => $mapStatus == 'case_success' ? $getDataCase->case_end : null,
                     'caseDetail' => !empty($saveStatus['case_detail'])
                         ? $saveStatus['case_detail']
                         : ($caseStatus == 'manager_mt_checkwork_success'
                             ? 'ผ่านการตรวจสอบจากผู้จัดการฝ่าย'
                             : 'ไม่ผ่านการตรวจสอบจากผู้จัดการฝ่าย'),
+                    'casePrice' => $getDataCase->price
                 ];
-            } else {
+            } else if ($saveStatus['tagStep'] == 'add_price') {
                 $setUpdate = [
-                    'caseStatus' => $caseStatus,
-                    'caseStep' => $caseStatus == 4 ? 'user_check_work' : 'reject_case',
-                    'tagWork' => $caseStatus == 4 ? 'user_check_work' : 'reject_case',
-                    'userApprove' => $caseStatus == 4 ? 'Y' : 'N',
-                    'caseDetail'    => $caseStatus == 4 ? 'ผ่านการตรวจสอบจากผู้แจ้ง' : 'ไม่ผ่านการตรวจสอบจากผู้แจ้ง'
+                    'caseStatus' => $getDataCase->case_status,
+                    'caseStep' => $getDataCase->case_step,
+                    'tagWork' => $getDataCase->tag_work,
+                    'dateEnd'   => $getDataCase->case_end,
+                    'userApprove' => $getDataCase->tag_user_approve,
+                    'caseDetail' => !empty($saveStatus['case_detail']) ? $saveStatus['case_detail'] . ' / บันทึกค่าใช้จ่ายจากเจ้าหน้าที่'  : 'บันทึกค่าใช้จ่ายจากเจ้าหน้าที่',
+                    'casePrice' => str_replace(',', '', $saveStatus['case_price'])
+
                 ];
             }
 
@@ -546,7 +567,8 @@ class ApproveCaseModel extends Model
                     'case_step' => $setUpdate['caseStep'],
                     'tag_user_approve'   =>  $setUpdate['userApprove'],
                     'tag_work'   => $setUpdate['tagWork'],
-                    'case_end' => now(),
+                    'price' => $setUpdate['casePrice'],
+                    'case_end' => $setUpdate['dateEnd'],
                     'updated_at' => $setUpdateTime,
                     'updated_user' => $setUpdateUSer
                 ]);
@@ -559,7 +581,8 @@ class ApproveCaseModel extends Model
                     'tag_work' => $setUpdate['tagWork'],
                     'case_detail'   => $setUpdate['caseDetail'],
                     'created_at' => now(),
-                    'created_user'  => Auth::user()->emp_code
+                    'created_user'  => Auth::user()->emp_code,
+                    'price' => $setUpdate['casePrice']
                 ]);
             }
 

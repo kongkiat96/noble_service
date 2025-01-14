@@ -290,8 +290,8 @@ class CaseModel extends Model
                         // ->orWhere('cs.manager_emp_id', Auth::user()->map_employee)
                         ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
                 })
-                // set case status getDataStatusWork
-                ->whereIn('cs.case_status', [1])
+                ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
+                ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -299,7 +299,7 @@ class CaseModel extends Model
                 ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
-
+                $sql = $sql->where('gs.group_status_en', 'Success');
             $sql = $sql->where('cs.deleted', 0)
                 ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
 
@@ -400,6 +400,12 @@ class CaseModel extends Model
                 ->limit(5)
                 ->get();
 
+            $getGroupStatus = $this->getDataMasterModel->getGroupStatus($mainQuery->case_status);
+            if($mainQuery->case_end != null && $mainQuery->sla != null){
+                $calSLA = $this->getDataMasterModel->calculateSLA($mainQuery->sla, $mainQuery->case_start, $mainQuery->case_end);
+            }
+
+            // dd($calSLA);
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             $data = [
                 'datadetail' => [
@@ -425,7 +431,12 @@ class CaseModel extends Model
                     'price'                 => number_format($mainQuery->price, 2),
                     'case_status'           => $mainQuery->case_status,
                     'use_tag'               => $mainQuery->use_tag == 'IT' ? 'ไอที' : 'ช่างซ่อมบำรุง / อาคาร',
+                    'use_tag_code'          => $mainQuery->use_tag,
                     'tag_work'              => $mainQuery->tag_work,
+                    'group_status'          => $getGroupStatus['groupName'],
+                    'case_start'            => $mainQuery->case_start,
+                    'case_end'              => $mainQuery->case_end,
+                    'calSLA'                => @$calSLA
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
                 'dataimageDoing' => $imageQueryDoing->toArray()
@@ -702,8 +713,9 @@ class CaseModel extends Model
                     $query->where('cs.case_user_open', Auth::user()->emp_code)
                         ->orWhere('cs.employee_other_case', Auth::user()->map_employee);
                 })
-                // set case status getDataStatusWork
-                ->whereIn('cs.case_status', [1])
+                ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
+                ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id')
+                ->where('gs.group_status_en', 'Success')
                 ->count();
             // dd($query);
             return $query;

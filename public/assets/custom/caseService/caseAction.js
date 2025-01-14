@@ -32,6 +32,24 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#saveCaseAddprice').on('click', function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formCaseAddPrice")[0];
+        const caseID = $('#caseID').val();
+        const fv = setupFormValidationCaseAddPrice(form);
+        const formData = new FormData(form);
+        console.log(formData)
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData("/service/approve-case/case-check-work/" + caseID, formData)
+                    .done(onSaveCaseActionSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
+    })
+
 })
 
 function setupFormValidationDoingCaseAction(formElement, setSelect) {
@@ -62,6 +80,37 @@ function setupFormValidationDoingCaseAction(formElement, setSelect) {
             bootstrap5: new FormValidation.plugins.Bootstrap5({
                 eleValidClass: '',
                 rowSelector: '.col-md-12, .col-md-6'
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+    });
+}
+
+function setupFormValidationCaseAddPrice(formElement, setSelect) {
+    const validators = {
+        notEmptyAndRegexp: (message, regexp) => ({
+            validators: {
+                notEmpty: { message },
+                regexp: { regexp, message: 'ข้อมูลไม่ถูกต้อง' }
+            }
+        }),
+    };
+    const validationRules = {
+        case_price: validators.notEmptyAndRegexp(
+            'ระบุ ค่าใช้จ่าย', 
+            /^[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{1,2})?$/
+        ),
+    };
+    
+
+    return FormValidation.formValidation(formElement, {
+        fields: validationRules,
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: '',
+                rowSelector: '.col-md-9'
             }),
             submitButton: new FormValidation.plugins.SubmitButton(),
             autoFocus: new FormValidation.plugins.AutoFocus()

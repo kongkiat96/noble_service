@@ -49,6 +49,22 @@ class CaseServiceMTController extends Controller
         }
     }
 
+    public function getDataCaseSuccessMT(Request $request)
+    {
+        try {
+            $getAllCase = $this->caseServiceModel->getDataCaseSuccessMT($request);
+            return response()->json($getAllCase);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function realtimeCaseNewCountMT()
     {
         $countCaseNew = $this->caseServiceModel->realtimeCaseNewCountMT();
@@ -61,5 +77,12 @@ class CaseServiceMTController extends Controller
         $countCaseDoing = $this->caseServiceModel->realtimeCaseDoingCountMT();
         // dd($countCaseDoing);
         return response()->json(['count' => $countCaseDoing]);
+    }
+
+    public function realtimeCaseSuccessCountMT()
+    {
+        $countCaseSuccess = $this->caseServiceModel->realtimeCaseSuccessCountMT();
+        // dd($countCaseSuccess);
+        return response()->json(['count' => $countCaseSuccess]);
     }
 }

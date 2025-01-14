@@ -956,6 +956,7 @@ function badgeStatusTagWork(data, type, full, row) {
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
 
         case_success: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบ', className: 'bg-label-success' },
+        case_success_user: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบจากผู้แจ้ง', className: 'bg-label-warning' },
         case_reject: { title: 'งานไม่เรียบร้อย / ไม่ผ่านการตรวจสอบ', className: 'bg-label-danger' }
     };
 

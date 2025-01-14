@@ -133,6 +133,7 @@
                             <th>ลำดับ</th>
                             <th>สถานะ</th>
                             <th class="text-center">รายละเอียด</th>
+                            <th>ค่าใช้จ่าย</th>
                             <th>วัน / เวลาที่บันทึกข้อมูล</th>
                             <th>ผู้บันทึกข้อมูล</th>
                         </tr>
@@ -140,8 +141,6 @@
                 </table>
             </div>
             {{-- </div> --}}
-
-
         </div>
         <input type="text" value="{{ $data['id'] }}" name="caseID" id="caseID" hidden>
     </div>

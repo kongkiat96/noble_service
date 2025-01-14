@@ -201,7 +201,7 @@ class CaseController extends Controller
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
             if ($getCaseDetail['status'] == 200) {
-                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'user_check_work') {
+                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success_user') {
                     $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
                     $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
                     $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];

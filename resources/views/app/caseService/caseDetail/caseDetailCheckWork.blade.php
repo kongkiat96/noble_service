@@ -141,6 +141,26 @@
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
 
+                        <div class="divider">
+                            <div class="divider-text font-weight-bold font-size-lg">ข้อมูลระยะเวลาดำเนินงาน</div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="case_start">วันที่แจ้งงาน</label>
+                            <input type="text" id="case_start" class="form-control" name="case_start" readonly value="{{ $data['case_start'] }}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานเรียบร้อย</label>
+                            <input type="text" id="case_end" class="form-control" name="case_end" readonly value="{{ $data['case_end'] }}">
+                            <label class="form-label-sm mt-2 text-danger" for="case_end">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="calSLA">ระยะเวลาที่คำนวณแล้ว</label>
+                            <input type="text" id="calSLA" class="form-control" name="calSLA" readonly value="{{ $data['calSLA']['message'] }}">
+                            <label class="form-label-sm mt-2 text-danger" for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                        </div>
+
                         
                         <div class="divider">
                             <div class="divider-text font-weight-bold font-size-lg">สถานะการตรวจสอบการทำงาน</div>
@@ -169,7 +189,7 @@
 
 
                     <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
-
+                    <input type="text" name="tagStep" id="tagStep" value="managerCheckWork" hidden>
                     {{-- <div class="divider">
                         <div class="divider-text font-weight-bold font-size-lg">รูปภาพการแก้ไขปัญหา</div>
                     </div> --}}
