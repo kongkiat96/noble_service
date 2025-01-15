@@ -339,7 +339,7 @@ Route::middleware(['auth'])->group(function () {
 
 
             Route::post('/get-data-approve-mt', 'Service\ApproveCaseController@getDataApproveMT');
-            Route::get('/realtime-case-approve-count-mt', 'Service\ApproveCaseController@realtimeCaseApproveCountMT');
+            Route::get('/realtime-case-approve-count/{type}', 'Service\ApproveCaseController@realtimeCaseApproveCountTag');
             Route::post('/get-data-approve-fu', 'Service\ApproveCaseController@getDataApproveFU');
             Route::get('/realtime-case-approve-count-fu', 'Service\ApproveCaseController@realtimeCaseApproveCountFU');
             Route::post('/get-data-caseCheckWork', 'Service\ApproveCaseController@getDataCaseCheckWork');
@@ -361,6 +361,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/realtime-case-doing-count-mt', 'CaseService\mt\CaseServiceMTController@realtimeCaseDoingCountMT');
         Route::get('/realtime-case-success-count-mt', 'CaseService\mt\CaseServiceMTController@realtimeCaseSuccessCountMT');
 
+        Route::get('/case-approve-it', 'CaseService\CaseServiceController@index_case_approve_it');
+        Route::get('/case-all-it', 'CaseService\CaseServiceController@index_case_all_it');
+        Route::post('/get-data-case-open-it', 'CaseService\it\CaseServiceITController@getDataCaseOpenIT');
 
         Route::get('/case-action/{ticket}', 'CaseService\CaseServiceController@getDatacaseAction');
         Route::post('/case-doing-action/{caseID}', 'CaseService\CaseServiceController@caseDoingAction');

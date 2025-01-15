@@ -94,13 +94,12 @@ class ApproveCaseModel extends Model
     public function getDataApproveMT($param)
     {
         try {
+            // dd("ss");
             $sql = DB::connection('mysql')->table('tbt_case_service AS cs')
                 // ->where(function ($query) use ($param) {
                 //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereNotIn('cs.category_main', $this->setWhereIn())
-                ->where('cs.tag_work', 'wait_manager_mt_approve')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -109,9 +108,9 @@ class ApproveCaseModel extends Model
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
             if ($param['use_tag'] == 'IT') {
-                $sql = $sql->where('cs.use_tag', 'IT');
+                $sql = $sql->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_it_approve');
             } else if ($param['use_tag'] == 'MT') {
-                $sql = $sql->where('cs.use_tag', 'MT');
+                $sql = $sql->where('cs.use_tag', 'MT')->where('cs.tag_work', 'wait_manager_mt_approve')->whereNotIn('cs.category_main', $this->setWhereIn_MT());
             }
             $sql = $sql->where('cs.deleted', 0)
                 ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
@@ -169,7 +168,7 @@ class ApproveCaseModel extends Model
                 //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.category_main', $this->setWhereIn())
+                ->whereIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'wait_manager_mt_approve')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
@@ -240,7 +239,7 @@ class ApproveCaseModel extends Model
                 //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                // ->whereNotIn('cs.category_main', $this->setWhereIn())
+                // ->whereNotIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'case_success_user')
                 ->where('cs.tag_user_approve', 'Y')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
@@ -438,15 +437,26 @@ class ApproveCaseModel extends Model
         }
     }
 
-    public function countCaseApproveMT()
+    public function countCaseApproveType($type)
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
-                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereNotIn('cs.category_main', $this->setWhereIn())
-                ->where('cs.tag_work', 'wait_manager_mt_approve')
-                ->where('cs.use_tag', 'MT')->count();
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+            switch ($type) {
+                case 'it':
+                    $query = $query->where('cs.tag_work', 'wait_manager_it_approve')
+                        ->where('cs.use_tag', 'IT');
+                    break;
+                case 'mt':
+                    $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
+                        ->where('cs.tag_work', 'wait_manager_mt_approve')
+                        ->where('cs.use_tag', 'MT');
+                    break;
+            }
+
+            $query = $query->count();
+            // dd($query);
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
@@ -460,13 +470,15 @@ class ApproveCaseModel extends Model
         }
     }
 
+
+
     public function countCaseApproveFU()
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.category_main', $this->setWhereIn())
+                ->whereIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'wait_manager_mt_approve')
                 ->where('cs.use_tag', 'MT')->count();
             return $query;
@@ -487,7 +499,7 @@ class ApproveCaseModel extends Model
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                // ->whereIn('cs.category_main', $this->setWhereIn())
+                // ->whereIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'case_success_user')
                 ->where('cs.tag_user_approve', 'Y')
                 ->where('cs.use_tag', 'MT')->count();
@@ -503,7 +515,7 @@ class ApproveCaseModel extends Model
             ];
         }
     }
-    private function setWhereIn()
+    private function setWhereIn_MT()
     {
         $forCategoryMainFU = [433];
         return $forCategoryMainFU;

@@ -41,6 +41,25 @@ class CaseServiceController extends Controller
         ]);
     }
 
+    public function index_case_approve_it()
+    {
+        $url = request()->segments();
+        $urlName = "รายการอนุมัติแจ้งปัญหาฝ่ายไอที (ITs)";
+        $urlSubLink = "case-approve-it";
+
+        if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+            return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+        }
+        $getAccessMenus = getAccessToMenu::getAccessMenus();
+
+        return view('app.caseService.it.caseApprove.index', [
+            'url' => $url,
+            'urlName' => $urlName,
+            'urlSubLink' => $urlSubLink,
+            'listMenus' => $getAccessMenus
+        ]);
+    }
+
     public function index_case_all_mt()
     {
         $url = request()->segments();
@@ -62,21 +81,43 @@ class CaseServiceController extends Controller
         ]);
     }
 
+    public function index_case_all_it()
+    {
+        $url = request()->segments();
+        $urlName = "รายการแจ้งปัญหาฝ่ายไอที (ITs)";
+        $urlSubLink = "case-all-it";
+
+        if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+            return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+        }
+        $dateNow = CalculateDateHelper::getCurrentThaiMonthYear();
+        $getAccessMenus = getAccessToMenu::getAccessMenus();
+
+        return view('app.caseService.it.caseAll.index', [
+            'url' => $url,
+            'urlName' => $urlName,
+            'urlSubLink' => $urlSubLink,
+            'listMenus' => $getAccessMenus,
+            'dateNow' => $dateNow
+        ]);
+    }
+
     public function getDatacaseAction($ticket)
     {
         try {
             // dd($ticket);
             $getCaseDetail = $this->caseModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
+            $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
             $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
             $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
             $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
             $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
             $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
             $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
-            $getStatusWork = $this->getMaster->getDataStatusWork('mt','admin');
+            $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase,'admin');
 
-            $getDataWorker = $this->getMaster->getDataWorker('mt');
+            $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
             $setWorker = $getCaseDetail['message']['datadetail'];
             $workerArray = json_decode($setWorker['worker'], true);
             $workerNames = collect($workerArray)
@@ -84,7 +125,7 @@ class CaseServiceController extends Controller
                 ->implode(', ');
             // dd($workerNames);
 
-            $getDataChecker = $this->getMaster->getChecker('mt');
+            $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
             $setChecker = $getCaseDetail['message']['datadetail'];
             $checkerArray = json_decode($setChecker['checker'], true);
             $checkerNames = collect($checkerArray)

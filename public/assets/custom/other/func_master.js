@@ -942,6 +942,8 @@ function badgeStatusTagWork(data, type, full, row) {
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
         wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         openCaseWaitApprove: { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
+        wait_manager_it_approve: { title: 'รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
+
 
         manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },

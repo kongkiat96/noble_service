@@ -103,10 +103,10 @@ class CaseModel extends Model
                 $data['tag_work'] = 'wait_manager_mt_approve';
             } else {
                 $data['case_start'] = now();
-                $data['case_status'] = 'padding';
-                $data['case_step'] = 'padding';
-                $data['tag_manager_approve'] = null;
-                $data['tag_work'] = null;
+                $data['case_status'] = 'wait_manager_it_approve';
+                $data['case_step'] = 'wait_manager_it_approve';
+                $data['tag_manager_approve'] = 'NoManager';
+                $data['tag_work'] = 'wait_manager_it_approve';
             }
         }
 

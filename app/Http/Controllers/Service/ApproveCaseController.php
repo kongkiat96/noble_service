@@ -115,9 +115,10 @@ class ApproveCaseController extends Controller
         return response()->json(['count' => $countCaseApprove]);
     }
 
-    public function realtimeCaseApproveCountMT()
+    public function realtimeCaseApproveCountTag($type)
     {
-        $countCaseApprove = $this->approveCaseModel->countCaseApproveMT();
+        // dd($type);
+        $countCaseApprove = $this->approveCaseModel->countCaseApproveType($type);
         // dd($countCaseApprove);
         return response()->json(['count' => $countCaseApprove]);
     }

@@ -200,6 +200,8 @@ class CaseController extends Controller
             // dd($ticket);
             $getCaseDetail = $this->caseServiceModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
+            $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
+            // dd($setTextLowercase);
             if ($getCaseDetail['status'] == 200) {
                 if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success_user') {
                     $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
@@ -208,9 +210,9 @@ class CaseController extends Controller
                     $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
                     $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
                     $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
-                    $getStatusWork = $this->getMaster->getDataStatusWork('mt', 'admin');
+                    $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
 
-                    $getDataWorker = $this->getMaster->getDataWorker('mt');
+                    $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
                     $setWorker = $getCaseDetail['message']['datadetail'];
                     $workerArray = json_decode($setWorker['worker'], true);
                     $workerNames = collect($workerArray)
@@ -218,7 +220,7 @@ class CaseController extends Controller
                         ->implode(', ');
                     // dd($workerNames);
 
-                    $getDataChecker = $this->getMaster->getChecker('mt');
+                    $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
                     $setChecker = $getCaseDetail['message']['datadetail'];
                     $checkerArray = json_decode($setChecker['checker'], true);
                     $checkerNames = collect($checkerArray)
@@ -240,7 +242,8 @@ class CaseController extends Controller
                 } else {
                     return view('app.caseService.caseDetail.caseDetail', [
                         'data' => $getCaseDetail['message']['datadetail'],
-                        'image' => $getCaseDetail['message']['dataimage']
+                        'image' => $getCaseDetail['message']['dataimage'],
+                        'setLowercase' => $setTextLowercase
                     ]);
                 }
             } else {
