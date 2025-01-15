@@ -271,9 +271,9 @@ function reTable() {
     $('.dt-caseCheckWork').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
-    scheduleFetch("/service/approve-case/realtime-case-approve-count-mt", "caseApproveCountMT", 60000); // สำหรับ MT
-    scheduleFetch("/service/approve-case/realtime-case-approve-count-fu", "caseApproveCountFU", 60000); // สำหรับ FU
-    scheduleFetch("/service/approve-case/realtime-case-checkwork-count", "caseCheckWorkCount", 60000); // สำหรับ FU
+    scheduleFetch(setURLApprove + "/realtime-case-approve-count/mt", "caseApproveCountMT", 60000); // สำหรับ MT
+    scheduleFetch(setURLApprove + "/realtime-case-approve-count-subset/furniture", "caseApproveCountFU", 60000); // สำหรับ FU
+    scheduleFetch(setURLApprove + "/realtime-case-checkwork-count/mt", "caseCheckWorkCount", 60000); // สำหรับ FU
     setInterval(reTable, 60000);
 });
 

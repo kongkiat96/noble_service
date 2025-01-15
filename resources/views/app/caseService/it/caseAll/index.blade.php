@@ -115,7 +115,7 @@
                                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-openCase" aria-controls="#case-openCase" aria-selected="true"
                                                 id="reTabA">
-                                                รายการแจ้งปัญหาเข้ามาใหม่ <span class="badge bg-white text-primary ms-1" id="caseNewCountMT">0</span>
+                                                รายการแจ้งปัญหาเข้ามาใหม่ <span class="badge bg-white text-primary ms-1" id="caseNewCountIT">0</span>
                                             </button>
                                         </li>
         
@@ -123,7 +123,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-working" aria-controls="#case-working" aria-selected="true"
                                                 id="reTabB">
-                                                รายการแจ้งปัญหาที่ดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
+                                                รายการแจ้งปัญหาที่ดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountIT">0</span>
                                             </button>
                                         </li>
 
@@ -131,7 +131,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-success" aria-controls="#case-success" aria-selected="true"
                                                 id="reTabD">
-                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseSuccessCountMT">0</span>
+                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseSuccessCountIT">0</span>
                                             </button>
                                         </li>
         

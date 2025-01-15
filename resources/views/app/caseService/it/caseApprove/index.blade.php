@@ -35,7 +35,7 @@
                                                 aria-selected="true" id="reTabB">
                                                 รายการแจ้งปัญหากลุ่มขอตรวจสอบ CCTV <span
                                                     class="badge bg-white text-primary ms-1"
-                                                    id="caseApproveCountFU">0</span>
+                                                    id="caseApproveCountCCTV">0</span>
                                             </button>
                                         </li>
 

@@ -730,4 +730,77 @@ class CaseModel extends Model
             ];
         }
     }
+
+    public function realtimeCaseNewCountTag($type)
+    {
+        try {
+            $query = DB::connection('mysql')->table('tbt_case_service AS cs')
+                ->where('cs.deleted', 0)
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+            switch ($type) {
+                case 'it':
+                $query = $query->where('cs.case_status', 'manager_it_approve')->where('cs.use_tag', 'IT');
+                break;
+                case 'mt':
+                $query = $query->where('cs.case_status', 'manager_mt_approve')->where('cs.use_tag', 'MT');
+                break;
+            }
+            $query = $query->count();
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function realtimeCaseDoingCountTag($type)
+    {
+        try {
+            $setTextUpercase = strtoupper($type);
+            // dd($setTextUpercase);
+            $query = DB::connection('mysql')->table('tbt_case_service AS cs')
+                ->where('cs.deleted', 0)
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
+                ->whereIn('cs.case_step', ['doing_case','reject_case','case_reject'])
+                ->where('cs.use_tag', $setTextUpercase)->count();
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function realtimeCaseSuccessCountTag($type)
+    {
+        try {
+            $setTextUpercase = strtoupper($type);
+            $query = DB::connection('mysql')->table('tbt_case_service AS cs')
+                ->where('cs.deleted', 0)
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
+                ->where('cs.case_step', 'case_success')
+                ->where('cs.use_tag', $setTextUpercase)->count();
+            return $query;
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

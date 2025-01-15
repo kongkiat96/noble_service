@@ -129,16 +129,16 @@ class ApproveCaseController extends Controller
         return response()->json($getCaseMT);
     }
 
-    public function realtimeCaseApproveCountFU()
+    public function realtimeCaseApproveCountSubset($type)
     {
-        $countCaseApprove = $this->approveCaseModel->countCaseApproveFU();
+        $countCaseApprove = $this->approveCaseModel->countCaseApproveSubSet($type);
         // dd($countCaseApprove);
         return response()->json(['count' => $countCaseApprove]);
     }
 
-    public function realtimeCaseCheckWorkCount()
+    public function realtimeCaseCheckWorkCount($type)
     {
-        $countCaseApprove = $this->approveCaseModel->countCaseCheckWork();
+        $countCaseApprove = $this->approveCaseModel->countCaseCheckWork($type);
         // dd($countCaseApprove);
         return response()->json(['count' => $countCaseApprove]);
     }

@@ -32,4 +32,36 @@ class CaseServiceITController extends Controller
             ];
         }
     }
+
+    public function getDataCaseDoingIT(Request $request)
+    {
+        try {
+            $getAllCase = $this->caseServiceModel->getDataCaseDoingIT($request);
+            return response()->json($getAllCase);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getDataCaseSuccessIT(Request $request)
+    {
+        try {
+            $getAllCase = $this->caseServiceModel->getDataCaseSuccessIT($request);
+            return response()->json($getAllCase);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

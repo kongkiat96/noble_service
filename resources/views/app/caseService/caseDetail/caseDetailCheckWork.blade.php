@@ -173,8 +173,8 @@
                             <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
-                                <option value="manager_mt_checkwork_success">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
-                                <option value="reject_manager_mt_checkwork_success">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
+                                <option value="manager_{{ $setLowercase }}_checkwork_success">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
+                                <option value="reject_manager_{{ $setLowercase }}_checkwork_success">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
                             </select>
                         </div>
 

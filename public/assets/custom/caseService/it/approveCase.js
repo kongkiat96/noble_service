@@ -272,8 +272,8 @@ function reTable() {
 }
 $(document).ready(function () {
     scheduleFetch(setURLApprove + "/realtime-case-approve-count/it", "caseApproveCountIT", 60000); // สำหรับ MT
-    scheduleFetch(setURLApprove + "/realtime-case-approve-count/cctv", "caseApproveCountCCTV", 60000); // สำหรับ FU
-    scheduleFetch(setURLApprove + "/realtime-case-checkwork-count", "caseCheckWorkCount", 60000); // สำหรับ FU
+    scheduleFetch(setURLApprove + "/realtime-case-approve-count-subset/cctv", "caseApproveCountCCTV", 60000); // สำหรับ FU
+    scheduleFetch(setURLApprove + "/realtime-case-checkwork-count/it", "caseCheckWorkCount", 60000); // สำหรับ FU
     setInterval(reTable, 60000);
 });
 

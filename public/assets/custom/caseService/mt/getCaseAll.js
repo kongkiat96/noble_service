@@ -300,9 +300,9 @@ function reTable() {
     $('.dt-case-success').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
-    scheduleFetch("/case-service/realtime-case-new-count-mt", "caseNewCountMT", 60000); // สำหรับ MT
-    scheduleFetch("/case-service/realtime-case-doing-count-mt", "caseDoingCountMT", 60000); // สำหรับ FU
-    scheduleFetch("/case-service/realtime-case-success-count-mt", "caseSuccessCountMT", 60000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-new-count/mt", "caseNewCountMT", 60000); // สำหรับ MT
+    scheduleFetch("/case-service/realtime-case-doing-count/mt", "caseDoingCountMT", 60000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-success-count/mt", "caseSuccessCountMT", 60000); // สำหรับ FU
     setInterval(reTable, 60000);
 });
 

@@ -64,25 +64,4 @@ class CaseServiceMTController extends Controller
             ];
         }
     }
-
-    public function realtimeCaseNewCountMT()
-    {
-        $countCaseNew = $this->caseServiceModel->realtimeCaseNewCountMT();
-        // dd($countCaseNew);
-        return response()->json(['count' => $countCaseNew]);
-    }
-
-    public function realtimeCaseDoingCountMT()
-    {
-        $countCaseDoing = $this->caseServiceModel->realtimeCaseDoingCountMT();
-        // dd($countCaseDoing);
-        return response()->json(['count' => $countCaseDoing]);
-    }
-
-    public function realtimeCaseSuccessCountMT()
-    {
-        $countCaseSuccess = $this->caseServiceModel->realtimeCaseSuccessCountMT();
-        // dd($countCaseSuccess);
-        return response()->json(['count' => $countCaseSuccess]);
-    }
 }

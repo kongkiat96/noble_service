@@ -103,7 +103,7 @@ $(function () {
                 '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
         },
         ajax: {
-            url: setURLCaseService + "/get-data-case-doing-mt",
+            url: setURLCaseService + "/get-data-case-doing-it",
             type: 'POST',
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -199,7 +199,7 @@ $(function () {
                 '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>',
         },
         ajax: {
-            url: setURLCaseService + "/get-data-case-success-mt",
+            url: setURLCaseService + "/get-data-case-success-it",
             type: 'POST',
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
@@ -300,9 +300,9 @@ function reTable() {
     $('.dt-case-success').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
-    scheduleFetch("/case-service/realtime-case-new-count-mt", "caseNewCountMT", 60000); // สำหรับ MT
-    scheduleFetch("/case-service/realtime-case-doing-count-mt", "caseDoingCountMT", 60000); // สำหรับ FU
-    scheduleFetch("/case-service/realtime-case-success-count-mt", "caseSuccessCountMT", 60000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-new-count/it", "caseNewCountIT", 60000); // สำหรับ MT
+    scheduleFetch("/case-service/realtime-case-doing-count/it", "caseDoingCountIT", 60000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-success-count/it", "caseSuccessCountIT", 60000); // สำหรับ FU
     setInterval(reTable, 60000);
 });
 

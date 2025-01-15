@@ -180,4 +180,25 @@ class CaseServiceController extends Controller
             ];
         }
     }
+
+    public function realtimeCaseNewCountTag($type)
+    {
+        $countCaseNew = $this->caseModel->realtimeCaseNewCountTag($type);
+        // dd($countCaseNew);
+        return response()->json(['count' => $countCaseNew]);
+    }
+
+    public function realtimeCaseDoingCountTag($type)
+    {
+        $countCaseDoing = $this->caseModel->realtimeCaseDoingCountTag($type);
+        // dd($countCaseDoing);
+        return response()->json(['count' => $countCaseDoing]);
+    }
+
+    public function realtimeCaseSuccessCountTag($type)
+    {
+        $countCaseSuccess = $this->caseModel->realtimeCaseSuccessCountTag($type);
+        // dd($countCaseSuccess);
+        return response()->json(['count' => $countCaseSuccess]);
+    }
 }

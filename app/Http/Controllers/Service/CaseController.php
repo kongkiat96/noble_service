@@ -237,7 +237,8 @@ class CaseController extends Controller
                         'getStatusWork' => $getStatusWork,
                         'workerNames' => $workerNames,
                         'getDataChecker' => $getDataChecker,
-                        'checkerNames' => $checkerNames
+                        'checkerNames' => $checkerNames,
+                        'setLowercase' => $setTextLowercase
                     ]);
                 } else {
                     return view('app.caseService.caseDetail.caseDetail', [

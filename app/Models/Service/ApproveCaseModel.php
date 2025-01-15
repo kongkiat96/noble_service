@@ -472,15 +472,25 @@ class ApproveCaseModel extends Model
 
 
 
-    public function countCaseApproveFU()
+    public function countCaseApproveSubSet($type)
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
-                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.category_main', $this->setWhereIn_MT())
-                ->where('cs.tag_work', 'wait_manager_mt_approve')
-                ->where('cs.use_tag', 'MT')->count();
+                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+            switch ($type) {
+                case 'cctv':
+                    $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
+                        // ->where('cs.tag_work', 'wait_manager_mt_approve')
+                        ->where('cs.use_tag', 'IT');
+                    break;
+                case 'furniture':
+                    $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
+                        ->where('cs.tag_work', 'wait_manager_mt_approve')
+                        ->where('cs.use_tag', 'MT');
+                    break;
+            }
+            $query = $query->count();
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
@@ -493,16 +503,17 @@ class ApproveCaseModel extends Model
             ];
         }
     }
-    public function countCaseCheckWork()
+    public function countCaseCheckWork($type)
     {
         try {
+            $setTextUpercase = strtoupper($type);
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
                 // ->whereIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'case_success_user')
                 ->where('cs.tag_user_approve', 'Y')
-                ->where('cs.use_tag', 'MT')->count();
+                ->where('cs.use_tag', $setTextUpercase)->count();
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
@@ -526,6 +537,7 @@ class ApproveCaseModel extends Model
         try {
             // dd($saveStatus);
             $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
+            $setTextLower = strtolower($getDataCase->use_tag);
             // dd($saveStatus, $caseID);
             // dd($getDataCase);
             if ($saveStatus['tagStep'] == 'userCheckWork') {
@@ -543,7 +555,7 @@ class ApproveCaseModel extends Model
             } else if ($saveStatus['tagStep'] == 'managerCheckWork') {
                 $caseStatus = $saveStatus['case_status'];
 
-                $mapStatus = $caseStatus == 'manager_mt_checkwork_success' ? 'case_success' : 'case_reject';
+                $mapStatus = $caseStatus == 'manager_'.$setTextLower.'_checkwork_success' ? 'case_success' : 'case_reject';
                 $setUpdate = [
                     'caseStatus' => $mapStatus,
                     'caseStep' => $mapStatus,
@@ -552,7 +564,7 @@ class ApproveCaseModel extends Model
                     'dateEnd' => $mapStatus == 'case_success' ? $getDataCase->case_end : null,
                     'caseDetail' => !empty($saveStatus['case_detail'])
                         ? $saveStatus['case_detail']
-                        : ($caseStatus == 'manager_mt_checkwork_success'
+                        : ($caseStatus == 'manager_'.$setTextLower.'_checkwork_success'
                             ? 'ผ่านการตรวจสอบจากผู้จัดการฝ่าย'
                             : 'ไม่ผ่านการตรวจสอบจากผู้จัดการฝ่าย'),
                     'casePrice' => $getDataCase->price
