@@ -50,6 +50,12 @@ $(document).ready(function () {
         });
     })
 
+    $('#printWork').on('click', function (e) {
+        const caseTicket = $('#caseTicket').val();
+        window.open('/case-service/case-print-work/' + caseTicket, '_blank');
+        // window.location.href = '/case-service/case-print-work/'+ caseID, '_blank';
+    })
+
 })
 
 function setupFormValidationDoingCaseAction(formElement, setSelect) {

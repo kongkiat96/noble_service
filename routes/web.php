@@ -335,7 +335,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/approve-case')->group(function () {
             Route::get('/sub-manager', 'Service\ApproveCaseController@approveCaseSubManager');
             Route::post('/get-data-case-all', 'Service\ApproveCaseController@getDataCaseAll');
-            Route::get('/realtime-case-approve-count', 'Service\ApproveCaseController@realtimeCaseApproveCount');
+            // Route::get('/realtime-case-approve-count', 'Service\ApproveCaseController@realtimeCaseApproveCount');
 
 
             Route::post('/get-data-approve-mt', 'Service\ApproveCaseController@getDataApproveMT');
@@ -373,6 +373,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/realtime-case-new-count/{type}', 'CaseService\CaseServiceController@realtimeCaseNewCountTag');
         Route::get('/realtime-case-doing-count/{type}', 'CaseService\CaseServiceController@realtimeCaseDoingCountTag');
         Route::get('/realtime-case-success-count/{type}', 'CaseService\CaseServiceController@realtimeCaseSuccessCountTag');
+
+        Route::get('/case-print-work/{ticket}', 'CaseService\CaseServiceController@casePrintWork');
     });
 
     Route::prefix('getMaster')->group(function () {

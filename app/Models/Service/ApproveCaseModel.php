@@ -449,8 +449,8 @@ class ApproveCaseModel extends Model
                         ->where('cs.use_tag', 'IT');
                     break;
                 case 'mt':
-                    $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
-                        ->where('cs.tag_work', 'wait_manager_mt_approve')
+                    // $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
+                    $query = $query->where('cs.tag_work', 'wait_manager_mt_approve')
                         ->where('cs.use_tag', 'MT');
                     break;
             }

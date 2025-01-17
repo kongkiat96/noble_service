@@ -367,6 +367,7 @@ class CaseModel extends Model
     public function getDataCaseDetailApprove($getTicket)
     {
         try {
+            // dd("sss");
             // Query ข้อมูลหลัก (datadetail)
             $mainQuery = DB::connection('mysql')
                 ->table('tbt_case_service AS cs')
@@ -436,6 +437,7 @@ class CaseModel extends Model
                     'group_status'          => $getGroupStatus['groupName'],
                     'case_start'            => $mainQuery->case_start,
                     'case_end'              => $mainQuery->case_end,
+                    'created_at'            => $mainQuery->created_at,
                     'calSLA'                => @$calSLA
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array

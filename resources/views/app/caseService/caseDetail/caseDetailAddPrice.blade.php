@@ -32,6 +32,17 @@
 
     <div class="tab-content">
         <div class="tab-pane fade show active" id="detail-case" role="tabpanel">
+            <div class="row mb-2 text-end">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                    <button type="submit" name="printWork" id="printWork"
+                    class="btn btn-danger btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-file-pdf'></i>
+                    พิมพ์ใบงาน</button>
+                </div>
+                
+            </div>
             <div class="row g-1 form-block">
                 <div class="col-md-6 mb-4">
                     <label class="form-label-md mb-2" for="ticket">Ticket</label>
@@ -177,8 +188,7 @@
 
                     </div>
 
-                    <input type="text" name="tagStep" id="tagStep" value="add_price" hidden>
-                    <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
+                    <input type="text" name="caseTicket" id="caseTicket" value="{{ $data['ticket'] }}" hidden>
 
                     <div class="row">
                         <div class="col-md-12 mb-4">

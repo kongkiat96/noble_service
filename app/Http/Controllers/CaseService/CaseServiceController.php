@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Mpdf\Mpdf;
 
 class CaseServiceController extends Controller
 {
@@ -115,7 +116,7 @@ class CaseServiceController extends Controller
             $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
             $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
             $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
-            $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase,'admin');
+            $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
 
             $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
             $setWorker = $getCaseDetail['message']['datadetail'];
@@ -133,13 +134,13 @@ class CaseServiceController extends Controller
                 ->implode(', ');
 
             if ($getCaseDetail['status'] == 200) {
-                if($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success'){
+                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success') {
                     $setView = 'caseDetailAddPrice';
                 } else {
-                    $setView = 'caseDetail_'.$getCaseDetail['message']['datadetail']['use_tag_code'];
+                    $setView = 'caseDetail_' . $getCaseDetail['message']['datadetail']['use_tag_code'];
                 }
                 // dd($setView);
-                return view('app.caseService.caseDetail.'.$setView, [
+                return view('app.caseService.caseDetail.' . $setView, [
                     'data' => $getCaseDetail['message']['datadetail'],
                     'image' => $getCaseDetail['message']['dataimage'],
                     'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
@@ -200,5 +201,91 @@ class CaseServiceController extends Controller
         $countCaseSuccess = $this->caseModel->realtimeCaseSuccessCountTag($type);
         // dd($countCaseSuccess);
         return response()->json(['count' => $countCaseSuccess]);
+    }
+
+    public function casePrintWork($ticket)
+    {
+        // dd($ticket);
+        $getCaseDetail = $this->caseModel->getDataCaseDetailApprove($ticket);
+        // dd($getCaseDetail);
+        $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
+        $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+        $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+        $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+        $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
+        $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+        $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
+        $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
+
+        $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
+        $setWorker = $getCaseDetail['message']['datadetail'];
+        $workerArray = json_decode($setWorker['worker'], true);
+        $workerNames = collect($workerArray)
+            ->pluck('name')
+            ->implode(', ');
+        // dd($workerNames);
+
+        $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
+        $setChecker = $getCaseDetail['message']['datadetail'];
+        $checkerArray = json_decode($setChecker['checker'], true);
+        $checkerNames = collect($checkerArray)
+            ->pluck('name')
+            ->implode(', ');
+        
+        if($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT'){
+            $setTitle = 'ฝ่ายไอที (ITs)';
+        } else {
+            $setTitle = 'ฝ่ายอาคาร (MTs)';
+        }
+        // dd($setImage);
+        // เตรียมข้อมูลที่จะแสดงใน PDF
+        $html = view('app.caseService.caseDetail.casePrintWork', [
+            'data' => $getCaseDetail['message']['datadetail'],
+            'image' => $getCaseDetail['message']['dataimage'],
+            'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
+            'categoryItem' => $getCategoryItem,
+            'categoryList' => $getCategoryList,
+            'getDataWorker' => $getDataWorker,
+            'getStatusWork' => $getStatusWork,
+            'workerNames' => $workerNames,
+            'getDataChecker' => $getDataChecker,
+            'checkerNames' => $checkerNames,
+            'setTitle'  => $setTitle
+        ])->render(); // render HTML จาก view ที่จะแสดงผล
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'default_font_size' => 12,
+            'default_font' => 'sarabun',
+            'fontDir' => array_merge($fontDirs, [
+                public_path('fonts/THSarabunNew'), // ตำแหน่งที่เก็บฟอนต์
+            ]),
+            'fontdata' => array_merge($fontData, [
+                'sarabun' => [
+                    'R' => 'THSarabunNew.ttf',
+                    'B' => 'THSarabunNew Bold.ttf',
+                    'I' => 'THSarabunNew Italic.ttf',
+                    'BI' => 'THSarabunNew BoldItalic.ttf'
+                ]
+            ]),
+            'image_scale' => 0.5, // ปรับสเกลรูปภาพ
+        ]);
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->SetMargins(2, 2, 5); // ระยะขอบ 15 มม. ด้านซ้าย ขวา และด้านบน
+        // dd($mpdf->fontdata);
+        // dd(mb_detect_encoding($html));
+
+        $mpdf->WriteHTML($html); // เขียน HTML ลง PDF
+
+        // สร้างไฟล์ PDF และดาวน์โหลด
+        return $mpdf->Output('invoice.pdf', 'I'); // 'I' หมายถึงการแสดงใน browser, 'D' สำหรับการดาวน์โหลด
     }
 }
