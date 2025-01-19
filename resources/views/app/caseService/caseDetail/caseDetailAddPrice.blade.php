@@ -189,6 +189,7 @@
                     </div>
 
                     <input type="text" name="caseTicket" id="caseTicket" value="{{ $data['ticket'] }}" hidden>
+                    <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
 
                     <div class="row">
                         <div class="col-md-12 mb-4">

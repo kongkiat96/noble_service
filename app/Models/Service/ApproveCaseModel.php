@@ -453,6 +453,9 @@ class ApproveCaseModel extends Model
                     $query = $query->where('cs.tag_work', 'wait_manager_mt_approve')
                         ->where('cs.use_tag', 'MT');
                     break;
+                case 'userCheckCase':
+                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->where('cs.case_status', 'openCaseWaitApprove');
+                    break;
             }
 
             $query = $query->count();
@@ -555,7 +558,7 @@ class ApproveCaseModel extends Model
             } else if ($saveStatus['tagStep'] == 'managerCheckWork') {
                 $caseStatus = $saveStatus['case_status'];
 
-                $mapStatus = $caseStatus == 'manager_'.$setTextLower.'_checkwork_success' ? 'case_success' : 'case_reject';
+                $mapStatus = $caseStatus == 'manager_' . $setTextLower . '_checkwork_success' ? 'case_success' : 'case_reject';
                 $setUpdate = [
                     'caseStatus' => $mapStatus,
                     'caseStep' => $mapStatus,
@@ -564,7 +567,7 @@ class ApproveCaseModel extends Model
                     'dateEnd' => $mapStatus == 'case_success' ? $getDataCase->case_end : null,
                     'caseDetail' => !empty($saveStatus['case_detail'])
                         ? $saveStatus['case_detail']
-                        : ($caseStatus == 'manager_'.$setTextLower.'_checkwork_success'
+                        : ($caseStatus == 'manager_' . $setTextLower . '_checkwork_success'
                             ? 'ผ่านการตรวจสอบจากผู้จัดการฝ่าย'
                             : 'ไม่ผ่านการตรวจสอบจากผู้จัดการฝ่าย'),
                     'casePrice' => $getDataCase->price

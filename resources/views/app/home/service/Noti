@@ -1,0 +1,68 @@
+@php
+
+    // Access Token จาก LINE Messaging API
+    $accessToken = "s+nbp5LrhY4aocKfeUniAfnen0ede8MNHpYe43tO94U7Z3+4TvC8x8T9MevrbHbzjpIoE60BT3ARPLDaNX6+UBBFzCH/KSWWTPYxdghyh6DRR/tL4qXqjySbEUZHXY4olMKXERjhIVGMw9ZFPf+9QQdB04t89/1O/w1cDnyilFU=";
+
+    // URL สำหรับส่งข้อความ
+    $url = "https://api.line.me/v2/bot/message/push";
+
+    // ข้อมูลที่จะส่ง (User ID ที่ได้จากขั้นตอนที่ 1)
+    $userIds = ["Caef21334f736cb40b30890a959ba64bd","C8ce6b69d8371c167d1ed3e327176524d"]; // รายชื่อ User IDs ที่ต้องการส่ง
+
+    foreach ($userIds as $userId) {
+        $data = [
+    'to' => $userId,
+    'messages' => [
+        [
+            'type' => 'flex',
+            'altText' => 'This is a Flex Message',
+            'contents' => [
+                'type' => 'bubble',
+                'body' => [
+                    'type' => 'box',
+                    'layout' => 'vertical',
+                    'contents' => [
+                        [
+                            'type' => 'text',
+                            'text' => 'สวัสดี!',
+                            'weight' => 'bold',
+                            'size' => 'lg'
+                        ],
+                        [
+                            'type' => 'text',
+                            'text' => 'นี่คือข้อความที่ปรับแต่งได้',
+                            'wrap' => true
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];
+
+        // การตั้งค่าหัวข้อของ HTTP Request
+        $headers = [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $accessToken
+        ];
+
+        // การใช้ cURL ส่งข้อมูล
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        } else {
+            echo 'Response: ' . $response;
+        }
+
+        curl_close($ch);
+    }
+
+@endphp

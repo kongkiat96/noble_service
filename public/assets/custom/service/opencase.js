@@ -148,7 +148,7 @@ $(document).ready(function () {
     // ฟังก์ชันสำหรับดึงข้อมูลจำนวนรออนุมัติ
     function fetchCountApprove() {
         $.ajax({
-            url: "/service/approve-case/realtime-case-approve-count", // URL ไปที่ Route
+            url: "/service/approve-case/realtime-case-approve-count/userCheckCase", // URL ไปที่ Route
             type: "GET",
             success: function (response) {
                 // อัปเดตจำนวนบน badge

@@ -465,7 +465,9 @@ class CaseModel extends Model
     public function getDataCaseDetailHistory($param)
     {
         try {
+            // dd($param['caseID']);
             $param['caseID'] = decrypt($param['caseID']);
+            // dd("ss");
             // Query ข้อมูล history
             $sql = DB::connection('mysql')
                 ->table('tbt_case_service_history AS h')
@@ -489,7 +491,7 @@ class CaseModel extends Model
                     ->orderBy('h.created_at', 'desc')->get();
             }
             $dataCount = $sql->count();
-
+            // dd($sql);
             $newArr = [];
             foreach ($sql as $key => $value) {
                 if (is_numeric($value->hCaseStatus)) {
