@@ -358,13 +358,13 @@ class getDataMasterModel extends Model
             ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
             ->where('tbt_employee.deleted', 0)
             ->where('tbt_employee.status_login', 1);
-        if ($tagPosition == 'manager') {
-            $getEmployee = $getEmployee->whereIn('tbt_employee.position_class', ['1', '3', '4']);
-        } else if ($tagPosition == 'subManager') {
-            $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class', ['1', '3', '4']);
-        } else {
+        // if ($tagPosition == 'manager') {
+        //     $getEmployee = $getEmployee->whereIn('tbt_employee.position_class', ['1', '3', '4']);
+        // } else if ($tagPosition == 'subManager') {
+        //     $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class', ['1', '3', '4']);
+        // } else {
             $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
-        }
+        // }
         $getEmployee = $getEmployee->select(
             'tbt_employee.ID',
             'tbt_employee.employee_code',
