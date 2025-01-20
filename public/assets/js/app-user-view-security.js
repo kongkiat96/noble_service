@@ -7,35 +7,34 @@
 (function () {
   const formChangePass = document.querySelector('#formChangePassword');
 
-  // Form validation for Change password
   if (formChangePass) {
-    const fv = FormValidation.formValidation(formChangePass, {
+    window.formValidationInstance = FormValidation.formValidation(formChangePass, {
       fields: {
         newPassword: {
           validators: {
             notEmpty: {
-              message: 'Please enter new password'
+              message: 'กําหนดรหัสผ่านใหม่'
             },
             stringLength: {
-              min: 8,
-              message: 'Password must be more than 8 characters'
+              min: 6,
+              message: 'กรุณาระบุรหัสผ่านเกิน 6 ตัวอักษร'
             }
           }
         },
         confirmPassword: {
           validators: {
             notEmpty: {
-              message: 'Please confirm new password'
+              message: 'กรุณายืนยันรหัสผ่านใหม่'
             },
             identical: {
               compare: function () {
                 return formChangePass.querySelector('[name="newPassword"]').value;
               },
-              message: 'The password and its confirm are not the same'
+              message: 'รหัสผ่านไม่ตรงกัน'
             },
             stringLength: {
-              min: 8,
-              message: 'Password must be more than 8 characters'
+              min: 6,
+              message: 'กรุณาระบุรหัสผ่านเกิน 6 ตัวอักษร'
             }
           }
         }
@@ -47,8 +46,6 @@
           rowSelector: '.form-password-toggle'
         }),
         submitButton: new FormValidation.plugins.SubmitButton(),
-        // Submit the form when all fields are valid
-        // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
         autoFocus: new FormValidation.plugins.AutoFocus()
       },
       init: instance => {
@@ -61,3 +58,4 @@
     });
   }
 })();
+

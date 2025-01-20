@@ -6,6 +6,7 @@ use App\Helpers\CalculateDateHelper;
 use App\Models\Employee\EmployeeModel;
 use App\Models\Master\getDataMasterModel;
 use App\Models\Service\ApproveCaseModel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -51,7 +52,7 @@ class HomeController extends Controller
         // dd($countCaseApprove);
         // dd(COUNT($checkAccessManaget));
         // dd($getCalWorking);
-        return view('app.home.index',[
+        return view('app.home.index', [
             'name'      => $user->name,
             'urlName'   => $urlName,
             'url'       => $url,
@@ -64,5 +65,81 @@ class HomeController extends Controller
             'checkAccessManaget' => $checkAccessManaget,
             'countCaseApprove' => $countCaseApprove
         ]);
+    }
+
+    public function myProfile()
+    {
+        $user = Auth::user();
+        $url = request()->segments();
+        $urlName = "ข้อมูลส่วนตัว";
+        $accessMenuSubIDs = $user->accessMenus->pluck('menu_sub_ID')->toArray();
+        $getAccessMenus = getDataMasterModel::getMenusName($accessMenuSubIDs);
+        $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
+        // dd($getDataEmployee);
+        $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
+        // $dataManager = response()->json($this->testManager());
+        $dataManager = $this->testManager();
+        return view('app.home.myProfile', [
+            'name'      => $user->name,
+            'urlName'   => $urlName,
+            'url'       => $url,
+            'dataEmployee'      => $getDataEmployee,
+            'aboutDepartment'   => $getDepartment,
+            'listMenus'         => $getAccessMenus,
+            'dataManager'   => $dataManager
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        dd($request->input());
+    }
+    private function testManager()
+    {
+        $dataJson = [
+            [
+                "id" => 1,
+                "EmployeeName" => "Manager A",
+                "Title" => "Manager",
+                "pid" => null,
+                "ImgUrl" => "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                "subordinates" => [
+                    [
+                        "id" => 3,
+                        "EmployeeName" => "Employee A1",
+                        "Title" => "Manager",
+                        "pid" => 1,
+                        "subordinates" => [],
+                        "ImgUrl" => "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                    ],
+                    [
+                        "id" => 4,
+                        "EmployeeName" => "Employee A2",
+                        "Title" => "Manager",
+                        "pid" => 1,
+                        "subordinates" => [],
+                        "ImgUrl" => "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                    ],
+                    [
+                        "id" => 5,
+                        "EmployeeName" => "Employee A2",
+                        "Title" => "Manager",
+                        "pid" => 1,
+                        "subordinates" => [],
+                        "ImgUrl" => "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                    ],
+                    [
+                        "id" => 6,
+                        "EmployeeName" => "Employee A2",
+                        "Title" => "Manager",
+                        "pid" => 1,
+                        "subordinates" => [],
+                        "ImgUrl" => "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                    ]
+                ]
+            ],
+        ];
+
+        return $dataJson; // ส่งข้อมูลกลับในรูปแบบ Array
     }
 }

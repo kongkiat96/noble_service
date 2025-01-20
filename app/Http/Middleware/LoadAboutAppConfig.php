@@ -28,8 +28,10 @@ class LoadAboutAppConfig
         // ตรวจสอบว่าผู้ใช้ล็อกอินหรือไม่
         if (Auth::check()) {
             $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
+            $empIDEncrypt = encrypt(Auth::user()->map_employee);
             Config::set([
                 'aboutEmployee.getAll' => $getDataEmployee,
+                'aboutEmployee.empIDEncrypt' => $empIDEncrypt
             ]);
         }
 

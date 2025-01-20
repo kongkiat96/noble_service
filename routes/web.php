@@ -25,7 +25,11 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('home', 'HomeController@index');
-
+    Route::get('my-profile', 'HomeController@myProfile');
+    Route::prefix('/show-manager')->group(function () {
+        Route::get('/get-hierarchy', 'HomeController@getHierarchy');
+    });
+    Route::post('/change-password', 'HomeController@changePassword');
     Route::prefix('/assets-management')->group(function () {
 
 
