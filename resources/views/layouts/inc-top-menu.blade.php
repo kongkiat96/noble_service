@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">{{ config('aboutEmployee.getAll')->first_name.' '.config('aboutEmployee.getAll')->last_name }}</span>
+                                    <span class="fw-semibold d-block">{{ config('aboutEmployee.getAll')->prefix_name. ' '. config('aboutEmployee.getAll')->first_name.' '.config('aboutEmployee.getAll')->last_name }}</span>
                                     {{-- <small class="text-muted">Admin</small> --}}
                                     @if(config('aboutEmployee.getAll')->user_class == 'SuperAdmin')
                                         <span class="badge bg-label-danger">ผู้ดูแลระบบ</span>

@@ -91,6 +91,31 @@
 
         <div class="tab-pane fade" id="case-action" role="tabpanel">
             <div class="row g-1 form-block">
+                @if (!empty($data['sla']))
+                <form>
+                    <div class="row">
+                        <div class="divider mt-0">
+                            <div class="divider-text font-weight-bold">ข้อมูลระยะเวลาดำเนินงาน</div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="case_start">วันที่แจ้งงาน</label>
+                            <input type="text" id="case_start" class="form-control" name="case_start" readonly value="{{ $data['case_start'] }}">
+                        </div>
+        
+                        <div class="col-md-6">
+                            <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
+                            <input type="text" id="case_end" class="form-control" name="case_end" readonly value="{{ $data['calSLANullCaseEnd'] }}">
+                            @if(\Carbon\Carbon::now() > $data['calSLANullCaseEnd'])
+                                <label class="form-label-sm mt-2 text-danger" for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
+                            @endif
+                        </div>
+                    </div>
+                </form>
+                <div class="divider mt-0">
+                    <div class="divider-text font-weight-bold">บันทึกข้อมูลการดำเนินงาน</div>
+                </div>
+                @endif
+                
                 <form id="formDoingCaseAction">
                     <div class="row">
                         <div class="col-md-6 mb-4">

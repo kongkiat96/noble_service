@@ -143,26 +143,3 @@ function onSaveOpenCaseServiceSuccess(response) {
         })
     }
 }
-
-$(document).ready(function () {
-    // ฟังก์ชันสำหรับดึงข้อมูลจำนวนรออนุมัติ
-    function fetchCountApprove() {
-        $.ajax({
-            url: "/service/approve-case/realtime-case-approve-count/userCheckCase", // URL ไปที่ Route
-            type: "GET",
-            success: function (response) {
-                // อัปเดตจำนวนบน badge
-                $('#caseApproveCount').text(response.count);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: ", error);
-            }
-        });
-    }
-
-    // เรียกฟังก์ชันครั้งแรกทันทีที่หน้าโหลด
-    fetchCountApprove();
-
-    // ตั้งเวลาเรียกฟังก์ชันทุก 1 นาที (60000 มิลลิวินาที)
-    setInterval(fetchCountApprove, 60000);
-});

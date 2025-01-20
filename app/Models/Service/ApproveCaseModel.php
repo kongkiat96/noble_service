@@ -420,7 +420,7 @@ class ApproveCaseModel extends Model
         }
     }
 
-    public function countCaseApprove($empIDmanager)
+    public function realtimeCaseCountManagerApprove($empIDmanager)
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')->where('cs.manager_emp_id', $empIDmanager)->where('cs.case_status', 'openCaseWaitApprove')->where('cs.deleted', 0)->count();
@@ -531,7 +531,7 @@ class ApproveCaseModel extends Model
     }
     private function setWhereIn_MT()
     {
-        $forCategoryMainFU = [433];
+        $forCategoryMainFU = [99999999999999];
         return $forCategoryMainFU;
     }
 

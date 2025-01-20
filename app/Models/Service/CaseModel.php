@@ -404,6 +404,10 @@ class CaseModel extends Model
             $getGroupStatus = $this->getDataMasterModel->getGroupStatus($mainQuery->case_status);
             if($mainQuery->case_end != null && $mainQuery->sla != null){
                 $calSLA = $this->getDataMasterModel->calculateSLA($mainQuery->sla, $mainQuery->case_start, $mainQuery->case_end);
+            } else {
+                if($mainQuery->sla != null){
+                $calSLANullCaseEnd = $this->getDataMasterModel->calculateSLANullCaseEnd($mainQuery->case_start, $mainQuery->sla);
+                }
             }
 
             // dd($calSLA);
@@ -438,7 +442,8 @@ class CaseModel extends Model
                     'case_start'            => $mainQuery->case_start,
                     'case_end'              => $mainQuery->case_end,
                     'created_at'            => $mainQuery->created_at,
-                    'calSLA'                => @$calSLA
+                    'calSLA'                => @$calSLA,
+                    'calSLANullCaseEnd'     => @$calSLANullCaseEnd
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
                 'dataimageDoing' => $imageQueryDoing->toArray()

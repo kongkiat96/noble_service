@@ -77,7 +77,7 @@
                                 {{-- <a href="#" class="btn btn-warning me-3"><i class='menu-icon tf-icons bx bxs-user-check'></i>รายการอนุมัติงาน </a> --}}
                                 <button type="button" class="btn btn-warning" id="btnApproveCaseSubManager">
                                     <i class='menu-icon tf-icons bx bxs-user-check'></i> รายการรออนุมัติงาน
-                                    <span class="badge bg-white text-primary ms-1" id="caseApproveCount">{{ $countCaseApprove }}</span>
+                                    <span class="badge bg-white text-primary ms-1" id="caseApproveCount">0</span>
                                   </button>
                                 @endif
                             </div>

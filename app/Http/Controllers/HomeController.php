@@ -39,6 +39,7 @@ class HomeController extends Controller
         $provinceName   = $this->masterModel->getDataProvince();
         $getCompany     = $this->masterModel->getDataCompany();
         $getClassList   = $this->masterModel->getClassList();
+        // dd($user);
         $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
         // dd($getDataEmployee);
         $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
@@ -48,7 +49,6 @@ class HomeController extends Controller
         // dd(Auth::user()->map_employee);
         $getDataManager = $this->masterModel->getDataManager(Auth::user()->map_employee);
         $checkAccessManaget = $this->masterModel->checkAccessManager(Auth::user()->map_employee);
-        $countCaseApprove = $this->approveCaseModel->countCaseApprove(Auth::user()->map_employee);
         // dd($countCaseApprove);
         // dd(COUNT($checkAccessManaget));
         // dd($getCalWorking);
@@ -62,9 +62,14 @@ class HomeController extends Controller
             'aboutDepartment'   => $getDepartment,
             'dataAllEmployee'   => $getDataSelectEmp,
             'dataManager'       => $getDataManager,
-            'checkAccessManaget' => $checkAccessManaget,
-            'countCaseApprove' => $countCaseApprove
+            'checkAccessManaget' => $checkAccessManaget
         ]);
+    }
+
+    public function realtimeCaseCountManagerApprove()
+    {
+        $countCaseApprove = $this->approveCaseModel->realtimeCaseCountManagerApprove(Auth::user()->map_employee);
+        return response()->json(['count' => $countCaseApprove]);
     }
 
     public function myProfile()
@@ -78,12 +83,20 @@ class HomeController extends Controller
         // dd($getDataEmployee);
         $getDepartment  = $this->masterModel->getDataCompanyForID($getDataEmployee->department_id);
         // $dataManager = response()->json($this->testManager());
+        $prefixName     = $this->masterModel->getDataPrefixName();
+        $provinceName   = $this->masterModel->getDataProvince();
+        $getMapAmphoe = $this->masterModel->getDataAmphoe($getDataEmployee->province_code);
+        $getMapTambon = $this->masterModel->getDataTambon($getDataEmployee->amphoe_code);
         $dataManager = $this->testManager();
         return view('app.home.myProfile', [
             'name'      => $user->name,
             'urlName'   => $urlName,
             'url'       => $url,
+            'dataPrefixName'    => $prefixName,
             'dataEmployee'      => $getDataEmployee,
+            'provinceName'      => $provinceName,
+            'getMapAmphoe'      => $getMapAmphoe,
+            'getMapTambon'      => $getMapTambon,
             'aboutDepartment'   => $getDepartment,
             'listMenus'         => $getAccessMenus,
             'dataManager'   => $dataManager
@@ -92,7 +105,8 @@ class HomeController extends Controller
 
     public function changePassword(Request $request)
     {
-        dd($request->input());
+        $savePassword = $this->employeeModel->changePassword($request->input());
+        return response()->json(['status' => $savePassword['status'], 'message' => $savePassword['message']]);
     }
     private function testManager()
     {

@@ -101,11 +101,14 @@
                                                     <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
                                                 @endif
                                             @endforeach --}}
-                                            <option value="case_success_user">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
-                                            <option value="case_reject">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
+                                            <option value="case_success_user">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย
+                                            </option>
+                                            <option value="case_reject">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย
+                                            </option>
                                         </select>
                                     </div>
-                                    <input type="text" name="tagStep" id="tagStep" value="userCheckWork" hidden>
+                                    <input type="text" name="tagStep" id="tagStep" value="userCheckWork"
+                                        hidden>
                                 </form>
 
                             </div>
@@ -157,7 +160,8 @@
 
                                 </div>
                                 <div class="col-md-12 mb-2">
-                                    <label for="worker" class="form-label-md mb-2">ช่างผู้ปฏิบัติงาน / รับผิดชอบ</label>
+                                    <label for="worker" class="form-label-md mb-2">ช่างผู้ปฏิบัติงาน /
+                                        รับผิดชอบ</label>
                                     <input class="form-control" value="{{ $workerNames }}" disabled />
                                     {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                                 </div>
@@ -168,6 +172,36 @@
                                 </div>
 
                             </div>
+                            @if (!empty($data['case_end']))
+                                <div class="col-md-6">
+                                    <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานเรียบร้อย</label>
+                                    <input type="text" id="case_end" class="form-control" name="case_end"
+                                        readonly value="{{ $data['case_end'] }}">
+                                    <label class="form-label-sm mt-2 text-danger"
+                                        for="case_end">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label-md mb-2" for="calSLA">ระยะเวลาที่คำนวณแล้ว</label>
+                                    <input type="text" id="calSLA" class="form-control" name="calSLA"
+                                        readonly value="{{ $data['calSLA']['message'] }}">
+                                    <label class="form-label-sm mt-2 text-danger"
+                                        for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                                </div>
+                            @else
+                                <div class="col-md-6">
+
+                                    <label class="form-label-md mb-2"
+                                        for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
+                                    <input type="text" id="case_end" class="form-control" name="case_end"
+                                        readonly value="{{ $data['calSLANullCaseEnd'] }}">
+                                    @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd'])
+                                        <label class="form-label-sm mt-2 text-danger"
+                                            for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
+                                    @endif
+                                </div>
+
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -90,10 +90,10 @@ class getDataMasterModel extends Model
     public function getDataGroupStatus()
     {
         $getDataGroupStatus = DB::connection('mysql')->table('tbm_group_status')
-        ->select('id',DB::raw('CONCAT(group_status_th," (",group_status_en,")") as group_status_name'))
-        ->where('status_tag', 1)
-        ->where('deleted', 0)
-        ->get();
+            ->select('id', DB::raw('CONCAT(group_status_th," (",group_status_en,")") as group_status_name'))
+            ->where('status_tag', 1)
+            ->where('deleted', 0)
+            ->get();
 
         return $getDataGroupStatus;
     }
@@ -363,7 +363,7 @@ class getDataMasterModel extends Model
         // } else if ($tagPosition == 'subManager') {
         //     $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class', ['1', '3', '4']);
         // } else {
-            $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
+        $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
         // }
         $getEmployee = $getEmployee->select(
             'tbt_employee.ID',
@@ -513,7 +513,7 @@ class getDataMasterModel extends Model
             $query = DB::connection('mysql')->table('tbm_worker AS worker')
                 ->leftJoin('tbt_employee AS employee', 'worker.employee_id', '=', 'employee.ID')
                 ->leftJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
-                ->whereIn('worker.use_tag',[$useTag,'all'])
+                ->whereIn('worker.use_tag', [$useTag, 'all'])
                 ->where('worker.deleted', 0)
                 ->where('worker.status_tag', 1)
                 ->select(
@@ -523,7 +523,7 @@ class getDataMasterModel extends Model
                     'employee.img_base',
                 )
                 ->get();
-                // dd($query);
+            // dd($query);
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
@@ -536,19 +536,19 @@ class getDataMasterModel extends Model
         }
     }
 
-    public function getDataStatusWork($useTag,$statusShow)
+    public function getDataStatusWork($useTag, $statusShow)
     {
         $query = DB::connection('mysql')->table('tbm_status_work')->where('deleted', 0)->where('status', 1)
-        ->whereIn('status_use', ['all', $useTag])
-        ->whereIn('status_show',['all',$statusShow])
-        ->orderBy('id')->get();
+            ->whereIn('status_use', ['all', $useTag])
+            ->whereIn('status_show', ['all', $statusShow])
+            ->orderBy('id')->get();
         // dd($query);
         return $query;
     }
 
     public function getStatusWorkForByID($statusID)
     {
-        $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->select('status_name','status_color')->first();
+        $query = DB::connection('mysql')->table('tbm_status_work')->where('ID', $statusID)->select('status_name', 'status_color')->first();
         $responseData = [
             'status_name' => $query->status_name,
             'status_color' => $query->status_color
@@ -561,12 +561,12 @@ class getDataMasterModel extends Model
         // dd($statusID);
         if (is_numeric($statusID)) {
             $query = DB::connection('mysql')->table('tbm_status_work AS sw')
-            ->leftJoin('tbm_group_status AS gs', 'gs.id', '=', 'sw.group_status')
-            ->where('sw.ID', $statusID)
-            ->select([
-                'group_status_en',
-            ])
-            ->first();
+                ->leftJoin('tbm_group_status AS gs', 'gs.id', '=', 'sw.group_status')
+                ->where('sw.ID', $statusID)
+                ->select([
+                    'group_status_en',
+                ])
+                ->first();
             // dd($query);
             $setText = [
                 'groupName' => $query->group_status_en
@@ -589,38 +589,63 @@ class getDataMasterModel extends Model
         ];
 
         // dd($data);
-        
+
         // แปลงวันที่เริ่มต้นและสิ้นสุดเป็น Carbon
         $start = Carbon::parse($data['case_start']);
         $end = Carbon::parse($data['case_end']);
-        
+
         // ดึงประเภทและจำนวนจาก sla
         $type = substr($data['sla'], 0, 1); // ตัวอักษรแรก เช่น 'D' หรือ 'H'
         $amount = (int) substr($data['sla'], 1); // ตัวเลข เช่น 3
-        
+
         // คำนวณความแตกต่างระหว่าง case_start และ case_end
         if ($type === 'D') {
             // คำนวณเป็นวัน
             $diffInDays = $start->diffInDays($end);
             $isExceeded = $diffInDays > $amount;
-            $message = $isExceeded 
-                ? "เกินระยะเวลา $amount วัน ($diffInDays วัน)" 
+            $message = $isExceeded
+                ? "เกินระยะเวลา $amount วัน ($diffInDays วัน)"
                 : "ไม่เกินระยะเวลา $amount วัน ($diffInDays วัน)";
         } elseif ($type === 'H') {
             // คำนวณเป็นชั่วโมง
             $diffInHours = $start->diffInHours($end);
             $isExceeded = $diffInHours > $amount;
-            $message = $isExceeded 
-                ? "เกินระยะเวลา $amount ชั่วโมง ($diffInHours ชั่วโมง)" 
+            $message = $isExceeded
+                ? "เกินระยะเวลา $amount ชั่วโมง ($diffInHours ชั่วโมง)"
                 : "ไม่เกินระยะเวลา $amount ชั่วโมง ($diffInHours ชั่วโมง)";
         } else {
             $message = "ประเภท $type ไม่รองรับ";
         }
-        
+
         // ผลลัพธ์
         return [
             'message' => $message,
             'isExceeded' => $isExceeded ?? false,
         ];
+    }
+
+    public function calculateSLANullCaseEnd($case_start,$sla)
+    {
+
+        // แปลงวันที่เริ่มต้นเป็น Carbon instance
+        $start = Carbon::parse($case_start);
+
+        // ตรวจสอบประเภทของ SLA
+        if (str_starts_with($sla, 'D')) {
+            // ดึงจำนวนวันจาก SLA
+            $days = (int) str_replace('D', '', $sla);
+            // เพิ่มวันเข้าไป
+            $end = $start->addDays($days);
+        } elseif (str_starts_with($sla, 'H')) {
+            // ดึงจำนวนชั่วโมงจาก SLA
+            $hours = (int) str_replace('H', '', $sla);
+            // เพิ่มชั่วโมงเข้าไป
+            $end = $start->addHours($hours);
+        } else {
+            throw new Exception("รูปแบบ SLA ไม่ถูกต้อง");
+        }
+
+        return $end->toDateTimeString(); // ส่งคืนวันที่และเวลาในรูปแบบ string
+
     }
 }

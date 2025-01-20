@@ -125,7 +125,7 @@ class EmployeeController extends Controller
             'getMapAmphoe'      => $getMapAmphoe,
             'getMapTambon'      => $getMapTambon,
             'dataEmployee'      => $getDataEmployee,
-            'listMenus'     => $getAccessMenus,
+            'listMenus'         => $getAccessMenus,
             'dataBranch'        => $getBranch
         ]);
     }

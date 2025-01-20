@@ -30,9 +30,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-hierarchy', 'HomeController@getHierarchy');
     });
     Route::post('/change-password', 'HomeController@changePassword');
+    
     Route::prefix('/assets-management')->group(function () {
-
-
         Route::prefix('/settings-assets')->group(function () {
             Route::get('', 'AssetsManagement\SettingAssetsController@index');
 
@@ -334,6 +333,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/get-detail-case-history', 'Service\CaseController@getDataCaseDetailHistory');
             Route::get('/get-detail-case-approve/{ticket}', 'Service\CaseController@getDataCaseDetailApprove');
             Route::get('/realtime-case-checkwork-byuser-count', 'Service\CaseController@realtimeCaseCheckWorkByUserCount');
+            Route::get('/realtime-case-count-manager-approve', 'HomeController@realtimeCaseCountManagerApprove');
 
         });
         Route::prefix('/approve-case')->group(function () {

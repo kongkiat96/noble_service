@@ -348,10 +348,9 @@ $(document).ready(function () {
     })
 
     scheduleFetch(setURLCase + "/realtime-case-checkwork-byuser-count", "caseCheckWorkByUserAllCount", 60000);
-    // scheduleFetch("/service/approve-case/realtime-case-approve-count-fu", "caseApproveCountFU", 60000);
+    scheduleFetch(setURLCase + "/realtime-case-count-manager-approve", "caseApproveCount", 60000);
     setInterval(reTable, 60000);
 });
-
 function funcCheckCaseWork(caseID) {
     // alert(caseID);
     showModalWithAjax('#checkWorkerModal', setURLCase + '/show-case-check-work/' + caseID, ['#case_status']);

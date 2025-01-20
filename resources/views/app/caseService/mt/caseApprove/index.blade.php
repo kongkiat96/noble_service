@@ -29,7 +29,7 @@
                                             </button>
                                         </li>
 
-                                        <li class="nav-item">
+                                        {{-- <li class="nav-item">
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#approve-fu" aria-controls="#approve-fu"
                                                 aria-selected="true" id="reTabB">
@@ -37,7 +37,7 @@
                                                     class="badge bg-white text-primary ms-1"
                                                     id="caseApproveCountFU">0</span>
                                             </button>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="nav-item">
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class EmployeeModel extends Model
@@ -425,7 +426,7 @@ class EmployeeModel extends Model
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
                 ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
                 ->where('tbt_employee.ID', $getEmpGetID)
-                ->select('tbt_employee.*', 'tbt_employee.ID AS emp_id', 'tbm_group.*', 'tbm_group.ID AS group_id', 'tbm_class_list.*', 'tbm_class_list.ID AS class_id', 'tbm_prefix_name.*', 'tbm_prefix_name.ID AS prefix_id', 'tbm_province.*', 'tbm_province.ID AS province_id',DB::raw('CONCAT(tbm_branch.branch_name, " (", tbm_branch.branch_code, ")") AS branch_name'))
+                ->select('tbt_employee.*', 'tbt_employee.ID AS emp_id', 'tbm_group.*', 'tbm_group.ID AS group_id', 'tbm_class_list.*', 'tbm_class_list.ID AS class_id', 'tbm_prefix_name.*', 'tbm_prefix_name.ID AS prefix_id', 'tbm_province.*', 'tbm_province.ID AS province_id', DB::raw('CONCAT(tbm_branch.branch_name, " (", tbm_branch.branch_code, ")") AS branch_name'))
                 ->first();
 
             // dd($data);
@@ -448,24 +449,24 @@ class EmployeeModel extends Model
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
                 ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
                 ->where('tbt_employee.deleted', 0);
-                
-            if($param['company_id'] != '') {
+
+            if ($param['company_id'] != '') {
                 $sql = $sql->where('tbt_employee.company_id', intval($param['company_id']));
             }
-            if($param['department_id'] != '') {
+            if ($param['department_id'] != '') {
                 $sql = $sql->where('tbt_employee.department_id', intval($param['department_id']));
             }
-            if($param['group_department_id'] != '') {
+            if ($param['group_department_id'] != '') {
                 $sql = $sql->where('tbt_employee.group_department_id', intval($param['group_department_id']));
             }
-            if($param['user_class'] != '') {
+            if ($param['user_class'] != '') {
                 $sql = $sql->where('tbt_employee.user_class', $param['user_class']);
             }
-            if($param['status_login'] != '') {
+            if ($param['status_login'] != '') {
                 // dd($param['status_login']);
                 $sql = $sql->where('tbt_employee.status_login', intval($param['status_login']));
             }
-            if($param['employee_code'] != '') {
+            if ($param['employee_code'] != '') {
                 $sql = $sql->where('tbt_employee.employee_code', 'LIKE', '%' . $param['employee_code'] . '%');
             }
 
@@ -529,6 +530,34 @@ class EmployeeModel extends Model
                 "data" => $newArr,
             ];
             // dd($returnData);
+            return $returnData;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function changePassword($dataPassword)
+    {
+        try {
+            // dd($dataPassword['newPassword']);
+            $data['newPassword'] = Hash::make($dataPassword['newPassword']);
+            $changePassword = $this->getDatabase->table('users')->where('id', Auth::user()->id)->update([
+                'password'      => $data['newPassword'],
+                'updated_at'    => now(),
+            ]);
+            if ($changePassword) {
+                $returnData = [
+                    'status'    => 200,
+                    'message'   => 'Change Password Success'
+                ];
+            }
+
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
