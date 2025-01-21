@@ -187,7 +187,7 @@
                         </div>
 
                     </div>
-
+                    <input type="text" name="tagStep" id="tagStep" value="add_price" hidden>
                     <input type="text" name="caseTicket" id="caseTicket" value="{{ $data['ticket'] }}" hidden>
                     <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
 
