@@ -38,11 +38,38 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-3">
                     <button type="submit" name="printWork" id="printWork"
-                    class="btn btn-danger btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-file-pdf'></i>
-                    พิมพ์ใบงาน</button>
+                        class="btn btn-danger btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-file-pdf'></i>
+                        พิมพ์ใบงาน</button>
                 </div>
                 <input type="text" name="caseTicket" id="caseTicket" value="{{ $data['ticket'] }}" hidden>
             </div>
+            @if (!empty($data['sla']))
+                <form>
+                    <div class="row">
+                        <div class="divider mt-0">
+                            <div class="divider-text font-weight-bold">ข้อมูลระยะเวลาดำเนินงาน</div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-md mb-2" for="case_start">วันที่แจ้งงาน</label>
+                            <input type="text" id="case_start" class="form-control" name="case_start" readonly
+                                value="{{ $data['case_start'] }}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
+                            <input type="text" id="case_end" class="form-control" name="case_end" readonly
+                                value="{{ $data['calSLANullCaseEnd'] }}">
+                            @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd'])
+                                <label class="form-label-sm mt-2 text-danger"
+                                    for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
+                            @endif
+                        </div>
+                    </div>
+                </form>
+                <div class="divider mt-0">
+                    <div class="divider-text font-weight-bold">ข้อมูลการแจ้งปัญหา</div>
+                </div>
+            @endif
             <div class="row g-1 form-block">
                 <div class="col-md-6 mb-4">
                     <label class="form-label-md mb-2" for="ticket">Ticket</label>
@@ -91,28 +118,6 @@
 
         <div class="tab-pane fade" id="case-action" role="tabpanel">
             <div class="row g-1 form-block">
-                @if (!empty($data['sla']))
-                <form>
-                    <div class="row">
-                        <div class="divider mt-0">
-                            <div class="divider-text font-weight-bold">ข้อมูลระยะเวลาดำเนินงาน</div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label-md mb-2" for="case_start">วันที่แจ้งงาน</label>
-                            <input type="text" id="case_start" class="form-control" name="case_start" readonly value="{{ $data['case_start'] }}">
-                        </div>
-        
-                        <div class="col-md-6">
-                            <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
-                            <input type="text" id="case_end" class="form-control" name="case_end" readonly value="{{ $data['case_end'] }}">
-                            {{-- <label class="form-label-sm mt-2 text-danger" for="case_end">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label> --}}
-                        </div>
-                    </div>
-                </form>
-                <div class="divider mt-0">
-                    <div class="divider-text font-weight-bold">บันทึกข้อมูลการดำเนินงาน</div>
-                </div>
-                @endif
                 <form id="formDoingCaseAction">
                     <div class="row">
                         <div class="col-md-6 mb-4">
@@ -143,7 +148,8 @@
                         </div>
                         <div class="col-md-3 mb-4">
                             <label class="form-label-md mb-2" for="sla">SLA</label>
-                            <input type="text" id="sla" class="form-control" name="sla" readonly value="{{ $data['sla'] }}">
+                            <input type="text" id="sla" class="form-control" name="sla" readonly
+                                value="{{ $data['sla'] }}">
                         </div>
                         <div class="col-md-9 mb-4">
                             <label class="form-label-md mb-2" for="case_price">ค่าใช้จ่าย</label>
@@ -153,7 +159,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control numeral-mask text-end"
                                     placeholder="ค่าใช้จ่าย" name="case_price" id="case_price"
-                                    oninput="formatAmount(this)" value="{{ $data['price'] }}"/>
+                                    oninput="formatAmount(this)" value="{{ $data['price'] }}" />
                                 <span class="input-group-text">฿</span>
                             </div>
 
@@ -175,7 +181,8 @@
                         </div>
 
                         <div class="col-md-12 mb-4">
-                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span class="text-danger">*</span></label>
+                            <label class="form-label-md mb-2" for="case_doing_detail">รายละเอียดการทำงาน <span
+                                    class="text-danger">*</span></label>
                             <textarea id="case_doing_detail" name="case_doing_detail" rows="3" class="form-control"></textarea>
                         </div>
                         <div class="divider">
@@ -191,7 +198,9 @@
                                 <option value=""></option>
                                 @foreach ($getStatusWork as $key)
                                     {{-- @if (!in_array($key->ID, [99999])) --}}
-                                        <option value="{{ $key->ID }}" @if($data['case_status'] == $key->ID) selected @endif>{{ $key->status_name }}</option>
+                                    <option value="{{ $key->ID }}"
+                                        @if ($data['case_status'] == $key->ID) selected @endif>{{ $key->status_name }}
+                                    </option>
                                     {{-- @endif --}}
                                 @endforeach
                             </select>
@@ -223,15 +232,16 @@
                 <hr class="mt-4">
                 <div class="col-12 text-center">
                     {{-- set case status getDataStatusWork --}}
-                    @if(in_array($data['group_status'],['Success']))
-                    <div class="alert alert-warning text-bold" role="alert">
-                        รายการนี้อยู่ระหว่างตรวจสอบงาน
-                      </div>
+                    @if (in_array($data['group_status'], ['Success']))
+                        <div class="alert alert-warning text-bold" role="alert">
+                            รายการนี้อยู่ระหว่างตรวจสอบงาน
+                        </div>
                     @else
-                    <button type="submit" name="saveCaseAction" id="saveCaseAction"
-                        class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
-                        บันทึกข้อมูลดำเนินงาน</button>
-                        @endif
+                        <button type="submit" name="saveCaseAction" id="saveCaseAction"
+                            class="btn btn-success btn-form-block-overlay"><i
+                                class='menu-icon tf-icons bx bxs-save'></i>
+                            บันทึกข้อมูล</button>
+                    @endif
                 </div>
 
 
@@ -316,34 +326,34 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+<script type="text/javascript"
+    src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 <script type="text/javascript">
-
     mapSelectedCategoryItem('#case_list', '#case_item', true)
     AddPicMultiple('#pic-case');
 
     (function() {
-    // ดึงข้อมูลจาก API หรือ View
-    const TagifyWorkerEl = document.querySelector('#worker');
-    const TagifyCheckerEl = document.querySelector('#checker');
+        // ดึงข้อมูลจาก API หรือ View
+        const TagifyWorkerEl = document.querySelector('#worker');
+        const TagifyCheckerEl = document.querySelector('#checker');
 
-    const workerList = @json($getDataWorker).map(worker => ({
-        value: worker.ID,
-        name: worker.employee_name,
-        emp_code: worker.employee_code
-    }));
+        const workerList = @json($getDataWorker).map(worker => ({
+            value: worker.ID,
+            name: worker.employee_name,
+            emp_code: worker.employee_code
+        }));
 
-    const checkerList = @json($getDataChecker).map(checker => ({
-        value: checker.id,
-        name: checker.checker_name,
-        emp_code: ' '
-    }));
+        const checkerList = @json($getDataChecker).map(checker => ({
+            value: checker.id,
+            name: checker.checker_name,
+            emp_code: ' '
+        }));
 
-    // รวมข้อมูล Worker และ Checker
-    const combinedList = [workerList, checkerList];
+        // รวมข้อมูล Worker และ Checker
+        const combinedList = [workerList, checkerList];
 
-    function tagTemplate(tagData) {
-        return `
+        function tagTemplate(tagData) {
+            return `
             <tag title="${tagData.title || tagData.emp_code}" contenteditable='false' spellcheck='false' tabIndex="-1" class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ''}" ${this.getAttributes(tagData)}>
                 <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
                 <div>
@@ -351,10 +361,10 @@
                 </div>
             </tag>
         `;
-    }
+        }
 
-    function suggestionItemTemplate(tagData) {
-        return `
+        function suggestionItemTemplate(tagData) {
+            return `
             <div ${this.getAttributes(tagData)}
             class='tagify__dropdown__item align-items-center ${tagData.class ? tagData.class : ''}'
             tabindex="0"
@@ -364,64 +374,64 @@
                 <span>${tagData.emp_code}</span>
             </div>
         `;
-    }
+        }
 
-    function initializeTagify(element, list) {
-        if (!element) return;
+        function initializeTagify(element, list) {
+            if (!element) return;
 
-        let tagifyInstance = new Tagify(element, {
-            tagTextProp: 'name',
-            enforceWhitelist: true,
-            skipInvalid: true,
-            dropdown: {
-                closeOnSelect: false,
-                enabled: 0,
-                classname: 'users-list',
-                searchKeys: ['name', 'emp_code']
-            },
-            templates: {
-                tag: tagTemplate,
-                dropdownItem: suggestionItemTemplate
-            },
-            whitelist: list
-        });
+            let tagifyInstance = new Tagify(element, {
+                tagTextProp: 'name',
+                enforceWhitelist: true,
+                skipInvalid: true,
+                dropdown: {
+                    closeOnSelect: false,
+                    enabled: 0,
+                    classname: 'users-list',
+                    searchKeys: ['name', 'emp_code']
+                },
+                templates: {
+                    tag: tagTemplate,
+                    dropdownItem: suggestionItemTemplate
+                },
+                whitelist: list
+            });
 
-        tagifyInstance.on('dropdown:show dropdown:updated', onDropdownShow);
-        tagifyInstance.on('dropdown:select', onSelectSuggestion);
+            tagifyInstance.on('dropdown:show dropdown:updated', onDropdownShow);
+            tagifyInstance.on('dropdown:select', onSelectSuggestion);
 
-        let addAllSuggestionsEl;
+            let addAllSuggestionsEl;
 
-        function onDropdownShow(e) {
-            let dropdownContentEl = e.detail.tagify.DOM.dropdown.content;
+            function onDropdownShow(e) {
+                let dropdownContentEl = e.detail.tagify.DOM.dropdown.content;
 
-            if (tagifyInstance.suggestedListItems.length > 1) {
-                addAllSuggestionsEl = getAddAllSuggestionsEl();
+                if (tagifyInstance.suggestedListItems.length > 1) {
+                    addAllSuggestionsEl = getAddAllSuggestionsEl();
 
-                // insert "addAllSuggestionsEl" as the first element in the suggestions list
-                dropdownContentEl.insertBefore(addAllSuggestionsEl, dropdownContentEl.firstChild);
+                    // insert "addAllSuggestionsEl" as the first element in the suggestions list
+                    dropdownContentEl.insertBefore(addAllSuggestionsEl, dropdownContentEl.firstChild);
+                }
+            }
+
+            function onSelectSuggestion(e) {
+                if (e.detail.elm == addAllSuggestionsEl) tagifyInstance.dropdown.selectAll.call(tagifyInstance);
+            }
+
+            function getAddAllSuggestionsEl() {
+                return tagifyInstance.parseTemplate('dropdownItem', [{
+                    class: 'addAll',
+                    name: 'เลือกทั้งหมด',
+                    emp_code: tagifyInstance.settings.whitelist.reduce(function(remainingSuggestions,
+                        item) {
+                        return tagifyInstance.isTagDuplicate(item.value) ?
+                            remainingSuggestions :
+                            remainingSuggestions + 1;
+                    }, 0) + ' รายการ'
+                }]);
             }
         }
 
-        function onSelectSuggestion(e) {
-            if (e.detail.elm == addAllSuggestionsEl) tagifyInstance.dropdown.selectAll.call(tagifyInstance);
-        }
-
-        function getAddAllSuggestionsEl() {
-            return tagifyInstance.parseTemplate('dropdownItem', [{
-                class: 'addAll',
-                name: 'เลือกทั้งหมด',
-                emp_code: tagifyInstance.settings.whitelist.reduce(function(remainingSuggestions,
-                item) {
-                    return tagifyInstance.isTagDuplicate(item.value) ? remainingSuggestions :
-                        remainingSuggestions + 1;
-                }, 0) + ' รายการ'
-            }]);
-        }
-    }
-
-    // สร้าง Tagify สำหรับ Worker และ Checker
-    initializeTagify(TagifyWorkerEl, workerList);
-    initializeTagify(TagifyCheckerEl, checkerList);
-})();
-
+        // สร้าง Tagify สำหรับ Worker และ Checker
+        initializeTagify(TagifyWorkerEl, workerList);
+        initializeTagify(TagifyCheckerEl, checkerList);
+    })();
 </script>

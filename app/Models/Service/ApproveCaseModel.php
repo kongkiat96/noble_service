@@ -441,20 +441,25 @@ class ApproveCaseModel extends Model
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
-                ->where('cs.deleted', 0)
-                ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                ->where('cs.deleted', 0);
             switch ($type) {
                 case 'it':
                     $query = $query->where('cs.tag_work', 'wait_manager_it_approve')
-                        ->where('cs.use_tag', 'IT');
+                        ->where('cs.use_tag', 'IT')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
                 case 'mt':
                     // $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
                     $query = $query->where('cs.tag_work', 'wait_manager_mt_approve')
-                        ->where('cs.use_tag', 'MT');
+                        ->where('cs.use_tag', 'MT')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
                 case 'userCheckCase':
-                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->where('cs.case_status', 'openCaseWaitApprove');
+                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->where('cs.case_status', 'openCaseWaitApprove')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    break;
+                case 'managet-approve-user-it':
+                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->whereIn('cs.tag_manager_approve', ['N'])->where('cs.use_tag', 'IT');
+                    break;
+                case 'managet-approve-user-mt':
+                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->whereIn('cs.tag_manager_approve', ['N'])->where('cs.use_tag', 'MT');
                     break;
             }
 

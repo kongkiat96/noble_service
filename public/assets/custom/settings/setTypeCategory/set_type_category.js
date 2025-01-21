@@ -405,7 +405,7 @@ $(function () {
             },
         ],
     });
-    
+
 
 });
 
@@ -433,11 +433,11 @@ $(document).ready(function () {
     });
 
     $('#addCategoryItem').click(function () {
-        showModalWithAjax('#addCategoryItemModal', setURLCategoryTools + '/add-category-item-modal/'+ categoryAllID, ['#status_tag']);
+        showModalWithAjax('#addCategoryItemModal', setURLCategoryTools + '/add-category-item-modal/' + categoryAllID, ['#status_tag']);
     });
 
     $('#addCategoryList').click(function () {
-        showModalWithAjax('#addCategoryListModal', setURLCategoryTools + '/add-category-list-modal/'+ categoryAllID, ['#category_item_id','#checker_id','#status_tag']);
+        showModalWithAjax('#addCategoryListModal', setURLCategoryTools + '/add-category-list-modal/' + categoryAllID, ['#category_item_id', '#checker_id', '#status_tag']);
     });
 });
 
@@ -466,7 +466,7 @@ function funcEditCategoryItem(categoryItemID) {
 }
 
 function funcEditCategoryList(categoryListID) {
-    showModalWithAjax('#editCategoryListModal', setURLCategoryTools + '/show-edit-category-list/' + categoryListID, ['#category_item_id','#checker_id','#status_tag']);
+    showModalWithAjax('#editCategoryListModal', setURLCategoryTools + '/show-edit-category-list/' + categoryListID, ['#category_item_id', '#checker_id', '#status_tag']);
 }
 
 function funcDeleteCategoryMain(categoryMainID) {
@@ -679,5 +679,15 @@ function setDetailCategory(data, type, row, useFunc) {
 
 function funcSetDetailCategory(categoryDetailID) {
     // alert(categoryDetailID);
-    window.location.href = setURLCategoryTools + '/set-detail-category/' + encodeURIComponent(categoryDetailID);
+    // window.location.href = setURLCategoryTools + '/set-detail-category/' + encodeURIComponent(categoryDetailID);
+
+    // window.open(
+    //     setURLCategoryTools + '/set-detail-category/' + encodeURIComponent(categoryDetailID),
+    //     '_blank'
+    // );
+    window.open(
+        setURLCategoryTools + '/set-detail-category/' + encodeURIComponent(categoryDetailID),
+        '_blank', // ชื่อหรือ Target ของหน้าต่าง (ใช้ '_blank' เป็น default)
+        'width=1024,height=800,scrollbars=yes,resizable=yes' // กำหนดขนาดและคุณสมบัติของหน้าต่าง
+    );
 }

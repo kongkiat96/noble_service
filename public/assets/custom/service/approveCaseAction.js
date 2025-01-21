@@ -108,7 +108,7 @@ $(document).ready(function () {
 
 
 
-function setupFormValidationApproveCase(formElement, setSelect) {
+function setupFormValidationApproveCase(formElement) {
     const validators = {
         notEmpty: message => ({
             validators: {

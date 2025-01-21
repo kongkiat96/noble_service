@@ -93,19 +93,35 @@
                                     <div class="col-md-12 mb-2">
                                         <label class="form-label-md mb-2" for="case_status">สถานะตรวจสอบการทำงาน <span
                                                 class="text-danger">*</span></label>
-                                        <select name="case_status" id="case_status" class="form-select select2"
+                                        {{-- <select name="case_status" id="case_status" class="form-select select2"
                                             data-allow-clear="true">
-                                            <option value=""></option>
+                                            <option value=""></option> --}}
                                             {{-- @foreach ($getStatusWork as $key)
                                                 @if (!in_array($key->ID, [99999]))
                                                     <option value="{{ $key->ID }}">{{ $key->status_name }}</option>
                                                 @endif
                                             @endforeach --}}
-                                            <option value="case_success_user">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย
+                                            {{-- <option value="case_success_user">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย
                                             </option>
                                             <option value="case_reject">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย
                                             </option>
-                                        </select>
+                                        </select> --}}
+
+                                        <div class="row m-2">
+                                            <div class="col-md-6">
+                                                <div class="form-check form-check-success form-check-inline">
+                                                    <input name="case_status" class="form-check-input" type="radio" value="case_success_user" id="approve" />
+                                                    <label class="form-check-label" for="approve"> ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check form-check-danger form-check-inline">
+                                                    <input name="case_status" class="form-check-input" type="radio" value="case_reject" id="reject" />
+                                                    <label class="form-check-label" for="reject"> ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                     <input type="text" name="tagStep" id="tagStep" value="userCheckWork"
                                         hidden>
@@ -190,14 +206,17 @@
                                 </div>
                             @else
                                 <div class="col-md-6">
-
                                     <label class="form-label-md mb-2"
                                         for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
                                     <input type="text" id="case_end" class="form-control" name="case_end"
-                                        readonly value="{{ $data['calSLANullCaseEnd'] }}">
-                                    @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd'])
+                                        readonly value="{{ $data['calSLANullCaseEnd']['end_time'] }}">
+                                    @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd']['end_time'])
                                         <label class="form-label-sm mt-2 text-danger"
                                             for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
+                                    @else
+                                        <label class="form-label-sm mt-2 text-warning"
+                                            for="case_end">ขณะนี้เหลือเวลาอีก
+                                            {{ $data['calSLANullCaseEnd']['time_remaining'] }}</label>
                                     @endif
                                 </div>
 

@@ -24,7 +24,7 @@
                                             <button type="button" class="nav-link active" role="tab"
                                                 data-bs-toggle="tab" data-bs-target="#approve-mt"
                                                 aria-controls="#approve-mt" aria-selected="true" id="reTabA">
-                                                รายการแจ้งปัญหากลุ่มอาคาร <span class="badge bg-white text-primary ms-1"
+                                                รออนุมัติดำเนินงาน <span class="badge bg-white text-primary ms-1"
                                                     id="caseApproveCountMT">0</span>
                                             </button>
                                         </li>
@@ -43,7 +43,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#caseCheckWork" aria-controls="#caseCheckWork" aria-selected="true"
                                                 id="reTabC">
-                                                รายการตรวจสอบงานเสร็จสิ้น <span class="badge bg-white text-primary ms-1"
+                                                รออนุมัติงานเสร็จสิ้น <span class="badge bg-white text-primary ms-1"
                                                     id="caseCheckWorkCount">0</span>
                                             </button>
                                         </li>

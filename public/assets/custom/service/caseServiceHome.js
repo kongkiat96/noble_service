@@ -45,7 +45,8 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     // console.log(row)
-                    return `<span class="badge bg-label-primary">${row.ticket}</span>`;
+                    // return `<span class="badge bg-label-primary">${row.ticket}</span>`;
+                    return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
                 }
             },
             {
@@ -95,16 +96,16 @@ $(function () {
                 data: 'created_user',
                 class: "text-center",
             },
-            {
-                data: 'ID',
-                orderable: false,
-                searchable: false,
-                class: "text-center",
-                render: function (data, type, row) {
-                    // console.log(row)
-                    return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
-                }
-            }
+            // {
+            //     data: 'ID',
+            //     orderable: false,
+            //     searchable: false,
+            //     class: "text-center",
+            //     render: function (data, type, row) {
+            //         // console.log(row)
+            //         return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
+            //     }
+            // }
         ],
         columnDefs: [
             {
@@ -156,7 +157,8 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     // console.log(row)
-                    return `<span class="badge bg-label-primary">${row.ticket}</span>`;
+                    // return `<span class="badge bg-label-primary">${row.ticket}</span>`;
+                    return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
                 }
             },
             {
@@ -206,16 +208,16 @@ $(function () {
                 data: 'created_user',
                 class: "text-center",
             },
-            {
-                data: 'ID',
-                orderable: false,
-                searchable: false,
-                class: "text-center",
-                render: function (data, type, row) {
-                    // console.log(row)
-                    return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
-                }
-            }
+            // {
+            //     data: 'ID',
+            //     orderable: false,
+            //     searchable: false,
+            //     class: "text-center",
+            //     render: function (data, type, row) {
+            //         // console.log(row)
+            //         return renderGroupActionButtonsCaseCheck(data, type, row, 'ViewHistory');
+            //     }
+            // }
 
         ],
         columnDefs: [
@@ -268,7 +270,8 @@ $(function () {
                 class: "text-center",
                 render: function (data, type, row) {
                     // console.log(row)
-                    return `<span class="badge bg-label-primary">${row.ticket}</span>`;
+                    // return `<span class="badge bg-label-primary">${row.ID}</span>`;
+                    return renderGroupActionButtonsCaseCheck(data, type, row, 'CheckCaseWork');
                 }
             },
             {
@@ -318,16 +321,16 @@ $(function () {
                 data: 'created_user',
                 class: "text-center",
             },
-            {
-                data: 'ID',
-                orderable: false,
-                searchable: false,
-                class: "text-center",
-                render: function (data, type, row) {
-                    // console.log(row)
-                    return renderGroupActionButtonsCaseCheck(data, type, row, 'CheckCaseWork');
-                }
-            }
+            // {
+            //     data: 'ID',
+            //     orderable: false,
+            //     searchable: false,
+            //     class: "text-center",
+            //     render: function (data, type, row) {
+            //         // console.log(row)
+            //         return renderGroupActionButtonsCaseCheck(data, type, row, 'CheckCaseWork');
+            //     }
+            // }
         ],
         columnDefs: [
             {
@@ -347,13 +350,15 @@ $(document).ready(function () {
         window.location.href = setURLApprove + "/sub-manager";
     })
 
-    scheduleFetch(setURLCase + "/realtime-case-checkwork-byuser-count", "caseCheckWorkByUserAllCount", 60000);
-    scheduleFetch(setURLCase + "/realtime-case-count-manager-approve", "caseApproveCount", 60000);
-    setInterval(reTable, 60000);
+    scheduleFetch(setURLCase + "/realtime-case-count-byuser/checkwork-user", "caseCheckWorkByUserAllCount", 90000);
+    scheduleFetch(setURLCase + "/realtime-case-count-byuser/case-it-user", "CountCaseITByuser", 90000);
+    scheduleFetch(setURLCase + "/realtime-case-count-byuser/case-mt-user", "CountCaseMTByuser", 90000);
+    scheduleFetch(setURLCase + "/realtime-case-count-manager-approve", "caseApproveCount", 90000);
+    setInterval(reTable, 90000);
 });
 function funcCheckCaseWork(caseID) {
     // alert(caseID);
-    showModalWithAjax('#checkWorkerModal', setURLCase + '/show-case-check-work/' + caseID, ['#case_status']);
+    showModalWithAjax('#checkWorkerModal', setURLCase + '/show-case-check-work/' + caseID, []);
 }
 
 function funcViewHistory(caseID) {

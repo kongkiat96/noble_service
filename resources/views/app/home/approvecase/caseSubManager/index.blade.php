@@ -7,7 +7,7 @@
                 <a href="{{ url('/home') }}">หน้าแรก</a>
             </li>
             <li class="breadcrumb-item active">
-                <a href="{{ url('#') }}">อนุมัติการแจ้งงาน</a>
+                <a href="{{ url('#') }}">รออนุมัติแจ้งงาน</a>
             </li>
         </ol>
     </nav>
@@ -28,6 +28,7 @@
                                                 data-bs-target="#approve-it" aria-controls="#approve-it" aria-selected="true"
                                                 id="reTabA">
                                                 รายการแจ้งปัญหาฝ่ายไอที
+                                                <span class="badge bg-white text-primary ms-1" id="caseApproveUserIT">0</span>
                                             </button>
                                         </li>
         
@@ -36,6 +37,7 @@
                                                 data-bs-target="#approve-mt" aria-controls="#approve-mt" aria-selected="true"
                                                 id="reTabB">
                                                 รายการแจ้งปัญหาฝ่ายอาคาร
+                                                <span class="badge bg-white text-primary ms-1" id="caseApproveUserMT">0</span>
                                             </button>
                                         </li>
         

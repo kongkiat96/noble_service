@@ -300,10 +300,10 @@ function reTable() {
     $('.dt-case-success').DataTable().ajax.reload(null, false);
 }
 $(document).ready(function () {
-    scheduleFetch("/case-service/realtime-case-new-count/it", "caseNewCountIT", 60000); // สำหรับ MT
-    scheduleFetch("/case-service/realtime-case-doing-count/it", "caseDoingCountIT", 60000); // สำหรับ FU
-    scheduleFetch("/case-service/realtime-case-success-count/it", "caseSuccessCountIT", 60000); // สำหรับ FU
-    setInterval(reTable, 60000);
+    scheduleFetch("/case-service/realtime-case-new-count/it", "caseNewCountIT", 90000); // สำหรับ MT
+    scheduleFetch("/case-service/realtime-case-doing-count/it", "caseDoingCountIT", 90000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-success-count/it", "caseSuccessCountIT", 90000); // สำหรับ FU
+    setInterval(reTable, 90000);
 });
 
 function getDetailCase(ticket) {

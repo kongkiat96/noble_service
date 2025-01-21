@@ -110,12 +110,19 @@
                             <div class="col-12">
                                 <div class="nav-align-top mb-4">
                                     <ul class="nav nav-pills mb-3" role="tablist">
+                                        <li class="nav-item">
+                                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                                data-bs-target="#case-wait-approve" aria-controls="#case-wait-approve" aria-selected="true"
+                                                id="reTabA">
+                                                รออนุมัติดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseCountWaitApproveMT">0</span>
+                                            </button>
+                                        </li>
         
                                         <li class="nav-item">
                                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-openCase" aria-controls="#case-openCase" aria-selected="true"
                                                 id="reTabA">
-                                                รายการแจ้งปัญหาเข้ามาใหม่ <span class="badge bg-white text-primary ms-1" id="caseNewCountMT">0</span>
+                                                งานใหม่ <span class="badge bg-white text-primary ms-1" id="caseNewCountMT">0</span>
                                             </button>
                                         </li>
         
@@ -123,7 +130,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-working" aria-controls="#case-working" aria-selected="true"
                                                 id="reTabB">
-                                                รายการแจ้งปัญหาที่ดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
+                                                อยู่ระหว่างดำเนินงาน <span class="badge bg-white text-primary ms-1" id="caseDoingCountMT">0</span>
                                             </button>
                                         </li>
 
@@ -131,7 +138,7 @@
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-success" aria-controls="#case-success" aria-selected="true"
                                                 id="reTabD">
-                                                รายการรอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseSuccessCountMT">0</span>
+                                                รอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น <span class="badge bg-white text-primary ms-1" id="caseSuccessCountMT">0</span>
                                             </button>
                                         </li>
         
@@ -145,6 +152,24 @@
                                     </ul>
         
                                     <div class="tab-content">
+                                        <div class="tab-pane fade" id="case-wait-approve" role="tabpanel">
+                                            <div class="text-nowrap table-responsive">
+                                                <table class="dt-case-wait-approve table table-hover table-striped">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>ลำดับ</th>
+                                                            <th>Ticket</th>
+                                                            <th>ผู้แจ้งปัญหา</th>
+                                                            <th>วัน / เวลาที่แจ้งปัญหา</th>
+                                                            <th>ข้อมูลรายการกลุ่มอุปกรณ์</th>
+                                                            <th>ข้อมูลรายการประเภทหมวดหมู่</th>
+                                                            <th>ข้อมูลอาการแจ้งปัญหา</th>
+                                                            <th>ผู้บันทึกข้อมูล</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
         
                                         <div class="tab-pane fade show active" id="case-openCase" role="tabpanel">
                                             <div class="text-nowrap table-responsive">

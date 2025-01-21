@@ -170,12 +170,26 @@
                         <div class="col-md-12 mb-4">
                             <label class="form-label-md mb-2" for="case_status">สถานะการตรวจสอบการทำงาน <span
                                     class="text-danger">*</span></label>
-                            <select name="case_status" id="case_status" class="form-select select2"
+                            {{-- <select name="case_status" id="case_status" class="form-select select2"
                                 data-allow-clear="true">
                                 <option value=""></option>
                                 <option value="manager_{{ $setLowercase }}_checkwork_success">ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย</option>
                                 <option value="reject_manager_{{ $setLowercase }}_checkwork_success">ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย</option>
-                            </select>
+                            </select> --}}
+                            <div class="row m-2">
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-success form-check-inline">
+                                        <input name="case_status" class="form-check-input" type="radio" value="manager_{{ $setLowercase }}_checkwork_success" id="rm_approve" />
+                                        <label class="form-check-label" for="rm_approve"> อนุมัติดำเนินการแจ้งซ่อม </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-danger form-check-inline">
+                                        <input name="case_status" class="form-check-input" type="radio" value="reject_manager_{{ $setLowercase }}_checkwork_success" id="rm_reject" />
+                                        <label class="form-check-label" for="rm_reject"> ไม่อนุมัติดำเนินการแจ้งซ่อม </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -218,7 +232,7 @@
                     @else
                     <button type="submit" name="saveManagerCaseCheckWork" id="saveManagerCaseCheckWork"
                         class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
-                        บันทึกข้อมูลดำเนินงาน</button>
+                        บันทึกข้อมูล</button>
                         @endif
                 </div>
 

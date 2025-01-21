@@ -3,6 +3,7 @@
 namespace App\Models\Master;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -624,9 +625,8 @@ class getDataMasterModel extends Model
         ];
     }
 
-    public function calculateSLANullCaseEnd($case_start,$sla)
+    public function calculateSLANullCaseEnd($case_start, $sla)
     {
-
         // แปลงวันที่เริ่มต้นเป็น Carbon instance
         $start = Carbon::parse($case_start);
 
@@ -635,17 +635,35 @@ class getDataMasterModel extends Model
             // ดึงจำนวนวันจาก SLA
             $days = (int) str_replace('D', '', $sla);
             // เพิ่มวันเข้าไป
-            $end = $start->addDays($days);
+            $end = $start->copy()->addDays($days);
         } elseif (str_starts_with($sla, 'H')) {
             // ดึงจำนวนชั่วโมงจาก SLA
             $hours = (int) str_replace('H', '', $sla);
             // เพิ่มชั่วโมงเข้าไป
-            $end = $start->addHours($hours);
+            $end = $start->copy()->addHours($hours);
         } else {
-            throw new Exception("รูปแบบ SLA ไม่ถูกต้อง");
+            $end = Carbon::now(); // หาก SLA ไม่ถูกต้อง จะถือว่าจบที่ปัจจุบัน
         }
 
-        return $end->toDateTimeString(); // ส่งคืนวันที่และเวลาในรูปแบบ string
+        // คำนวณระยะเวลาที่เหลือ
+        $now = Carbon::now();
+        $timeRemaining = $now->diffForHumans($end, [
+            'parts' => 2, // แสดงผลสูงสุด 3 ช่วงเวลา (เช่น 2 days 3 hours)
+            'syntax' => CarbonInterface::DIFF_ABSOLUTE,
+            'short' => true, // แสดงข้อความแบบย่อ เช่น "2d 3h"
+        ]);
 
+        // ส่งคืนข้อมูลเป็น Array
+        return [
+            'end_time' => $end->toDateTimeString(), // วันที่และเวลาสิ้นสุด SLA
+            'time_remaining' => $timeRemaining, // ระยะเวลาที่เหลือในรูปแบบข้อความ
+        ];
+    }
+
+    public function searchMenuName($urlMenuSubLink)
+    {
+        $getMenuName = DB::table('tbm_menu_sub')->where('menu_sub_link', $urlMenuSubLink)->where('status', 1)->where('deleted', 0)->first();
+        // dd($getMenuName);
+        return $getMenuName;
     }
 }

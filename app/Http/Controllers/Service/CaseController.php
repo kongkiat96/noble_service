@@ -278,9 +278,9 @@ class CaseController extends Controller
         }
     }
 
-    public function realtimeCaseCheckWorkByUserCount()
+    public function realtimeCaseCountByUser($type)
     {
-        $countCaseCheckWork = $this->caseServiceModel->realtimeCaseCheckWorkByUserCount();
-        return response()->json(['count' => $countCaseCheckWork]);
+        $countCaseByUser = $this->caseServiceModel->realtimeCaseCountByUser($type);
+        return response()->json(['count' => $countCaseByUser]);
     }
 }

@@ -25,7 +25,7 @@ class ApproveCaseController extends Controller
     {
         $user = Auth::user();
         $url = request()->segments();
-        $urlName = "อนุมัติแจ้งงาน";
+        $urlName = "รออนุมัติแจ้งงาน";
         $accessMenuSubIDs = $user->accessMenus->pluck('menu_sub_ID')->toArray();
         $getAccessMenus = getDataMasterModel::getMenusName($accessMenuSubIDs);
         return view('app.home.approvecase.caseSubManager.index', [

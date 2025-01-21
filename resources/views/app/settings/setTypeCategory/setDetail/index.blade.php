@@ -15,25 +15,25 @@
 
 
 
-    <div class="modal fade" id="addCategoryItemModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="addCategoryItemModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryItemModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="editCategoryItemModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryListModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="addCategoryListModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editCategoryListModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="editCategoryListModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
@@ -195,8 +195,12 @@
     <div class="col-12">
         <div class="row">
             <div class="col-4">
-                <a href="{{ url('/settings-system/set-type-category-' . strtolower($tag)) }}" class="btn btn-danger"><i
-                        class="bx bx-arrow-back"></i> ย้อนกลับ</a>
+                {{-- <a href="{{ url('/settings-system/set-type-category-' . strtolower($tag)) }}" class="btn btn-danger"><i
+                        class="bx bx-arrow-back"></i> ย้อนกลับ</a> --}}
+
+                <a href="javascript:void(0);" onclick="closeWindow()" class="btn btn-danger">
+                    <i class="bx bx-window-close"></i> ปิดหน้าต่างนี้
+                </a>
             </div>
         </div>
     </div>

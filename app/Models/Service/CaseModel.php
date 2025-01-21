@@ -299,7 +299,7 @@ class CaseModel extends Model
                 ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
-                $sql = $sql->where('gs.group_status_en', 'Success');
+            $sql = $sql->where('gs.group_status_en', 'Success');
             $sql = $sql->where('cs.deleted', 0)
                 ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
 
@@ -402,15 +402,15 @@ class CaseModel extends Model
                 ->get();
 
             $getGroupStatus = $this->getDataMasterModel->getGroupStatus($mainQuery->case_status);
-            if($mainQuery->case_end != null && $mainQuery->sla != null){
+            if ($mainQuery->case_end != null && $mainQuery->sla != null) {
                 $calSLA = $this->getDataMasterModel->calculateSLA($mainQuery->sla, $mainQuery->case_start, $mainQuery->case_end);
             } else {
-                if($mainQuery->sla != null){
-                $calSLANullCaseEnd = $this->getDataMasterModel->calculateSLANullCaseEnd($mainQuery->case_start, $mainQuery->sla);
+                if ($mainQuery->sla != null) {
+                    $calSLANullCaseEnd = $this->getDataMasterModel->calculateSLANullCaseEnd($mainQuery->case_start, $mainQuery->sla);
                 }
             }
 
-            // dd($calSLA);
+            // dd($calSLANullCaseEnd);
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             $data = [
                 'datadetail' => [
@@ -713,7 +713,7 @@ class CaseModel extends Model
         }
     }
 
-    public function realtimeCaseCheckWorkByUserCount()
+    public function realtimeCaseCountByUser($type)
     {
         try {
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
@@ -723,9 +723,19 @@ class CaseModel extends Model
                         ->orWhere('cs.employee_other_case', Auth::user()->map_employee);
                 })
                 ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
-                ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id')
-                ->where('gs.group_status_en', 'Success')
-                ->count();
+                ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id');
+            switch ($type) {
+                case 'case-it-user':
+                    $query = $query->where('cs.use_tag', 'IT');
+                    break;
+                case 'case-mt-user':
+                    $query = $query->where('cs.use_tag', 'MT');
+                    break;
+                case 'checkwork-user':
+                    $query = $query->where('gs.group_status_en', 'Success');
+                    break;
+            }
+            $query = $query->count();
             // dd($query);
             return $query;
         } catch (Exception $e) {
@@ -748,11 +758,14 @@ class CaseModel extends Model
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
             switch ($type) {
                 case 'it':
-                $query = $query->where('cs.case_status', 'manager_it_approve')->where('cs.use_tag', 'IT');
-                break;
+                    $query = $query->where('cs.case_status', 'manager_it_approve')->where('cs.use_tag', 'IT');
+                    break;
                 case 'mt':
-                $query = $query->where('cs.case_status', 'manager_mt_approve')->where('cs.use_tag', 'MT');
-                break;
+                    $query = $query->where('cs.case_status', 'manager_mt_approve')->where('cs.use_tag', 'MT');
+                    break;
+                case 'wait-approve-mt':
+                    $query = $query->where('cs.use_tag', 'MT')->where('cs.tag_work', 'wait_manager_mt_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    break;
             }
             $query = $query->count();
             return $query;
@@ -776,7 +789,7 @@ class CaseModel extends Model
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.case_step', ['doing_case','reject_case','case_reject'])
+                ->whereIn('cs.case_step', ['doing_case', 'reject_case', 'case_reject'])
                 ->where('cs.use_tag', $setTextUpercase)->count();
             return $query;
         } catch (Exception $e) {

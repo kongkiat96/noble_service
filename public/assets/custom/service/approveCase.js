@@ -226,16 +226,9 @@ function setupFormValidationApproveCase(formElement, setSelect) {
                 notEmpty: { message }
             }
         }),
-        // notEmptyAndRegexp: (message, regexp) => ({
-        //     validators: {
-        //         notEmpty: { message },
-        //         regexp: { regexp, message: 'ข้อมูลไม่ถูกต้อง' }
-        //     }
-        // }),
     };
     const validationRules = {
         case_status: validators.notEmpty('เลือกข้อมูล สถานะการอนุมัติ'),
-        // case_detail: validators.notEmptyAndRegexp('ระบุ รายละเอียด', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
     };
 
     return FormValidation.formValidation(formElement, {
@@ -269,3 +262,9 @@ function onSaveApproveCaseSuccess(response) {
         })
     }
 }
+
+$(document).ready(function () {
+    scheduleFetch(setURLApprove + "/realtime-case-approve-count/managet-approve-user-it", "caseApproveUserIT", 90000);
+    scheduleFetch(setURLApprove + "/realtime-case-approve-count/managet-approve-user-mt", "caseApproveUserMT", 90000);
+    setInterval(reTable, 90000);
+});

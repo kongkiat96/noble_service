@@ -26,8 +26,9 @@ class CaseServiceController extends Controller
     public function index_case_approve_mt()
     {
         $url = request()->segments();
-        $urlName = "รายการอนุมัติแจ้งปัญหาฝ่ายอาคาร (MTs)";
         $urlSubLink = "case-approve-mt";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
 
         if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
@@ -45,8 +46,9 @@ class CaseServiceController extends Controller
     public function index_case_approve_it()
     {
         $url = request()->segments();
-        $urlName = "รายการอนุมัติแจ้งปัญหาฝ่ายไอที (ITs)";
         $urlSubLink = "case-approve-it";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
 
         if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
@@ -64,8 +66,9 @@ class CaseServiceController extends Controller
     public function index_case_all_mt()
     {
         $url = request()->segments();
-        $urlName = "รายการแจ้งปัญหาฝ่ายอาคาร (MTs)";
         $urlSubLink = "case-all-mt";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
 
         if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
@@ -85,8 +88,9 @@ class CaseServiceController extends Controller
     public function index_case_all_it()
     {
         $url = request()->segments();
-        $urlName = "รายการแจ้งปัญหาฝ่ายไอที (ITs)";
         $urlSubLink = "case-all-it";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
 
         if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');

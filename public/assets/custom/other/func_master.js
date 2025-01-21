@@ -306,7 +306,7 @@ function renderStatusWorkBadge(data, type, full, row) {
     const statusMap = {
         all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
-        mt: { title: 'ใช้งานฝ่ายอาคาร', className: 'bg-label-danger' },
+        mt: { title: 'ใช้งานฝ่ายช่าง', className: 'bg-label-danger' },
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -328,7 +328,7 @@ function renderStatusWorkBadge(data, type, full, row) {
     const statusMap = {
         all: { title: 'ทั้งหมด', className: 'bg-label-success' },
         it: { title: 'ฝ่าย IT', className: 'bg-label-info' },
-        mt: { title: 'ฝ่ายอาคาร', className: 'bg-label-warning' },
+        mt: { title: 'ฝ่ายช่าง', className: 'bg-label-warning' },
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -338,7 +338,7 @@ function renderStatusWorkBadge(data, type, full, row) {
 function renderUserClassBadge(data, type, full, row) {
     const statusMap = {
         // it: { title: 'สังกัด IT', className: 'bg-label-info' },
-        // mt: { title: 'สังกัด อาคาร', className: 'bg-label-warning' },
+        // mt: { title: 'สังกัด ช่าง', className: 'bg-label-warning' },
         // hr: { title: 'สังกัด บุคคล', className: 'bg-label-primary' },
         // userOther: { title: 'ผู้ใช้ทั่วไป', className: 'bg-label-danger' }
         SuperAdmin: { title: 'ผู้ดูแลระบบ', className: 'bg-label-danger' },
@@ -446,9 +446,14 @@ function renderGroupActionButtonsCaseCheck(data, type, row, useFunc) {
     const functionRender = `func${useFunc}`;
 
     let returnButton = '';
+    // returnButton = `
+    //     <button type="button" class="btn btn-icon btn-label-success btn-success" onclick="${functionRender}(${row.ID})">
+    //         <span class="tf-icons bx bxs-calendar-check"></span>
+    //     </button>
+    // `;
     returnButton = `
-        <button type="button" class="btn btn-icon btn-label-success btn-success" onclick="${functionRender}(${row.ID})">
-            <span class="tf-icons bx bxs-calendar-check"></span>
+        <button type="button" class="btn btn-label-info btn-info btn-sm" onclick="${functionRender}(${row.ID})">
+            ` + row.ticket + `
         </button>
     `;
 
@@ -940,21 +945,21 @@ function badgeStatusTagWork(data, type, full, row) {
     const statusTagWork = {
         wait_manager_approve: { title: 'รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         padding: { title: 'รอดำเนินการแก้ไข', className: 'bg-label-info' },
-        wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
+        wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายช่าง', className: 'bg-label-primary' },
         openCaseWaitApprove: { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         wait_manager_it_approve: { title: 'รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
 
 
-        manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายอาคาร', className: 'bg-label-primary' },
+        manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายช่าง', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
 
-        manager_mt_approve: { title: 'อนุมัติจากฝ่ายอาคาร / รอดำเนินงาน', className: 'bg-label-primary' },
+        manager_mt_approve: { title: 'อนุมัติจากฝ่ายช่าง / รอดำเนินงาน', className: 'bg-label-primary' },
         manager_it_approve: { title: 'อนุมัติจากฝ่ายไอที / รอดำเนินงาน', className: 'bg-label-primary' },
 
         reject_manager_approve_MT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
         reject_manager_approve_IT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
 
-        reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายอาคาร', className: 'bg-label-danger' },
+        reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายช่าง', className: 'bg-label-danger' },
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
 
         case_success: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบ', className: 'bg-label-success' },
@@ -984,6 +989,9 @@ function fetchCountAndUpdateBadge(url, badgeId) {
     });
 }
 
+function closeWindow() {
+    window.close(); // ปิดหน้าต่าง
+}
 function scheduleFetch(url, badgeId, interval) {
     fetchCountAndUpdateBadge(url, badgeId);
     setInterval(() => fetchCountAndUpdateBadge(url, badgeId), interval);

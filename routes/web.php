@@ -332,7 +332,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/get-detail-case-history', 'Service\CaseController@getDataCaseDetailHistory');
             Route::get('/get-detail-case-approve/{ticket}', 'Service\CaseController@getDataCaseDetailApprove');
-            Route::get('/realtime-case-checkwork-byuser-count', 'Service\CaseController@realtimeCaseCheckWorkByUserCount');
+            Route::get('/realtime-case-count-byuser/{type}', 'Service\CaseController@realtimeCaseCountByUser');
             Route::get('/realtime-case-count-manager-approve', 'HomeController@realtimeCaseCountManagerApprove');
 
         });
@@ -360,6 +360,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/case-service')->group(function () {
         Route::get('/case-approve-mt', 'CaseService\CaseServiceController@index_case_approve_mt');
         Route::get('/case-all-mt', 'CaseService\CaseServiceController@index_case_all_mt');
+        Route::post('/get-data-case-wait-approve-mt','CaseService\mt\CaseServiceMTController@getDataCaseWaitApproveMT');
         Route::post('/get-data-case-open-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseOpenMT');
         Route::post('/get-data-case-doing-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseDoingMT');
         Route::post('/get-data-case-success-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseSuccessMT');

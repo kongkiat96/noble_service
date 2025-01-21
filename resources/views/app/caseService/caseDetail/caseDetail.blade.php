@@ -74,14 +74,33 @@
                     </div>
                 </div>
                 <form id="formApproveToPadding">
+                        
+
+
                     <div class="col-md-12 mb-2">
                         <label class="form-label-md mb-2" for="case_status">สถานะการอนุมัติงาน</label>
-                        <select name="case_status" id="case_status" class="form-select select2"
+                        {{-- <select name="case_status" id="case_status" class="form-select select2"
                             data-allow-clear="true">
                             <option value=""></option>
                             <option value="manager_{{ $setLowercase }}_approve">อนุมัติดำเนินการแจ้งซ่อม</option>
                             <option value="reject_manager_{{ $setLowercase }}_approve">ไม่อนุมัติดำเนินการแจ้งซ่อม</option>
-                        </select>
+                        </select> --}}
+                        <div class="row m-2">
+                            <div class="col-md-6">
+                                <div class="form-check form-check-success form-check-inline">
+                                    <input name="case_status" class="form-check-input" type="radio" value="manager_{{ $setLowercase }}_approve" id="rm_approve" />
+                                    <label class="form-check-label" for="rm_approve"> อนุมัติดำเนินการแจ้งซ่อม </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-danger form-check-inline">
+                                    <input name="case_status" class="form-check-input" type="radio" value="reject_manager_{{ $setLowercase }}_approve" id="rm_reject" />
+                                    <label class="form-check-label" for="rm_reject"> ไม่อนุมัติดำเนินการแจ้งซ่อม </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                     <div class="col-md-12 mb-2">
                         <label class="form-label-md mb-2" for="case_approve_detail">รายละเอียดการอนุมัติงาน</label>
@@ -98,7 +117,7 @@
                     <button type="submit" name="approveCaseToPadding" id="approveCaseToPadding"
                         class="btn btn-warning btn-form-block-overlay"><i
                             class='menu-icon tf-icons bx bxs-paper-plane'></i>
-                        อนุมัติดำเนินการ</button>
+                        บันทึกข้อมูล</button>
                 </div>
 
 

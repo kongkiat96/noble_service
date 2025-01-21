@@ -69,18 +69,7 @@
                                     <span>{{ $dataEmployee->branch_name }}</span>
                                 </li>
                             </ul>
-                            <div class="d-flex justify-content-center pt-3">
-                                {{-- <a href="javascript:;" class="btn btn-secondary me-3" data-bs-target="#editUser"
-                                    data-bs-toggle="modal">Edit</a> --}}
-                                {{-- <a href="javascript:;" class="btn btn-label-danger suspend-user">Suspended</a> --}}
-                                @if(COUNT($checkAccessManaget) >= 1)
-                                {{-- <a href="#" class="btn btn-warning me-3"><i class='menu-icon tf-icons bx bxs-user-check'></i>รายการอนุมัติงาน </a> --}}
-                                <button type="button" class="btn btn-warning" id="btnApproveCaseSubManager">
-                                    <i class='menu-icon tf-icons bx bxs-user-check'></i> รายการรออนุมัติงาน
-                                    <span class="badge bg-white text-primary ms-1" id="caseApproveCount">0</span>
-                                  </button>
-                                @endif
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -107,6 +96,7 @@
                                         data-bs-target="#service-it" aria-controls="#service-it" aria-selected="true"
                                         id="reTabA">
                                         รายการแจ้งปัญหาฝ่ายไอที
+                                        <span class="badge bg-white text-primary ms-1" id="CountCaseITByuser">0</span>
                                     </button>
                                 </li>
 
@@ -115,6 +105,7 @@
                                         data-bs-target="#service-mt" aria-controls="#service-mt" aria-selected="true"
                                         id="reTabB">
                                         รายการแจ้งปัญหาฝ่ายอาคาร
+                                        <span class="badge bg-white text-primary ms-1" id="CountCaseMTByuser">0</span>
                                     </button>
                                 </li>
 
@@ -125,6 +116,16 @@
                                         รายการตรวจสอบงานเสร็จสิ้น <span class="badge bg-success text-white ms-1" id="caseCheckWorkByUserAllCount">0</span>
                                     </button>
                                 </li>
+
+                                {{-- <div class="ml-2"> --}}
+                                    @if(COUNT($checkAccessManaget) >= 1)
+                                    {{-- <a href="#" class="btn btn-warning me-3"><i class='menu-icon tf-icons bx bxs-user-check'></i>รายการอนุมัติงาน </a> --}}
+                                    <button type="button" class="btn btn-warning btn-md" id="btnApproveCaseSubManager">
+                                        รายการรออนุมัติงาน
+                                        <span class="badge bg-white text-primary ms-1" id="caseApproveCount">0</span>
+                                      </button>
+                                    @endif
+                                {{-- </div> --}}
                             </ul>
 
                             <div class="tab-content">
