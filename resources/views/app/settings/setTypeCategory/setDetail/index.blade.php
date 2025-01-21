@@ -207,7 +207,11 @@
     <input type="text" id="categoryAllID" name="categoryAllID" value="{{ $dataCategoryDetail->id }}" hidden>
 @endsection
 @section('script')
-    <script type="text/javascript"
-        src="{{ asset('/assets/custom/settings/setTypeCategory/set_type_category.js?v=') }}@php echo date("H:i:s") @endphp">
+    <script type="text/javascript" src="{{ asset('/assets/custom/settings/setTypeCategory/set_type_category.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+    <script>
+        function closeWindow() {
+            window.close(); // ปิดหน้าต่าง
+        }
     </script>
+    
 @endsection

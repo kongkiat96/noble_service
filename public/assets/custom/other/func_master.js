@@ -988,10 +988,6 @@ function fetchCountAndUpdateBadge(url, badgeId) {
         }
     });
 }
-
-function closeWindow() {
-    window.close(); // ปิดหน้าต่าง
-}
 function scheduleFetch(url, badgeId, interval) {
     fetchCountAndUpdateBadge(url, badgeId);
     setInterval(() => fetchCountAndUpdateBadge(url, badgeId), interval);
