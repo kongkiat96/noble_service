@@ -180,13 +180,13 @@
                                 <div class="col-md-6">
                                     <div class="form-check form-check-success form-check-inline">
                                         <input name="case_status" class="form-check-input" type="radio" value="manager_{{ $setLowercase }}_checkwork_success" id="rm_approve" />
-                                        <label class="form-check-label" for="rm_approve"> อนุมัติดำเนินการแจ้งซ่อม </label>
+                                        <label class="form-check-label" for="rm_approve"> ผ่านการตรวจสอบ / ดำเนินงานเรียบร้อย </label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-check form-check-danger form-check-inline">
                                         <input name="case_status" class="form-check-input" type="radio" value="reject_manager_{{ $setLowercase }}_checkwork_success" id="rm_reject" />
-                                        <label class="form-check-label" for="rm_reject"> ไม่อนุมัติดำเนินการแจ้งซ่อม </label>
+                                        <label class="form-check-label" for="rm_reject"> ไม่ผ่านการตรวจสอบ / ดำเนินงานไม่เรียบร้อย </label>
                                     </div>
                                 </div>
                             </div>
