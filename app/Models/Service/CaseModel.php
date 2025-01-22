@@ -415,7 +415,7 @@ class CaseModel extends Model
                 }
             }
 
-            // dd($calSLANullCaseEnd);
+            // dd($mainQuery);
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             $data = [
                 'datadetail' => [

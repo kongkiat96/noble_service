@@ -360,6 +360,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/approve-case-manager/{caseID}', 'Service\ApproveCaseController@approveCaseManager');
             Route::post('/approve-case-padding/{caseID}', 'Service\ApproveCaseController@approveCasePadding');
             Route::post('/case-check-work/{caseID}', 'Service\ApproveCaseController@caseCheckWork');
+            Route::post('/change-category/{caseID}', 'Service\ApproveCaseController@changeCategory');
 
             Route::get('/realtime-case-approve-count/{type}', 'Service\ApproveCaseController@realtimeCaseApproveCountTag');
             Route::get('/realtime-case-approve-count-subset/{type}', 'Service\ApproveCaseController@realtimeCaseApproveCountSubset');

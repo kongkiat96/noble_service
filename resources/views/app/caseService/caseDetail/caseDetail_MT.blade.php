@@ -73,49 +73,78 @@
                     <div class="divider-text font-weight-bold">ข้อมูลการแจ้งปัญหา</div>
                 </div>
             @endif
-            <div class="row g-1 form-block">
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="ticket">Ticket</label>
-                    <input type="text" id="ticket" class="form-control" name="ticket"
-                        value="{{ $data['ticket'] }}" readonly autofocus>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="category_main_name">รายการกลุ่มอุปกรณ์</label>
-                    <input type="text" id="category_main_name" class="form-control" name="category_main_name"
-                        value="{{ $data['category_main_name'] }}" readonly>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="category_type_name">รายการประเภทหมวดหมู่</label>
-                    <input type="text" id="category_type_name" class="form-control" name="category_type_name"
-                        value="{{ $data['category_type_name'] }}" readonly>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="category_detail_name">อาการที่ต้องการแจ้งปัญหา</label>
-                    <input type="text" id="category_detail_name" class="form-control" name="category_detail_name"
-                        value="{{ $data['category_detail_name'] }}" readonly>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="asset_number">หมายเลขครุภัณฑ์</label>
-                    <input type="text" id="asset_number" class="form-control" name="asset_number"
-                        value="{{ $data['asset_number'] }}" readonly>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <label class="form-label-md mb-2" for="employee_other_case_name">ผู้แจ้งปัญหา</label>
-                    <input type="text" id="employee_other_case_name" class="form-control"
-                        name="employee_other_case_name" value="{{ $data['employee_other_case_name'] }}" readonly>
-                </div>
-                @if ($data['manager_name'] != null)
-                    <div class="col-md-12 mb-4">
-                        <label class="form-label-md mb-2" for="manager_name">ผู้บังคับบัญชา</label>
-                        <input type="text" id="manager_name" class="form-control" name="manager_name"
-                            value="{{ $data['manager_name'] }}" readonly>
+            <form id="formChangeCategory">
+                <div class="row g-1 form-block">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="ticket">Ticket</label>
+                        <input type="text" id="ticket" class="form-control" name="ticket"
+                            value="{{ $data['ticket'] }}" readonly autofocus>
                     </div>
-                @endif
-                <div class="col-md-12 mb-2">
-                    <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
-                    <textarea id="case_detail" name="case_detail" rows="3" class="form-control" readonly>{{ $data['case_detail'] }}</textarea>
+    
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="category_main">รายการกลุ่มอุปกรณ์</label>
+                            <select class="form-select select2" name="category_main" id="category_main" data-allow-clear="true">
+                                <option value="">Select</option>
+                                @foreach ($dataCategoryMain as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_main'] == $value->id ) selected @endif>{{ $value->category_main_name }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="category_type">รายการประเภทหมวดหมู่</label>
+                            <select class="form-select select2" name="category_type" id="category_type" data-allow-clear="true">
+                                <option value="">Select</option>
+                                @foreach ($dataCategoryType as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_type'] == $value->id ) selected @endif>{{ $value->category_type_name }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="category_detail">อาการที่ต้องการแจ้งปัญหา</label>
+                            <select class="form-select select2" name="category_detail" id="category_detail" data-allow-clear="true">
+                                <option value="">Select</option>
+                                @foreach ($dataCategoryDetail as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_detail'] == $value->id ) selected @endif>{{ $value->category_detail_name }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <input type="text" name="category_type_old" id="category_type_old" value="{{ $data['category_type'] }}" hidden>
+                    <input type="text" name="category_detail_old" id="category_detail_old" value="{{ $data['category_detail'] }}" hidden>
+                    <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="asset_number">หมายเลขครุภัณฑ์</label>
+                        <input type="text" id="asset_number" class="form-control" name="asset_number"
+                            value="{{ $data['asset_number'] }}" readonly>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label-md mb-2" for="employee_other_case_name">ผู้แจ้งปัญหา</label>
+                        <input type="text" id="employee_other_case_name" class="form-control"
+                            name="employee_other_case_name" value="{{ $data['employee_other_case_name'] }}" readonly>
+                    </div>
+                    @if ($data['manager_name'] != null)
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label-md mb-2" for="manager_name">ผู้บังคับบัญชา</label>
+                            <input type="text" id="manager_name" class="form-control" name="manager_name"
+                                value="{{ $data['manager_name'] }}" readonly>
+                        </div>
+                    @endif
+                    <div class="col-md-12 mb-2">
+                        <label class="form-label-md mb-2" for="case_detail">รายละเอียด</label>
+                        <textarea id="case_detail" name="case_detail" rows="3" class="form-control" readonly>{{ $data['case_detail'] }}</textarea>
+                    </div>
                 </div>
+            </form>
+            <div class="col-12 text-center">
+                {{-- set case status getDataStatusWork --}}
+                @if (in_array($data['group_status'], ['Success']))
+                    <div class="alert alert-warning text-bold" role="alert">
+                        รายการนี้อยู่ระหว่างตรวจสอบงาน
+                    </div>
+                @else
+                    <button type="submit" name="changeCategory" id="changeCategory"
+                        class="btn btn-warning btn-form-block-overlay"><i class='menu-icon tf-icons bx bx-git-compare'></i>
+                        เปลี่ยนแปลงข้อมูลการแจ้ง</button>
+                @endif
             </div>
         </div>
 
@@ -437,4 +466,9 @@
         initializeTagify(TagifyWorkerEl, workerList);
         initializeTagify(TagifyCheckerEl, checkerList);
     })();
+</script>
+<script>
+
+    mapSelectedCategory('#category_type', '#category_main', true)
+    mapSelectedCategoryDetail('#category_detail', '#category_type', true)
 </script>

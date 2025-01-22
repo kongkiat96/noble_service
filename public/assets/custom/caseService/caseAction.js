@@ -40,7 +40,6 @@ $(document).ready(function () {
         const caseID = $('#caseID').val();
         const fv = setupFormValidationCaseAddPrice(form);
         const formData = new FormData(form);
-        console.log(formData)
         fv.validate().then(function (status) {
             if (status === 'Valid') {
                 postFormData("/service/approve-case/case-check-work/" + caseID, formData)
@@ -54,6 +53,22 @@ $(document).ready(function () {
         const caseTicket = $('#caseTicket').val();
         window.open('/case-service/case-print-work/' + caseTicket, '_blank');
         // window.location.href = '/case-service/case-print-work/'+ caseID, '_blank';
+    })
+
+    $('#changeCategory').on('click', function (e) {
+        e.preventDefault();
+        removeValidationFeedback();
+        const form = $("#formChangeCategory")[0];
+        const caseID = $('#caseID').val();
+        const fv = setupFormValidationChangeCategory(form);
+        const formData = new FormData(form);
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                postFormData("/service/approve-case/change-category/" + caseID, formData)
+                    .done(onSaveCaseActionSuccess)
+                    .fail(handleAjaxSaveError);
+            }
+        });
     })
 
 })
@@ -117,6 +132,40 @@ function setupFormValidationCaseAddPrice(formElement, setSelect) {
             bootstrap5: new FormValidation.plugins.Bootstrap5({
                 eleValidClass: '',
                 rowSelector: '.col-md-9'
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+    });
+}
+
+function setupFormValidationChangeCategory(formElement, setSelect) {
+    const validators = {
+        notEmpty: message => ({
+            validators: {
+                notEmpty: { message }
+            }
+        }),
+        // notEmptyAndRegexp: (message, regexp) => ({
+        //     validators: {
+        //         notEmpty: { message },
+        //         regexp: { regexp, message: 'ข้อมูลไม่ถูกต้อง' }
+        //     }
+        // }),
+    };
+    const validationRules = {
+        category_main: validators.notEmpty('เลือกข้อมูล รายการกลุ่มอุปกรณ์'),
+        category_type: validators.notEmpty('เลือกข้อมูล รายการประเภทหมวดหมู่'),
+        category_detail: validators.notEmpty('เลือกข้อมูล อาการที่ต้องการแจ้งปัญหา'),
+    };
+
+    return FormValidation.formValidation(formElement, {
+        fields: validationRules,
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: '',
+                rowSelector: '.col-md-6'
             }),
             submitButton: new FormValidation.plugins.SubmitButton(),
             autoFocus: new FormValidation.plugins.AutoFocus()

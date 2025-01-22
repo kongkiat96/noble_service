@@ -633,4 +633,31 @@ class ApproveCaseModel extends Model
             ];
         }
     }
+
+    public function saveChangeCategory($setInput, $caseID)
+    {
+        try {
+            $updateCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->update([
+                'category_main' => $setInput['category_main'],
+                'category_type' => $setInput['category_type'],
+                'category_detail' => $setInput['category_detail'],
+                'updated_at' => now(),
+                'updated_user' => Auth::user()->emp_code
+            ]);
+
+            return [
+                'status' => 200,
+                'message' => 'success'
+            ];
+        } catch (Exception $e) {
+            // บันทึกข้อผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+
+            // ส่งคืนข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

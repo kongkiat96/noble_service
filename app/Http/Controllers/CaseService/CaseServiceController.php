@@ -113,6 +113,8 @@ class CaseServiceController extends Controller
             // dd($ticket);
             $getCaseDetail = $this->caseModel->getDataCaseDetailApprove($ticket);
             // dd($getCaseDetail);
+            $detailCase = $getCaseDetail['message']['datadetail'];
+            // dd($detailCase);
             $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
             $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
             $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
@@ -122,17 +124,19 @@ class CaseServiceController extends Controller
             $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
             $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
 
+            $getListCategoryMain = $this->getMaster->getDataCategoryMain($detailCase['use_tag_code']);
+            $getListCategoryType = $this->getMaster->getListCategoryType($detailCase['category_main']);
+            $getListCategoryDetail = $this->getMaster->getListCategoryDetail($detailCase['category_type']);
+            // dd($getListCategoryMain);
             $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
-            $setWorker = $getCaseDetail['message']['datadetail'];
-            $workerArray = json_decode($setWorker['worker'], true);
+            $workerArray = json_decode($detailCase['worker'], true);
             $workerNames = collect($workerArray)
                 ->pluck('name')
                 ->implode(', ');
             // dd($workerNames);
 
             $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
-            $setChecker = $getCaseDetail['message']['datadetail'];
-            $checkerArray = json_decode($setChecker['checker'], true);
+            $checkerArray = json_decode($detailCase['checker'], true);
             $checkerNames = collect($checkerArray)
                 ->pluck('name')
                 ->implode(', ');
@@ -154,7 +158,10 @@ class CaseServiceController extends Controller
                     'getStatusWork' => $getStatusWork,
                     'workerNames' => $workerNames,
                     'getDataChecker' => $getDataChecker,
-                    'checkerNames' => $checkerNames
+                    'checkerNames' => $checkerNames,
+                    'dataCategoryMain' => $getListCategoryMain,
+                    'dataCategoryType' => $getListCategoryType,
+                    'dataCategoryDetail' => $getListCategoryDetail
                 ]);
             } else {
                 return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);

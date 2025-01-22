@@ -109,6 +109,32 @@ class ApproveCaseController extends Controller
         }
     }
 
+    public function changeCategory(Request $request, $caseID)
+    {
+        try {
+            $setInput = $request->input();
+            // dd($setInput);
+            if(isset($setInput['category_type']) && isset($setInput['category_detail'])) {
+                $setNewInput = [
+                    'category_main' => $setInput['category_main'],
+                    'category_type' => $setInput['category_type'],
+                    'category_detail' => $setInput['category_detail']
+                ];
+            } else {
+                $setNewInput = [
+                    'category_main' => $setInput['category_main'],
+                    'category_type' => $setInput['category_type_old'],
+                    'category_detail' => $setInput['category_detail_old']
+                ];
+            }
+            $decryptCaseID = decrypt($caseID);
+            // dd($setNewInput);
+            $saveCase = $this->approveCaseModel->saveChangeCategory($setNewInput, $decryptCaseID);
+            return response()->json(['status' => $saveCase['status'], 'message' => $saveCase['message']]);
+        } catch (Exception $e) {
+        
+    }}
+
     public function realtimeCaseApproveCount()
     {
         $countCaseApprove = $this->approveCaseModel->countCaseApprove(Auth::user()->map_employee);
