@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-hierarchy', 'HomeController@getHierarchy');
     });
     Route::post('/change-password', 'HomeController@changePassword');
-    
+
     Route::prefix('/assets-management')->group(function () {
         Route::prefix('/settings-assets')->group(function () {
             Route::get('', 'AssetsManagement\SettingAssetsController@index');
@@ -317,6 +317,18 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/get-data-worker', 'Settings\WorkerController@getDataWorker');
         });
+
+        Route::prefix('/setnotify-telegram')->group(function () {
+            Route::get('', 'Settings\NotifyController@index');
+            Route::get('/add-notify-modal', 'Settings\NotifyController@showAddNotifyModal');
+            Route::post('/search-chat-id/{token}', 'Settings\NotifyController@searchChatID');
+            Route::post('/save-notify-telegram', 'Settings\NotifyController@saveNotifyTelegramData');
+            Route::get('/show-edit-notify-telegram/{notifyID}', 'Settings\NotifyController@showEditNotifyTelegram');
+            Route::post('/edit-notify-telegram/{notifyID}', 'Settings\NotifyController@saveEditNotifyTelegram');
+            Route::post('/delete-notify-telegram/{notifyID}', 'Settings\NotifyController@deleteNotifyTelegram');
+
+            Route::post('/get-data-notify-telegram', 'Settings\NotifyController@getDataNotifyTelegram');
+        });
     });
 
     Route::prefix('/service')->group(function () {
@@ -334,7 +346,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/get-detail-case-approve/{ticket}', 'Service\CaseController@getDataCaseDetailApprove');
             Route::get('/realtime-case-count-byuser/{type}', 'Service\CaseController@realtimeCaseCountByUser');
             Route::get('/realtime-case-count-manager-approve', 'HomeController@realtimeCaseCountManagerApprove');
-
         });
         Route::prefix('/approve-case')->group(function () {
             Route::get('/sub-manager', 'Service\ApproveCaseController@approveCaseSubManager');
@@ -353,18 +364,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/realtime-case-approve-count/{type}', 'Service\ApproveCaseController@realtimeCaseApproveCountTag');
             Route::get('/realtime-case-approve-count-subset/{type}', 'Service\ApproveCaseController@realtimeCaseApproveCountSubset');
             Route::get('/realtime-case-checkwork-count/{type}', 'Service\ApproveCaseController@realtimeCaseCheckWorkCount');
-
         });
     });
 
     Route::prefix('/case-service')->group(function () {
         Route::get('/case-approve-mt', 'CaseService\CaseServiceController@index_case_approve_mt');
         Route::get('/case-all-mt', 'CaseService\CaseServiceController@index_case_all_mt');
-        Route::post('/get-data-case-wait-approve-mt','CaseService\mt\CaseServiceMTController@getDataCaseWaitApproveMT');
+        Route::post('/get-data-case-wait-approve-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseWaitApproveMT');
         Route::post('/get-data-case-open-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseOpenMT');
         Route::post('/get-data-case-doing-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseDoingMT');
         Route::post('/get-data-case-success-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseSuccessMT');
-        
+
 
         Route::get('/case-approve-it', 'CaseService\CaseServiceController@index_case_approve_it');
         Route::get('/case-all-it', 'CaseService\CaseServiceController@index_case_all_it');
@@ -398,13 +408,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-data-manager/{empID}', 'Master\getDataMasterController@getDataManager');
         Route::get('/get-category-tag/{useTag}', 'Master\getDataMasterController@getDataCategoryTag');
     });
-
-    Route::prefix('test')->group(function () {
-        Route::post('', 'Test\KongkiatController@index');
-    });
 });
 
-
+Route::prefix('/test')->group(function () {
+    Route::get('/test-noti-telegram', 'Test\FunctionTestAllController@notiTelegram');
+});
 //Clear route cache:
 Route::get('/route-cache', function () {
     Artisan::call('route:cache');

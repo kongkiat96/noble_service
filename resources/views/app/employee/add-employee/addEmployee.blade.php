@@ -96,7 +96,7 @@
                                 </div>
                                 <input type="text" name="mapIDGroup" id="mapIDGroup" readonly hidden autocomplete="off" >
                                 <div class="col-md-6">
-                                    <label class="form-label-md mb-2" for="positionClass">ระดับตําแหน่ง <span class="text-danger">*</span></label>
+                                    <label class="form-label-md mb-2" for="positionClass">ระดับตําแหน่ง</label>
                                     <select id="positionClass" name="positionClass" class="form-select select2" autocomplete="off"
                                         data-allow-clear="true">
                                         <option value="">Select</option>
@@ -107,7 +107,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label-md mb-2" for="positionName">ตำแหน่ง <span class="text-danger">*</span></label>
+                                    <label class="form-label-md mb-2" for="positionName">ตำแหน่ง</label>
                                     <input type="text" name="positionName" id="positionName" class="form-control"
                                         autocomplete="off">
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Models\Service;
 
 use App\Models\Master\getDataMasterModel;
+use App\Models\Notify\SentNotifyModel;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -149,11 +150,15 @@ class CaseModel extends Model
 
             // บันทึกข้อมูลในตาราง tbt_case_service
             $insertCase = $data;
+            // SentNotifyModel::setDataCaseToSend(11);
+            // dd("ss");
             $caseService = DB::connection('mysql')->table('tbt_case_service')->insertGetId($insertCase);
 
             // หากการบันทึกสำเร็จ
             if ($caseService) {
                 // บันทึกประวัติลงในตาราง tbt_case_service_history
+                SentNotifyModel::setDataCaseToSend($caseService);
+
                 DB::connection('mysql')->table('tbt_case_service_history')->insert([
                     'case_service_id' => $caseService,
                     'ticket' => $data['ticket'],

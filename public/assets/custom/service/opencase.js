@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#openCaseService').click(function (e) {
+        $("#openCaseService").attr("disabled", true);
         e.preventDefault();
         removeValidationFeedback();
         const form = $("#formOpenCaseService")[0];
@@ -134,6 +135,8 @@ function onSaveOpenCaseServiceSuccess(response) {
                 $('#formOpenCaseService')[0].reset();
                 $('.select2').val(null).trigger('change');
                 resetDropzone();
+                $("#openCaseService").attr("disabled", false);
+
             }
         });
     } else {
@@ -141,5 +144,6 @@ function onSaveOpenCaseServiceSuccess(response) {
             icon: 'error',
             text: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'
         })
+        $("#openCaseService").attr("disabled", false);
     }
 }

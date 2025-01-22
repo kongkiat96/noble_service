@@ -48,8 +48,8 @@ function setupFormValidationChangePassword(formElement) {
                     message: 'กําหนดรหัสผ่านใหม่'
                 },
                 stringLength: {
-                    min: 8,
-                    message: 'กรุณาระบุรหัสผ่านเกิน 8 ตัวอักษร'
+                    min: 6,
+                    message: 'กรุณาระบุรหัสผ่านเกิน 6 ตัวอักษร'
                 }
             }
         },
@@ -59,8 +59,8 @@ function setupFormValidationChangePassword(formElement) {
                     message: 'กรุณายืนยันรหัสผ่านใหม่'
                 },
                 stringLength: {
-                    min: 8,
-                    message: 'กรุณาระบุรหัสผ่านเกิน 8 ตัวอักษร'
+                    min: 6,
+                    message: 'กรุณาระบุรหัสผ่านเกิน 6 ตัวอักษร'
                 },
                 identical: {
                     compare: function() {

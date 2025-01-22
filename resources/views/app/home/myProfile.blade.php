@@ -241,7 +241,7 @@
                                     <form id="formChangePasswordUser">
                                         <div class="alert alert-warning" role="alert">
                                             <h6 class="alert-heading fw-bold mb-1">คําแนะนําการเปลี่ยนรหัสผ่าน</h6>
-                                            <span>ความยาวขั้นต่ำ 8 ตัวอักษร ตัวพิมพ์ใหญ่ และสัญลักษณ์</span>
+                                            <span>ความยาวขั้นต่ำ 6 ตัวอักษร ตัวพิมพ์ใหญ่ และสัญลักษณ์</span>
                                         </div>
                                         <div class="row">
                                             <div class="mb-3 col-md-6 form-password-toggle">
