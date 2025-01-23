@@ -322,9 +322,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'Settings\NotifyController@index');
             Route::get('/add-notify-modal', 'Settings\NotifyController@showAddNotifyModal');
             Route::post('/search-chat-id/{token}', 'Settings\NotifyController@searchChatID');
-            Route::post('/save-notify-telegram', 'Settings\NotifyController@saveNotifyTelegramData');
+            Route::match(['get', 'post'],'/save-notify-telegram', 'Settings\NotifyController@saveNotifyTelegramData');
             Route::get('/show-edit-notify-telegram/{notifyID}', 'Settings\NotifyController@showEditNotifyTelegram');
-            Route::post('/edit-notify-telegram/{notifyID}', 'Settings\NotifyController@saveEditNotifyTelegram');
+            Route::match(['get', 'post'],'/edit-notify-telegram/{notifyID}', 'Settings\NotifyController@saveEditNotifyTelegram');
             Route::post('/delete-notify-telegram/{notifyID}', 'Settings\NotifyController@deleteNotifyTelegram');
 
             Route::post('/get-data-notify-telegram', 'Settings\NotifyController@getDataNotifyTelegram');
