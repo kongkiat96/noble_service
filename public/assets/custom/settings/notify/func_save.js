@@ -8,7 +8,7 @@ $(document).ready(function () {
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
-                postFormData("/settings-system/setnotify-telegram/save-notify-telegram/", formData)
+                postFormData("/settings-system/setnotify-telegram/save-notify-telegram", formData)
                     .done(onSaveNotifySuccess)
                     .fail(handleAjaxSaveError);
             }
