@@ -364,7 +364,7 @@ class getDataMasterModel extends Model
         // } else if ($tagPosition == 'subManager') {
         //     $getEmployee = $getEmployee->whereNotIn('tbt_employee.position_class', ['1', '3', '4']);
         // } else {
-        $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
+        // $getEmployee = $getEmployee->whereNotNull('tbt_employee.position_class');
         // }
         $getEmployee = $getEmployee->select(
             'tbt_employee.ID',
