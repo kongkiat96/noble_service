@@ -13,7 +13,10 @@
                         <select id="sub_emp_id" name="sub_emp_id" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             @foreach ($getDataEmployee as $key => $value)
+                            @if ($value->ID != $dataManager->manager_emp_id)
                                 <option value="{{ $value->ID }}">{{ $value->full_name }}</option>
+                            @endif
+                                {{-- <option value="{{ $value->ID }}">{{ $value->full_name }}</option> --}}
                             @endforeach
                         </select>
                     </div>

@@ -13,7 +13,9 @@
                         <select id="sub_emp_id" name="sub_emp_id" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
                             @foreach ($getDataEmployee as $key => $value)
-                                <option value="{{ $value->ID }}" @if ($dataManager->sub_emp_id == $value->ID) selected @endif>{{ $value->full_name }}</option>
+                                @if ($value->ID != $dataManagerCheck->manager_emp_id)
+                                    <option value="{{ $value->ID }}" @if ($dataManager->sub_emp_id == $value->ID) selected @endif>{{ $value->full_name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

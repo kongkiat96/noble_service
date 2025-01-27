@@ -83,10 +83,12 @@ class ManagerController extends Controller
     public function showAddSubManagerModal($managerID)
     {
         $getDataEmployee = $this->masterModel->getEmployeeListByPosition('subManager');
-        // dd($getDataEmployee);
+        $getDataManager = $this->managerModel->getDataManagerByID($managerID,'manager');
+        // dd($getDataManager);
         return view('app.employee.manager.dialog.save.addSubManager', [
             'getDataEmployee' => $getDataEmployee,
-            'managerID' => $managerID
+            'managerID' => $managerID,
+            'dataManager' => $getDataManager
         ]);
     }
 
@@ -141,14 +143,15 @@ class ManagerController extends Controller
         if (request()->ajax()) {
             $getDataManager = $this->managerModel->getDataManagerByID($subManagerID,'subManager');
             // dd($getDataManager);
+            $getDataManagerCheck = $this->managerModel->getDataManagerByID($getDataManager->manager_id,'manager');
             $getDataEmployee = $this->masterModel->getEmployeeListByPosition('subManager');
             $getDataOnSelect = $this->masterModel->getDataAboutEmployee($getDataManager->sub_emp_id);
-
             // dd($getDataOnSelect);
             return view('app.employee.manager.dialog.edit.editSubManager', [
                 'dataManager' => $getDataManager,
                 'getDataEmployee'   => $getDataEmployee,
                 'getDataOnSelect'   => $getDataOnSelect,
+                'dataManagerCheck' => $getDataManagerCheck
             ]);
         }
         return abort(404);
