@@ -122,10 +122,10 @@ function setupFormValidationSetTelegram(formElement) {
 
     const validationRules = {
         token: validators.notEmptyAndRegexp('ระบุ Token ของ Telegram Bot'),
-        chat_id: validators.notEmptyAndRegexp('กรุณากดตรวจสอบ Chat ID', /^-?[0-9]+$/),
+        chat_id: validators.notEmptyAndRegexp('กรุณาตรวจสอบ Chat ID', /^-?[0-9]+$/),
         use_tag: validators.notEmpty('เลือกข้อมูล ฝ่ายที่ใช้งาน'),
         status_use: validators.notEmpty('เลือกข้อมูล สถานะ'),
-        alertType: validators.notEmpty('เลือกข้อมูล สถานะ'),
+        alert_type: validators.notEmpty('เลือกข้อมูล สถานะ'),
     };
 
     return FormValidation.formValidation(formElement, {

@@ -37,10 +37,10 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="ระบบจะทำการดึงค่าให้อัตโนมัติ"
-                          aria-label="ระบบจะทำการดึงค่าให้อัตโนมัติ"
-                          aria-describedby="searchChatID" id="chat_id" name="chat_id" readonly/>
-                        <button class="btn btn-outline-primary" type="button" id="searchChatID"><i class="bx bx-search"></i></button>
+                          {{-- placeholder="ระบบจะทำการดึงค่าให้อัตโนมัติ" --}}
+                          {{-- aria-label="ระบบจะทำการดึงค่าให้อัตโนมัติ" --}}
+                          aria-describedby="searchChatID" id="chat_id" name="chat_id"/>
+                        {{-- <button class="btn btn-outline-primary" type="button" id="searchChatID"><i class="bx bx-search"></i></button> --}}
                       </div>
                 </div>
 
