@@ -34,8 +34,8 @@
                     <label class="form-label-md mb-2" for="status_show">การแสดงผลสถานะ <span class="text-danger">*</span></label>
                     <select id="status_show" name="status_show" class="form-select select2" data-allow-clear="true">
                         <option value="">Select</option>
-                        <option value="admin" @if($dataStatus->status_show == 'admin') selected @endif>แสดงสำหรับเจ้าหน้าที่</option>
-                        <option value="user" @if($dataStatus->status_show == 'user') selected @endif>แสดงสำหรับผู้แจ้ง</option>
+                        {{-- <option value="admin" @if($dataStatus->status_show == 'admin') selected @endif>แสดงสำหรับเจ้าหน้าที่</option>
+                        <option value="user" @if($dataStatus->status_show == 'user') selected @endif>แสดงสำหรับผู้แจ้ง</option> --}}
                         <option value="all" @if($dataStatus->status_show == 'all') selected @endif>แสดงทั้งหมด</option>
                     </select>
                 </div>

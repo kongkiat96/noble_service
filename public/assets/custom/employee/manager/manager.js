@@ -411,7 +411,13 @@ function renderGroupSubManager(data, type, row, useFunc, color, countTotal) {
 function funcActionAddSubManager(encrypt_id) {
     // alert(encrypt_id);
     // console.log(encrypt_id,tag_search)
-    location.href = setURLManager + '/sub-manager/' + encrypt_id;
+    // location.href = setURLManager + '/sub-manager/' + encrypt_id;
+
+    window.open(
+        setURLManager + '/sub-manager/' + encrypt_id,
+        '_blank', // ชื่อหรือ Target ของหน้าต่าง (ใช้ '_blank' เป็น default)
+        'width=1024,height=800,scrollbars=yes,resizable=yes' // กำหนดขนาดและคุณสมบัติของหน้าต่าง
+    );
 }
 
 function funcEditManager(managerID) {

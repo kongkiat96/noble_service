@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">เพิ่มรายการแจ้งเตือนผ่าน Telegram</h5>
+        <h5 class="modal-title">แก้ไขรายการแจ้งเตือนผ่าน Telegram</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr>
@@ -37,8 +37,8 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="ระบบจะทำการดึงค่าให้อัตโนมัติ"
-                          aria-label="ระบบจะทำการดึงค่าให้อัตโนมัติ"
+                          {{-- placeholder="ระบบจะทำการดึงค่าให้อัตโนมัติ" --}}
+                          {{-- aria-label="ระบบจะทำการดึงค่าให้อัตโนมัติ" --}}
                           aria-describedby="searchChatID" id="chat_id" name="chat_id" value="{{ $dataTelegram->chat_id }}"/>
                         {{-- <button class="btn btn-outline-primary" type="button" id="searchChatID"><i class="bx bx-search"></i></button> --}}
                       </div>

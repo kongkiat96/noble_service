@@ -771,6 +771,9 @@ class CaseModel extends Model
                 case 'wait-approve-mt':
                     $query = $query->where('cs.use_tag', 'MT')->where('cs.tag_work', 'wait_manager_mt_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
+                case 'wait-approve-it':
+                    $query = $query->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_IT_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    break;
             }
             $query = $query->count();
             return $query;

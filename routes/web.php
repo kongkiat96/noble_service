@@ -329,6 +329,10 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/get-data-notify-telegram', 'Settings\NotifyController@getDataNotifyTelegram');
         });
+
+        Route::prefix('/case-approve-special')->group(function () {
+            Route::get('', 'Settings\CaseApproveSpecialController@index');
+        });
     });
 
     Route::prefix('/service')->group(function () {
@@ -379,6 +383,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/case-approve-it', 'CaseService\CaseServiceController@index_case_approve_it');
         Route::get('/case-all-it', 'CaseService\CaseServiceController@index_case_all_it');
+        Route::post('/get-data-case-wait-approve-it', 'CaseService\it\CaseServiceITController@getDataCaseWaitApproveIT');
         Route::post('/get-data-case-open-it', 'CaseService\it\CaseServiceITController@getDataCaseOpenIT');
         Route::post('/get-data-case-doing-it', 'CaseService\it\CaseServiceITController@getDataCaseDoingIT');
         Route::post('/get-data-case-success-it', 'CaseService\it\CaseServiceITController@getDataCaseSuccessIT');

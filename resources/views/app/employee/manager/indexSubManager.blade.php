@@ -150,12 +150,20 @@
     <div class="col-12">
         <div class="row">
             <div class="col-4">
-                <a href="{{ url('/employee/manager') }}" class="btn btn-danger"><i
-                        class="bx bx-arrow-back"></i> ย้อนกลับ</a>
+                {{-- <a href="{{ url('/employee/manager') }}" class="btn btn-danger"><i
+                        class="bx bx-arrow-back"></i> ย้อนกลับ</a> --}}
+                        <a href="javascript:void(0);" onclick="closeWindow()" class="btn btn-danger">
+                            <i class="bx bx-window-close"></i> ปิดหน้าต่างนี้
+                        </a>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('/assets/custom/employee/manager/manager.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+    <script>
+        function closeWindow() {
+            window.close(); // ปิดหน้าต่าง
+        }
+    </script>
 @endsection

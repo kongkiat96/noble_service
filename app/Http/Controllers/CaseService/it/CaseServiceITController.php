@@ -64,4 +64,21 @@ class CaseServiceITController extends Controller
             ];
         }
     }
+
+    public function getDataCaseWaitApproveIT(Request $request)
+    {
+        try {
+            // dd($request);
+            $getAllCase = $this->caseServiceModel->getDataCaseWaitApproveIT($request);
+            return response()->json($getAllCase);
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

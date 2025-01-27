@@ -58,7 +58,7 @@ function setupFormValidationMenuMain(formElement) {
                         message: 'ระบุชื่อ เมนู'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\'\()\,]+$/,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
@@ -125,7 +125,7 @@ function setupFormValidationMenuSub(formElement) {
                         message: 'ระบุชื่อ เมนู'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\']+$/,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\'\()\,]+$/,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
