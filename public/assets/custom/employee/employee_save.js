@@ -98,9 +98,9 @@ function setupFormValidationEmployee(formElement) {
     const validationRules = {
         employee_code: validators.notEmptyAndRegexp('ระบุชื่อ รหัสพนักงาน', /^[a-zA-Z0-9ก-๏\s.]+$/u),
         company: validators.notEmpty('เลือกข้อมูล บริษัท'),
-        department: validators.notEmpty('เลือกข้อมูล สังกัด / ฝ่าย'),
+        // department: validators.notEmpty('เลือกข้อมูล สังกัด / ฝ่าย'),
         branch_id: validators.notEmpty('เลือกข้อมูล สาขา'),
-        groupOfDepartment: validators.notEmpty('เลือกข้อมูล แผนก'),
+        // groupOfDepartment: validators.notEmpty('เลือกข้อมูล แผนก'),
         // positionClass: validators.notEmpty('เลือกข้อมูล ระดับตําแหน่ง'),
         // positionName: validators.notEmptyAndRegexp('ระบุชื่อตําแหน่ง', /^[a-zA-Z0-9ก-๏\s]+$/u),
         userClass: validators.notEmpty('เลือกข้อมูล ระดับสิทธิ์ผู้ใช้งาน'),

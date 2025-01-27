@@ -26,7 +26,7 @@ function setupFormValidationEditCompany(formElement) {
                         message: 'ระบุชื่อ บริษัท (ภาษาไทย)'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\-]+$/u,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
@@ -37,7 +37,7 @@ function setupFormValidationEditCompany(formElement) {
                         message: 'ระบุชื่อ บริษัท (ภาษาอังกฤษ)'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\-]+$/u,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
@@ -95,7 +95,7 @@ function setupFormValidationEditDepartment(formElement) {
                         message: 'ระบุชื่อสังกัด / ฝ่าย'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\-]+$/u,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
@@ -159,7 +159,7 @@ function setupFormValidationEditGroup(formElement) {
                         message: 'ระบุชื่อกลุ่มงาน'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\-]+$/u,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }
@@ -289,7 +289,7 @@ function setupFormValidationEditClassList(formElement){
                         message: 'ระบุชื่อระดับตำแหน่งาน'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9ก-๏\s]+$/u,
+                        regexp: /^[a-zA-Z0-9ก-๏\s\-]+$/u,
                         message: 'ข้อมูลไม่ถูกต้อง'
                     }
                 }

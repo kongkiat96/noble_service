@@ -45,13 +45,15 @@ class NotifyController extends Controller
         return abort(404);
     }
 
-    public function searchChatID($token){
-        $searchChatID = $this->notify->searchChatID($token);
+    public function searchChatID($token,Request $request){
+        $setAlertType = $request->alert_type;
+        $searchChatID = $this->notify->searchChatID($token,$setAlertType);
         // dd($searchChatID);
         return $searchChatID;
     }
 
     public function saveNotifyTelegramData(Request $request){
+        // dd($request->input());
         $saveNotifyTelegram = $this->notify->saveNotifyTelegramData($request->input());
         return $saveNotifyTelegram;
     }

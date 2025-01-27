@@ -35,6 +35,20 @@ $(function () {
             { data: 'token', class: "text-center" },
             { data: 'chat_id', class: "text-center" },
             {
+                data: 'alert_type',
+                class: "text-center",
+                render: function (data, type, row) {
+                    // return row.alert_type;
+                    if(row.alert_type == "alert_only"){
+                    return `<span class="badge bg-label-info">ส่วนตัว</span>`;
+                    } else if (row.alert_type == "alert_group") {
+                        return `<span class="badge bg-label-primary">กลุ่ม</span>`;
+                    } else {
+                        return `<span class="badge bg-label-secondary">UNDEFINED</span>`;
+                    }
+                }
+            },
+            {
                 data: "use_tag",
                 orderable: true,
                 searchable: false,
@@ -108,9 +122,10 @@ function setupFormValidationSetTelegram(formElement) {
 
     const validationRules = {
         token: validators.notEmptyAndRegexp('ระบุ Token ของ Telegram Bot'),
-        chat_id: validators.notEmptyAndRegexp('กรุณากดตรวจสอบ Chat ID', /^[0-9]+$/),
+        chat_id: validators.notEmptyAndRegexp('กรุณากดตรวจสอบ Chat ID', /^-?[0-9]+$/),
         use_tag: validators.notEmpty('เลือกข้อมูล ฝ่ายที่ใช้งาน'),
         status_use: validators.notEmpty('เลือกข้อมูล สถานะ'),
+        alertType: validators.notEmpty('เลือกข้อมูล สถานะ'),
     };
 
     return FormValidation.formValidation(formElement, {

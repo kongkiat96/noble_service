@@ -120,11 +120,11 @@ class AboutCompanyController extends Controller
 
     public function saveDataCompany(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddCompany');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddCompany');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveDataCompany($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -132,11 +132,11 @@ class AboutCompanyController extends Controller
 
     public function saveDataDepartment(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddDepartment');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddDepartment');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveDataDepartment($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -144,11 +144,11 @@ class AboutCompanyController extends Controller
 
     public function saveDataGroup(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddGroup');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddGroup');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveDataGroup($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -156,11 +156,11 @@ class AboutCompanyController extends Controller
 
     public function saveDataPrefixName(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddPrefixName');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddPrefixName');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveDataPrefixName($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -168,11 +168,11 @@ class AboutCompanyController extends Controller
 
     public function saveDataClassList(Request $request)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddClassList');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcAddClassList');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveDataClassList($request->input());
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -246,11 +246,11 @@ class AboutCompanyController extends Controller
 
     public function editCompany(Request $request, $companyID)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditCompany');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditCompany');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveEditDataCompany($request->input(), $companyID);
 
@@ -278,11 +278,11 @@ class AboutCompanyController extends Controller
 
     public function editDepartment(Request $request, $departmentID)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditDepartment');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditDepartment');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveEditDataDepartment($request->input(), $departmentID);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -311,11 +311,11 @@ class AboutCompanyController extends Controller
 
     public function editGroup(Request $request, $groupID)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditGroup');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditGroup');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveEditDataGroup($request->input(), $groupID);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -340,11 +340,11 @@ class AboutCompanyController extends Controller
 
     public function editPrefixName(Request $request, $prefixNameID)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditPrefixName');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditPrefixName');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveEditDataPrefixName($request->input(), $prefixNameID);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);
@@ -369,11 +369,11 @@ class AboutCompanyController extends Controller
 
     public function editClassList(Request $request, $classListID)
     {
-        $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditClassList');
+        // $validator = $this->funcValidator->validateSettingAboutCompany($request->input(), 'funcEditClassList');
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 400, 'message' => $validator->errors()], 400);
+        // }
 
         $saveData = $this->aboutCompany->saveEditDataClassList($request->input(), $classListID);
         return response()->json(['status' => $saveData['status'], 'message' => $saveData['message']]);

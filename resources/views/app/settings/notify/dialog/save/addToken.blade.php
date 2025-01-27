@@ -13,7 +13,25 @@
                         autocomplete="off" />
                 </div>
 
-                <div class="col-md-12 mt-2">
+                <div class="col-md-6 mt-2">
+                    <label class="form-label-md mb-2" for="alert_type">เลือกประเภทการส่งข้อมูล<span class="text-danger">*</span></label>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="form-check form-check-info form-check-inline">
+                                <input name="alert_type" class="form-check-input" type="radio" value="alert_only" id="alert_only"/>
+                                <label class="form-check-label" for="alert_only">Chat ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-check-info form-check-inline">
+                                <input name="alert_type" class="form-check-input" type="radio" value="alert_group" id="alert_group"/>
+                                <label class="form-check-label" for="alert_group">Group ID</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mt-2">
                     <label class="form-label-md mb-2" for="chat_id">Chat ID<span class="text-danger">*</span></label>
                     <div class="input-group">
                         <input

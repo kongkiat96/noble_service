@@ -14,10 +14,11 @@ class NotifyModel extends Model
 {
     use HasFactory;
 
-    public function searchChatID($token)
+    public function searchChatID($token, $setAlertType)
     {
         // URL สำหรับ getUpdates
         $getChannel = "https://api.telegram.org/bot{$token}/getUpdates";
+
         try {
             // ใช้ Guzzle ในการส่ง request
             $client = new Client();
@@ -26,33 +27,59 @@ class NotifyModel extends Model
                     'Accept' => 'application/json',
                 ],
             ]);
+
             // แปลงผลลัพธ์จาก JSON เป็น Array
             $contents = json_decode($response->getBody(), true);
-            // ตรวจสอบข้อมูลที่ได้
+
             if (isset($contents['result']) && count($contents['result']) > 0) {
-                // ดึง chat_id จากข้อความแรกที่พบ
-                $chatId = $contents['result'][0]['message']['chat']['id'] ?? null;
-                $setReturn = [
-                    'status' => 200,
-                    'chat_id' => $chatId
-                ];
+                // ตรวจสอบประเภทการแจ้งเตือน
+                if ($setAlertType === 'alert_only') {
+                    // ดึง chat_id ของ User
+                    $chatId = $contents['result'][0]['message']['chat']['id'] ?? null;
+                } elseif ($setAlertType === 'alert_group') {
+                    // ดึง chat_id ของ Group
+                    foreach ($contents['result'] as $result) {
+                        if (isset($result['message']['chat']['type']) && $result['message']['chat']['type'] === 'group') {
+                            $chatId = $result['message']['chat']['id'] ?? null;
+                            break;
+                        }
+                    }
+                }
+
+                // ถ้า chat_id ถูกกำหนด
+                if (isset($chatId)) {
+                    $setReturn = [
+                        'status' => 200,
+                        'chat_id' => $chatId,
+                    ];
+                } else {
+                    // ไม่พบ chat_id ที่ต้องการ
+                    $setReturn = [
+                        'status' => 404,
+                        'chat_id' => null,
+                        'message' => 'ไม่พบ chat_id ที่ต้องการ',
+                    ];
+                }
             } else {
                 // กรณีที่ไม่มีผลลัพธ์จาก Telegram
                 $setReturn = [
                     'status' => 404,
-                    'chat_id' => null
+                    'chat_id' => null,
+                    'message' => 'ไม่มีข้อมูลใน Telegram',
                 ];
             }
         } catch (Exception $e) {
             // จัดการกรณีที่เกิดข้อผิดพลาด
             $setReturn = [
                 'status' => $e->getCode(),
-                'chat_id' => null
+                'chat_id' => null,
+                'message' => $e->getMessage(),
             ];
         } finally {
             return $setReturn;
         }
     }
+
 
     public function getDataNotifyTelegram($param)
     {
@@ -75,6 +102,7 @@ class NotifyModel extends Model
                     'ID' => $value->id,
                     'token' => $value->token,
                     'chat_id' => $value->chat_id,
+                    'alert_type' => $value->alert_type,
                     'notify_type' => $value->notify_type,
                     'status_use' => $value->status_use,
                     'created_at' => $value->created_at,
@@ -107,12 +135,13 @@ class NotifyModel extends Model
     public function saveNotifyTelegramData($data)
     {
         try {
+            // dd($data);
             $data['created_at'] = now();
             $data['created_userid'] = Auth::user()->emp_code;
             $data['notify_type'] = 'telegram';
             $saveDataNotify = DB::connection('mysql')->table('tbm_notify')->insert($data);
 
-            if($saveDataNotify){
+            if ($saveDataNotify) {
                 return [
                     'status' => 200,
                     'message' => 'Insert Success'
@@ -156,7 +185,7 @@ class NotifyModel extends Model
             unset($data['telegramID']);
             $saveDataNotify = DB::connection('mysql')->table('tbm_notify')->where('id', $id)->update($data);
 
-            if($saveDataNotify){
+            if ($saveDataNotify) {
                 return [
                     'status' => 200,
                     'message' => 'Update Success'
@@ -184,7 +213,7 @@ class NotifyModel extends Model
             // dd($id);
             $deleteData = DB::connection('mysql')->table('tbm_notify')->where('id', $id)->delete();
 
-            if($deleteData){
+            if ($deleteData) {
                 return [
                     'status' => 200,
                     'message' => 'Delete Success'
