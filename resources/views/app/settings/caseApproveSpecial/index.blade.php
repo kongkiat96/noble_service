@@ -13,19 +13,19 @@
 
     
 
-    <div class="modal fade" id="addWorkerModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="addCaseCCTVModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="editWorkerModal" data-bs-backdrop="static" >
+    <div class="modal fade" id="addCasePermissionModal" data-bs-backdrop="static"  >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
     </div>
 
-    <div class="modal fade" id="addCategoryTypeModal" data-bs-backdrop="static"  >
+    <div class="modal fade" id="editCaseApproveModal" data-bs-backdrop="static" >
         <div class="modal-dialog modal-lg" role="document">
 
         </div>
@@ -54,26 +54,21 @@
                     <div class="tab-pane fade show active" id="caseCCTV" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addWorker">
+                                <button type="button" class="btn btn-info" id="addCaseCCTV">
                                     <i class='menu-icon tf-icons bx bx-cctv'></i> เพิ่มข้อมูลรายการแจ้งขอตรวจสอบ CCTV
                                 </button>
                             @endif
                         </div>
                         <div class="text-nowrap table-responsive">
-                            <table class="dt-worker table table-hover table-striped">
+                            <table class="dt-case-approve-cctv table table-hover table-striped">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ชื่อ - นามสกุลผู้ปฏิบัติงาน</th>
-                                        <th>บริษัท</th>
-                                        <th>ระดับตำแหน่ง</th>
-                                        <th>ตำแหน่ง</th>
-                                        <th>สังกัด / ฝ่าย</th>
-                                        <th>แผนก</th>
-                                        <th>ชื่อสาขา</th>
-                                        <th>ชื่อสาขาย่อ</th>
+                                        <th>รายการกลุ่มอุปกรณ์</th>
+                                        <th>รายการประเภทหมวดหมู่</th>
+                                        <th>อาการที่ต้องการแจ้งปัญหา</th>
+                                        <th>ประเภทใช้งาน</th>
                                         <th>สถานะการใช้งาน</th>
-                                        <th>ปฏิบัติงาน</th>
                                         <th>วันที่บันทึกข้อมูล</th>
                                         <th>ผู้บันทึกข้อมูล</th>
                                         <th>วันที่แก้ไขข้อมูล</th>
@@ -88,26 +83,21 @@
                     <div class="tab-pane fade" id="casePermission" role="tabpanel">
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
-                                <button type="button" class="btn btn-info" id="addWorker">
+                                <button type="button" class="btn btn-info" id="addCasePermission">
                                     <i class='menu-icon tf-icons bx bx-key'></i> เพิ่มข้อมูลรายการแจ้งขอสิทธิ์ใช้งาน
                                 </button>
                             @endif
                         </div>
                         <div class="text-nowrap table-responsive">
-                            <table class="dt-worker table table-hover table-striped">
+                            <table class="dt-case-approve-permission table table-hover table-striped">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ลำดับ</th>
-                                        <th>ชื่อ - นามสกุลผู้ปฏิบัติงาน</th>
-                                        <th>บริษัท</th>
-                                        <th>ระดับตำแหน่ง</th>
-                                        <th>ตำแหน่ง</th>
-                                        <th>สังกัด / ฝ่าย</th>
-                                        <th>แผนก</th>
-                                        <th>ชื่อสาขา</th>
-                                        <th>ชื่อสาขาย่อ</th>
+                                        <th>รายการกลุ่มอุปกรณ์</th>
+                                        <th>รายการประเภทหมวดหมู่</th>
+                                        <th>อาการที่ต้องการแจ้งปัญหา</th>
+                                        <th>ประเภทใช้งาน</th>
                                         <th>สถานะการใช้งาน</th>
-                                        <th>ปฏิบัติงาน</th>
                                         <th>วันที่บันทึกข้อมูล</th>
                                         <th>ผู้บันทึกข้อมูล</th>
                                         <th>วันที่แก้ไขข้อมูล</th>
@@ -124,5 +114,5 @@
     </div>
 @endsection
 @section('script')
-    {{-- <script type="text/javascript" src="{{ asset('/assets/custom/settings/worker/worker.js?v=') }}@php echo date("H:i:s") @endphp"></script> --}}
+    <script type="text/javascript" src="{{ asset('/assets/custom/settings/caseApproveSpecial/caseApproveSpecial.js?v=') }}@php echo date("H:i:s") @endphp"></script>
 @endsection

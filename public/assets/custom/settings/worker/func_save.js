@@ -17,9 +17,7 @@ $(document).ready(function () {
                     .fail(handleAjaxSaveError);
             }
         });
-    })
-
-    
+    })    
 });
 
 function onSaveWorkerSuccess(response) {

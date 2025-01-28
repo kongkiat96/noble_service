@@ -303,10 +303,13 @@ function renderDeletedBadge(data, type, full, row) {
 }
 
 function renderStatusWorkBadge(data, type, full, row) {
+    // console.log(data);
     const statusMap = {
         all: { title: 'ใช้งานทั้งหมด', className: 'bg-label-success' },
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
         mt: { title: 'ใช้งานฝ่ายช่าง', className: 'bg-label-danger' },
+        cctv: { title: 'ใช้งานสำหรับอนุมัติ CCTV', className: 'bg-label-info' },
+        permission: { title: 'ใช้งานสำหรับอนุมัติสิทธิ์การใช้งาน', className: 'bg-label-danger' }
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -324,16 +327,16 @@ function renderStatusShowBadge(data, type, full, row) {
     return `<span class="badge ${status.className}">${status.title}</span>`;
 }
 
-function renderStatusWorkBadge(data, type, full, row) {
-    const statusMap = {
-        all: { title: 'ทั้งหมด', className: 'bg-label-success' },
-        it: { title: 'ฝ่าย IT', className: 'bg-label-info' },
-        mt: { title: 'ฝ่ายช่าง', className: 'bg-label-warning' },
-        // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
-    };
-    const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
-    return `<span class="badge ${status.className}">${status.title}</span>`;
-}
+// function renderStatusWorkBadge(data, type, full, row) {
+//     const statusMap = {
+//         all: { title: 'ทั้งหมด', className: 'bg-label-success' },
+//         it: { title: 'ฝ่าย IT', className: 'bg-label-info' },
+//         mt: { title: 'ฝ่ายช่าง', className: 'bg-label-warning' },
+//         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
+//     };
+//     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
+//     return `<span class="badge ${status.className}">${status.title}</span>`;
+// }
 
 function renderUserClassBadge(data, type, full, row) {
     const statusMap = {
@@ -782,6 +785,8 @@ $(document).ready(function () {
 function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
     var originalContent = $(disabledElement).html();
     $('#category_detail').prop('disabled', true);
+    $('#category_detail_edit').prop('disabled', true);
+    $('#category_detail_per').prop('disabled', true);
 
     $(disabledElement).prop('disabled', disableStatus);
     $(selectElement).on('change', function () {
@@ -797,6 +802,8 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
                 success: function (categoryTypeData) {
                     $categoryTypeSelect.empty().append('<option value="">Select</option>');
                     $('#category_detail').empty().append('<option value="">Select</option>');
+                    $('#category_detail_edit').empty().append('<option value="">Select</option>');
+                    $('#category_detail_per').empty().append('<option value="">Select</option>');
 
                     categoryTypeData.forEach(function (categoryType) {
                         var optionElement = $('<option>').val(categoryType.id).text(categoryType.category_type_name);
@@ -813,6 +820,12 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
 
             $('#category_detail').prop('disabled', true);
             $('#category_detail').empty().append('<option value="">Select</option>');
+
+            $('#category_detail_edit').prop('disabled', true);
+            $('#category_detail_edit').empty().append('<option value="">Select</option>');
+
+            $('#category_detail_per').prop('disabled', true);
+            $('#category_detail_per').empty().append('<option value="">Select</option>');
         }
     });
 }
@@ -820,6 +833,8 @@ function mapSelectedCategory(disabledElement, selectElement, disableStatus) {
 function mapSelectedCategoryDetail(disabledElement, selectElement, disableStatus) {
     var originalContent = $(disabledElement).html();
     $('#category_detail').prop('disabled', true);
+    $('#category_detail_edit').prop('disabled', true);
+    $('#category_detail_per').prop('disabled', true);
 
     $(disabledElement).prop('disabled', disableStatus);
     $(selectElement).on('change', function () {

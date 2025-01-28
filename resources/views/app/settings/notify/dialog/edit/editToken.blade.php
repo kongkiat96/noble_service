@@ -71,7 +71,7 @@
                     class='menu-icon tf-icons bx bx-window-close'></i> ปิด</button>
 
             <button type="submit" name="editNotiTelegram" id="editNotiTelegram"
-                class="btn btn-success btn-form-block-overlay"><i
+                class="btn btn-warning btn-form-block-overlay"><i
                     class='menu-icon tf-icons bx bxs-save'></i> บันทึกข้อมูล</button>
         </div>
     </form>

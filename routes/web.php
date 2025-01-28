@@ -332,6 +332,17 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('/case-approve-special')->group(function () {
             Route::get('', 'Settings\CaseApproveSpecialController@index');
+            Route::get('/add-case-cctv-modal', 'Settings\CaseApproveSpecialController@showAddCaseCCTVModal');
+            Route::post('/save-case-cctv', 'Settings\CaseApproveSpecialController@saveCaseCCTVData');
+            Route::get('/add-case-permission-modal', 'Settings\CaseApproveSpecialController@showAddCasePermissionModal');
+            Route::post('/save-case-permission', 'Settings\CaseApproveSpecialController@saveCasePermissionData');
+
+
+            Route::get('/show-edit-case-approve/{caseID}', 'Settings\CaseApproveSpecialController@showEditCaseApprove');
+            Route::post('/edit-case-approve/{caseID}', 'Settings\CaseApproveSpecialController@saveEditCaseApprove');
+            Route::post('/delete-case-approve/{caseID}', 'Settings\CaseApproveSpecialController@deleteCaseApprove');
+
+            Route::post('/get-data-case-approve-special', 'Settings\CaseApproveSpecialController@getDataCaseApproveSpecial');
         });
     });
 
