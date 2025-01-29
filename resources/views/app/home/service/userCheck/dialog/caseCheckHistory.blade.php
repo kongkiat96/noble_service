@@ -177,17 +177,17 @@
                                                 for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
                                         </div>
                                     @else
-                                        <div class="col-md-6">
-
-                                            <label class="form-label-md mb-2"
-                                                for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
-                                            <input type="text" id="case_end" class="form-control"
-                                                name="case_end" readonly value="{{ $data['calSLANullCaseEnd'] }}">
-                                            @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd'])
-                                                <label class="form-label-sm mt-2 text-danger"
-                                                    for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
-                                            @endif
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานต้องแล้วเสร็จ</label>
+                                        <input type="text" id="case_end" class="form-control" name="case_end" readonly
+                                            value="{{ $data['calSLANullCaseEnd']['end_time'] }}">
+                                        @if (\Carbon\Carbon::now() > $data['calSLANullCaseEnd']['end_time'])
+                                            <label class="form-label-sm mt-2 text-danger"
+                                                for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
+                                        @else
+                                            <label class="form-label-sm mt-2 text-warning" for="case_end">ขณะนี้เหลือเวลาอีก {{ $data['calSLANullCaseEnd']['time_remaining'] }}</label>
+                                        @endif
+                                    </div>
 
                                     @endif
 
