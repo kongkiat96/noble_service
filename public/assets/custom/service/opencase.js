@@ -1,10 +1,5 @@
 $(document).ready(function () {
-    setTimeout(function() {
-        $("#openCaseService").attr("disabled", false);
-    }, 6000);
-    
     $('#openCaseService').click(function (e) {
-        $("#openCaseService").attr("disabled", true);
         e.preventDefault();
         removeValidationFeedback();
         const form = $("#formOpenCaseService")[0];
@@ -32,6 +27,7 @@ $(document).ready(function () {
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
+                $('#openCaseService').attr("disabled", true);
                 postFormData("/service/case/open-case-service", formData)
                     .done(onSaveOpenCaseServiceSuccess)
                     .fail(handleAjaxSaveError);
