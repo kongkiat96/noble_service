@@ -71,13 +71,13 @@
                             <div class="col-md-6">
                                 <div class="form-check form-check-success form-check-inline">
                                     <input name="case_status" class="form-check-input" type="radio" value="manager_approve" id="m_approve" />
-                                    <label class="form-check-label" for="m_approve"> อนุมัติดำเนินการแจ้งซ่อม </label>
+                                    <label class="form-check-label" for="m_approve"> อนุมัติดำเนินการ </label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check form-check-danger form-check-inline">
                                     <input name="case_status" class="form-check-input" type="radio" value="reject_manager_approve" id="m_reject" />
-                                    <label class="form-check-label" for="m_reject"> ไม่อนุมัติดำเนินการแจ้งซ่อม </label>
+                                    <label class="form-check-label" for="m_reject"> ไม่อนุมัติดำเนินการ </label>
                                 </div>
                             </div>
                         </div>
