@@ -86,7 +86,7 @@
                         <form id="formAuthentication" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="email" class="form-label">รหัสพนักงาน หรืออีเมล์</label>
+                                <label for="email" class="form-label">ชื่อผู้ใช้ หรืออีเมล์</label>
                                 <input id="username" type="text"
                                     class="form-control @error('username') is-invalid @enderror" name="username"
                                     value="{{ old('username') }}" required autocomplete="username" autofocus>

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           username: {
             validators: {
               notEmpty: {
-                message: 'กรุณาระบุรหัสพนักงาน หรืออีเมล์'
+                message: 'กรุณาระบุชื่อผู้ใช้ หรืออีเมล์'
               },
               stringLength: {
                 min: 3,
