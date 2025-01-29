@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    setTimeout(function() {
+        $("#openCaseService").attr("disabled", false);
+    }, 6000);
+    
     $('#openCaseService').click(function (e) {
         $("#openCaseService").attr("disabled", true);
         e.preventDefault();
