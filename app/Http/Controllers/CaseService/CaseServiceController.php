@@ -244,9 +244,9 @@ class CaseServiceController extends Controller
             ->implode(', ');
         
         if($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT'){
-            $setTitle = 'ฝ่ายไอที (ITs)';
+            $setTitle = 'ฝ่ายไอที (ICT)';
         } else {
-            $setTitle = 'ฝ่ายอาคาร (MTs)';
+            $setTitle = 'ฝ่ายช่าง (CMM)';
         }
         // dd($setImage);
         // เตรียมข้อมูลที่จะแสดงใน PDF

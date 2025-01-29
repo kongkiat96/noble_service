@@ -6,7 +6,7 @@
                 <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                     <option value="">Select</option>
                     <option value="IT">ฝ่ายไอที</option>
-                    <option value="MT">ฝ่ายอาคาร</option>
+                    <option value="MT">ฝ่ายช่าง</option>
 
                 </select>
             </div>

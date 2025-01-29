@@ -104,7 +104,7 @@
                                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                         data-bs-target="#service-mt" aria-controls="#service-mt" aria-selected="true"
                                         id="reTabB">
-                                        รายการแจ้งปัญหาฝ่ายอาคาร
+                                        รายการแจ้งปัญหาฝ่ายช่าง
                                         <span class="badge bg-white text-primary ms-1" id="CountCaseMTByuser">0</span>
                                     </button>
                                 </li>
