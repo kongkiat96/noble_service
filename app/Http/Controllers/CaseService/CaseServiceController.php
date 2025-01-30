@@ -63,6 +63,46 @@ class CaseServiceController extends Controller
         ]);
     }
 
+    public function index_case_approve_cctv()
+    {
+        $url = request()->segments();
+        $urlSubLink = "case-approve-cctv";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
+
+        if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+            return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+        }
+        $getAccessMenus = getAccessToMenu::getAccessMenus();
+
+        return view('app.caseService.cctv.caseApprove.index', [
+            'url' => $url,
+            'urlName' => $urlName,
+            'urlSubLink' => $urlSubLink,
+            'listMenus' => $getAccessMenus
+        ]);
+    }
+
+    public function index_case_approve_permission()
+    {
+        $url = request()->segments();
+        $urlSubLink = "case-approve-permission";
+        $getMenuName = $this->getMaster->searchMenuName($urlSubLink);
+        $urlName = $getMenuName->menu_sub_name;
+
+        if (!getAccessToMenu::hasAccessToMenu($urlSubLink)) {
+            return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
+        }
+        $getAccessMenus = getAccessToMenu::getAccessMenus();
+
+        return view('app.caseService.permission.caseApprove.index', [
+            'url' => $url,
+            'urlName' => $urlName,
+            'urlSubLink' => $urlSubLink,
+            'listMenus' => $getAccessMenus
+        ]);
+    }
+
     public function index_case_all_mt()
     {
         $url = request()->segments();
@@ -124,7 +164,13 @@ class CaseServiceController extends Controller
             $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
             $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
 
-            $getListCategoryMain = $this->getMaster->getDataCategoryMain($detailCase['use_tag_code']);
+            if(in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
+                $useCodeCategory = 'IT';
+            } else {
+                $useCodeCategory = $detailCase['use_tag_code'];
+            }
+
+            $getListCategoryMain = $this->getMaster->getDataCategoryMain($useCodeCategory);
             $getListCategoryType = $this->getMaster->getListCategoryType($detailCase['category_main']);
             $getListCategoryDetail = $this->getMaster->getListCategoryDetail($detailCase['category_type']);
             // dd($getListCategoryMain);
@@ -145,7 +191,12 @@ class CaseServiceController extends Controller
                 if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success') {
                     $setView = 'caseDetailAddPrice';
                 } else {
-                    $setView = 'caseDetail_' . $getCaseDetail['message']['datadetail']['use_tag_code'];
+                    if(in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
+                        $setView = 'caseDetail_IT';
+                    } else {
+                        $setView = 'caseDetail_' . $getCaseDetail['message']['datadetail']['use_tag_code'];
+                    }
+                    
                 }
                 // dd($setView);
                 return view('app.caseService.caseDetail.' . $setView, [
@@ -242,8 +293,8 @@ class CaseServiceController extends Controller
         $checkerNames = collect($checkerArray)
             ->pluck('name')
             ->implode(', ');
-        
-        if($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT'){
+
+        if ($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT') {
             $setTitle = 'ฝ่ายไอที (ICT)';
         } else {
             $setTitle = 'ฝ่ายช่าง (CMM)';

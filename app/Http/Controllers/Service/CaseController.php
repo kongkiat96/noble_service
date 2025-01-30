@@ -203,7 +203,7 @@ class CaseController extends Controller
             $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
             // dd($setTextLowercase);
             if ($getCaseDetail['status'] == 200) {
-                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success_user') {
+                if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success_user' || ($setTextLowercase == 'permission' && $getCaseDetail['message']['datadetail']['case_status'] == 'case_success')) {
                     $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
                     $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
                     $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
@@ -219,7 +219,6 @@ class CaseController extends Controller
                         ->pluck('name')
                         ->implode(', ');
                     // dd($workerNames);
-
                     $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
                     $setChecker = $getCaseDetail['message']['datadetail'];
                     $checkerArray = json_decode($setChecker['checker'], true);

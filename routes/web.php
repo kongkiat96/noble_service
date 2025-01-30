@@ -391,13 +391,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/get-data-case-doing-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseDoingMT');
         Route::post('/get-data-case-success-mt', 'CaseService\mt\CaseServiceMTController@getDataCaseSuccessMT');
 
-
         Route::get('/case-approve-it', 'CaseService\CaseServiceController@index_case_approve_it');
         Route::get('/case-all-it', 'CaseService\CaseServiceController@index_case_all_it');
         Route::post('/get-data-case-wait-approve-it', 'CaseService\it\CaseServiceITController@getDataCaseWaitApproveIT');
         Route::post('/get-data-case-open-it', 'CaseService\it\CaseServiceITController@getDataCaseOpenIT');
         Route::post('/get-data-case-doing-it', 'CaseService\it\CaseServiceITController@getDataCaseDoingIT');
         Route::post('/get-data-case-success-it', 'CaseService\it\CaseServiceITController@getDataCaseSuccessIT');
+
+        Route::get('/case-approve-cctv', 'CaseService\CaseServiceController@index_case_approve_cctv');
+        Route::get('/case-approve-permission', 'CaseService\CaseServiceController@index_case_approve_permission');
 
         Route::get('/case-action/{ticket}', 'CaseService\CaseServiceController@getDatacaseAction');
         Route::post('/case-doing-action/{caseID}', 'CaseService\CaseServiceController@caseDoingAction');

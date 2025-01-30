@@ -38,7 +38,8 @@ class ApproveCaseModel extends Model
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
             if ($param['use_tag'] == 'IT') {
-                $sql = $sql->where('cs.use_tag', 'IT');
+                // $sql = $sql->where('cs.use_tag', 'IT');
+                $sql = $sql->whereIn('cs.use_tag', ['IT','cctv','permission']);
             } else if ($param['use_tag'] == 'MT') {
                 $sql = $sql->where('cs.use_tag', 'MT');
             }
@@ -109,6 +110,10 @@ class ApproveCaseModel extends Model
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
             if ($param['use_tag'] == 'IT') {
                 $sql = $sql->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_it_approve');
+            } else if ($param['use_tag'] == 'cctv') {
+                $sql = $sql->where('cs.use_tag', 'cctv')->where('cs.tag_work', 'wait_manager_it_approve');
+            } else if ($param['use_tag'] == 'permission') {
+                $sql = $sql->where('cs.use_tag', 'permission')->where('cs.tag_work', 'wait_manager_hr_approve');
             } else if ($param['use_tag'] == 'MT') {
                 $sql = $sql->where('cs.use_tag', 'MT')->where('cs.tag_work', 'wait_manager_mt_approve')->whereNotIn('cs.category_main', $this->setWhereIn_MT());
             }
@@ -250,7 +255,9 @@ class ApproveCaseModel extends Model
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
             if ($param['use_tag'] == 'IT') {
-                $sql = $sql->where('cs.use_tag', 'IT');
+                $sql = $sql->whereIn('cs.use_tag', ['IT', 'permission']);
+            } else if ($param['use_tag'] == 'cctv') {
+                $sql = $sql->where('cs.use_tag', 'cctv');
             } else if ($param['use_tag'] == 'MT') {
                 $sql = $sql->where('cs.use_tag', 'MT');
             }
@@ -310,7 +317,9 @@ class ApproveCaseModel extends Model
             if ($data['case_status'] == 'manager_approve') {
                 if ($getDataCase->use_tag == 'MT') {
                     $case_step = 'wait_manager_mt_approve';
-                } else {
+                } else if ($getDataCase->use_tag == 'permission') {
+                    $case_step = 'wait_manager_hr_approve';
+                }else {
                     $case_step = 'wait_manager_it_approve';
                 }
             } else {
@@ -366,7 +375,7 @@ class ApproveCaseModel extends Model
     public function saveApproveCasePadding($data, $caseID)
     {
         try {
-            // dd($data);
+            // dd($data); 
             $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
             // if($getDataCase->use_tag == 'MT'){
             //     $case_step = 'wait_manager_mt_approve';
@@ -447,6 +456,14 @@ class ApproveCaseModel extends Model
                     $query = $query->where('cs.tag_work', 'wait_manager_it_approve')
                         ->where('cs.use_tag', 'IT')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
+                case 'cctv':
+                    $query = $query->where('cs.tag_work', 'wait_manager_it_approve')
+                        ->where('cs.use_tag', 'cctv')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    break;
+                case 'permission':
+                    $query = $query->where('cs.tag_work', 'wait_manager_hr_approve')
+                        ->where('cs.use_tag', 'permission')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    break;
                 case 'mt':
                     // $query = $query->whereIn('cs.category_main', $this->setWhereIn_MT())
                     $query = $query->where('cs.tag_work', 'wait_manager_mt_approve')
@@ -456,7 +473,7 @@ class ApproveCaseModel extends Model
                     $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->where('cs.case_status', 'openCaseWaitApprove')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
                 case 'managet-approve-user-it':
-                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->whereIn('cs.tag_manager_approve', ['N'])->where('cs.use_tag', 'IT');
+                    $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->whereIn('cs.tag_manager_approve', ['N'])->whereIn('cs.use_tag', ['IT','cctv','permission']);
                     break;
                 case 'managet-approve-user-mt':
                     $query = $query->where('cs.manager_emp_id', Auth::user()->map_employee)->whereIn('cs.tag_manager_approve', ['N'])->where('cs.use_tag', 'MT');
@@ -515,13 +532,18 @@ class ApproveCaseModel extends Model
     {
         try {
             $setTextUpercase = strtoupper($type);
+            // dd($setTextUpercase);
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
                 // ->whereIn('cs.category_main', $this->setWhereIn_MT())
                 ->where('cs.tag_work', 'case_success_user')
-                ->where('cs.tag_user_approve', 'Y')
-                ->where('cs.use_tag', $setTextUpercase)->count();
+                ->where('cs.tag_user_approve', 'Y');
+                if(in_array($setTextUpercase, ['IT'])) {
+                    $query = $query->whereIn('cs.use_tag', ['IT','permission'])->count();
+                } else {
+                    $query = $query->where('cs.use_tag', $setTextUpercase)->count();
+                }
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
@@ -545,7 +567,12 @@ class ApproveCaseModel extends Model
         try {
             // dd($saveStatus);
             $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
-            $setTextLower = strtolower($getDataCase->use_tag);
+            if(in_array($getDataCase->use_tag, ['IT', 'cctv', 'permission'])) {
+                $setTextLower = strtolower('IT');
+            } else {
+                $setTextLower = strtolower($getDataCase->use_tag);
+            }
+            // dd($setTextLower);
             // dd($saveStatus, $caseID);
             // dd($getDataCase);
             if ($saveStatus['tagStep'] == 'userCheckWork') {

@@ -666,4 +666,20 @@ class getDataMasterModel extends Model
         // dd($getMenuName);
         return $getMenuName;
     }
+
+    public function searchCaseApprove($categoryMain,$categoryType,$categoryDetail)
+    {
+        $searchData = DB::connection('mysql')->table('tbm_set_approve_case')
+        ->where('category_main', $categoryMain)
+        ->where('category_type', $categoryType)
+        ->where('category_detail', $categoryDetail)
+        ->where('status_use',1)
+        ->where('deleted', 0)->first();
+        // dd($searchData);
+        if($searchData){
+            return $searchData->use_tag;
+        } else {
+            return null;
+        }
+    }
 }

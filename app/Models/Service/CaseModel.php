@@ -73,12 +73,19 @@ class CaseModel extends Model
 
     private function buildParamOpenCase($request)
     {
-        $getTicket = $this->generateCaseTicket($request->input("use_tag"));
 
+        $getTicket = $this->generateCaseTicket($request->input("use_tag"));
+        $getCaseApprove = $this->getDataMasterModel->searchCaseApprove($request->input("category_main"), $request->input("category_type"), $request->input("category_detail"));
+
+        if($getCaseApprove != null){
+            $setUseTag = $getCaseApprove;
+        } else {
+            $setUseTag = $request->input("use_tag");
+        }
         $data = [
             'ticket'    => $getTicket,
             'case_user_open'    => Auth::user()->emp_code,
-            'use_tag' => $request->input("use_tag"),
+            'use_tag' => $setUseTag,
             'category_main' => $request->input("category_main"),
             'category_type' => $request->input("category_type"),
             'category_detail' => $request->input("category_detail"),
@@ -102,6 +109,12 @@ class CaseModel extends Model
                 $data['case_step'] = 'wait_manager_mt_approve';
                 $data['tag_manager_approve'] = 'NoManager';
                 $data['tag_work'] = 'wait_manager_mt_approve';
+            } else if ($data['use_tag'] == 'permission') {
+                $data['case_start'] = now();
+                $data['case_status'] = 'wait_manager_hr_approve';
+                $data['case_step'] = 'wait_manager_hr_approve';
+                $data['tag_manager_approve'] = 'NoManager';
+                $data['tag_work'] = 'wait_manager_hr_approve';
             } else {
                 $data['case_start'] = now();
                 $data['case_status'] = 'wait_manager_it_approve';
@@ -151,7 +164,7 @@ class CaseModel extends Model
             // บันทึกข้อมูลในตาราง tbt_case_service
             $insertCase = $data;
             // SentNotifyModel::setDataCaseToSend(11);
-            // dd("ss");
+            // dd($insertCase);
             $caseService = DB::connection('mysql')->table('tbt_case_service')->insertGetId($insertCase);
 
             // หากการบันทึกสำเร็จ
@@ -223,7 +236,8 @@ class CaseModel extends Model
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
             if ($param['use_tag'] == 'IT') {
-                $sql = $sql->where('cs.use_tag', 'IT');
+                // $sql = $sql->where('cs.use_tag', 'IT');
+                $sql = $sql->whereIn('cs.use_tag', ['IT','cctv','permission']);
             } else if ($param['use_tag'] == 'MT') {
                 $sql = $sql->where('cs.use_tag', 'MT');
             }
@@ -414,9 +428,20 @@ class CaseModel extends Model
                     $calSLANullCaseEnd = $this->getDataMasterModel->calculateSLANullCaseEnd($mainQuery->case_start, $mainQuery->sla);
                 }
             }
-
+            
+            if(in_array($mainQuery->use_tag, ['IT','cctv'])) {
+                $setTitle = 'ไอที';
+                $useTag = 'IT';
+            } else if ($mainQuery->use_tag == 'permission') {
+                $setTitle = 'ไอที';
+                $useTag = 'permission';
+            }else {
+                $setTitle = 'ช่างซ่อมบำรุง / อาคาร';
+                $useTag = $mainQuery->use_tag;
+            }
             // dd($mainQuery);
             // สร้างโครงสร้างข้อมูลผลลัพธ์
+            
             $data = [
                 'datadetail' => [
                     'id'                    => encrypt($mainQuery->id),
@@ -427,7 +452,7 @@ class CaseModel extends Model
                     'asset_number'          => $mainQuery->asset_number,
                     'employee_other_case'   => $mainQuery->employee_other_case,
                     'case_detail'           => $mainQuery->case_detail,
-                    'use_tag'               => $mainQuery->use_tag,
+                    'use_tag'               => $useTag,
                     'category_main_name'    => $mainQuery->category_main_name,
                     'category_type_name'    => $mainQuery->category_type_name,
                     'category_detail_name'  => $mainQuery->category_detail_name,
@@ -440,8 +465,8 @@ class CaseModel extends Model
                     'sla'                   => $mainQuery->sla,
                     'price'                 => number_format($mainQuery->price, 2),
                     'case_status'           => $mainQuery->case_status,
-                    'use_tag'               => $mainQuery->use_tag == 'IT' ? 'ไอที' : 'ช่างซ่อมบำรุง / อาคาร',
-                    'use_tag_code'          => $mainQuery->use_tag,
+                    'use_tag'               => $setTitle,
+                    'use_tag_code'          => $useTag,
                     'tag_work'              => $mainQuery->tag_work,
                     'group_status'          => $getGroupStatus['groupName'],
                     'case_start'            => $mainQuery->case_start,
@@ -731,7 +756,7 @@ class CaseModel extends Model
                 ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id');
             switch ($type) {
                 case 'case-it-user':
-                    $query = $query->where('cs.use_tag', 'IT');
+                    $query = $query->whereIn('cs.use_tag', ['IT','cctv','permission']);
                     break;
                 case 'case-mt-user':
                     $query = $query->where('cs.use_tag', 'MT');
@@ -758,12 +783,14 @@ class CaseModel extends Model
     public function realtimeCaseNewCountTag($type)
     {
         try {
+            // dd($type);
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
             switch ($type) {
                 case 'it':
-                    $query = $query->where('cs.case_status', 'manager_it_approve')->where('cs.use_tag', 'IT');
+                    // $query = $query->where('cs.case_status', 'manager_it_approve')->where('cs.use_tag', 'IT');
+                    $query = $query->whereIn('cs.case_status', ['manager_it_approve','manager_cctv_approve','manager_permission_approve'])->whereIn('cs.use_tag', ['IT','cctv','permission']);
                     break;
                 case 'mt':
                     $query = $query->where('cs.case_status', 'manager_mt_approve')->where('cs.use_tag', 'MT');
@@ -772,7 +799,8 @@ class CaseModel extends Model
                     $query = $query->where('cs.use_tag', 'MT')->where('cs.tag_work', 'wait_manager_mt_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
                 case 'wait-approve-it':
-                    $query = $query->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_IT_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    // $query = $query->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_it_approve')->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
+                    $query = $query->whereIn('cs.use_tag', ['IT','cctv','permission'])->whereIn('cs.tag_work', ['wait_manager_it_approve','wait_manager_hr_approve'])->whereIn('cs.tag_manager_approve', ['Y', 'NoManager']);
                     break;
             }
             $query = $query->count();
@@ -797,8 +825,12 @@ class CaseModel extends Model
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.case_step', ['doing_case', 'reject_case', 'case_reject'])
-                ->where('cs.use_tag', $setTextUpercase)->count();
+                ->whereIn('cs.case_step', ['doing_case', 'reject_case', 'case_reject']);
+            if($setTextUpercase == 'IT'){
+                $query = $query->whereIn('cs.use_tag', ['IT','cctv','permission'])->count();
+            } else {
+                $query = $query->where('cs.use_tag', $setTextUpercase)->count();
+            }
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
@@ -819,8 +851,14 @@ class CaseModel extends Model
             $query = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where('cs.deleted', 0)
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->where('cs.case_step', 'case_success')
-                ->where('cs.use_tag', $setTextUpercase)->count();
+                ->where('cs.case_step', 'case_success');
+            if (in_array($setTextUpercase, ['IT'])) {
+                $query = $query->whereIn('cs.use_tag', ['IT','cctv','permission'])->count();
+            }else if($setTextUpercase == 'permission'){
+                $query = $query->where('cs.use_tag', 'permission')->count();
+            } else {
+                $query = $query->where('cs.use_tag', $setTextUpercase)->count();
+            }
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log

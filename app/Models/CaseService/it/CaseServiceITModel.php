@@ -17,7 +17,7 @@ class CaseServiceITModel extends Model
 
     public function __construct()
     {
-           $this->getMasterModel = new getDataMasterModel();
+        $this->getMasterModel = new getDataMasterModel();
     }
 
     public function getDataCaseOpenIT($param)
@@ -28,7 +28,7 @@ class CaseServiceITModel extends Model
                 //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->where('cs.case_status', 'manager_it_approve')
+                ->whereIn('cs.case_status', ['manager_it_approve', 'manager_cctv_approve', 'manager_permission_approve'])
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -36,7 +36,7 @@ class CaseServiceITModel extends Model
                 ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
-                ->where('cs.use_tag', 'IT');
+                ->whereIn('cs.use_tag', ['IT', 'cctv', 'permission']);
 
             $sql = $sql->where('cs.deleted', 0)
                 ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
@@ -95,7 +95,7 @@ class CaseServiceITModel extends Model
                 //     $query->where('cs.manager_emp_id', Auth::user()->map_employee);
                 // })
                 ->whereIn('cs.tag_manager_approve', ['Y', 'NoManager'])
-                ->whereIn('cs.case_step', ['doing_case','reject_case','case_reject'])
+                ->whereIn('cs.case_step', ['doing_case', 'reject_case', 'case_reject'])
                 // ->whereNotIn('cs.category_main', $this->setWhereIn())
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
@@ -105,17 +105,18 @@ class CaseServiceITModel extends Model
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
                 ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
-                ->where('cs.use_tag', 'IT');
+                ->whereIn('cs.use_tag', ['IT', 'cctv', 'permission']);
 
             $sql = $sql->where('cs.deleted', 0)
-                ->select('cs.*', 
-                'cm.category_main_name', 
-                'ct.category_type_name', 
-                'cd.category_detail_name', 
-                DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), 
-                DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"),
-                'sw.status_name'
-            );
+                ->select(
+                    'cs.*',
+                    'cm.category_main_name',
+                    'ct.category_type_name',
+                    'cd.category_detail_name',
+                    DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"),
+                    DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"),
+                    'sw.status_name'
+                );
 
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
@@ -180,18 +181,23 @@ class CaseServiceITModel extends Model
                 ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
-                ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
-                ->where('cs.use_tag', 'IT');
+                ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID');
+            if ($param['use_tag'] == 'permission') {
+                $sql = $sql->whereIn('cs.use_tag', ['permission']);
+            } else {
+                $sql = $sql->whereIn('cs.use_tag', ['IT', 'cctv', 'permission']);
+            }
 
             $sql = $sql->where('cs.deleted', 0)
-                ->select('cs.*', 
-                'cm.category_main_name', 
-                'ct.category_type_name', 
-                'cd.category_detail_name', 
-                DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), 
-                DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"),
-                'sw.status_name'
-            );
+                ->select(
+                    'cs.*',
+                    'cm.category_main_name',
+                    'ct.category_type_name',
+                    'cd.category_detail_name',
+                    DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"),
+                    DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"),
+                    'sw.status_name'
+                );
 
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
@@ -257,7 +263,7 @@ class CaseServiceITModel extends Model
                 ->leftJoin('tbm_prefix_name AS pre', 'em.prefix_id', '=', 'pre.ID')
                 ->leftJoin('tbt_employee AS empUser', 'cs.employee_other_case', '=', 'empUser.ID')
                 ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID')
-                ->where('cs.use_tag', 'IT')->where('cs.tag_work', 'wait_manager_it_approve');
+                ->whereIn('cs.use_tag', ['IT', 'cctv', 'permission'])->whereIn('cs.tag_work', ['wait_manager_it_approve', 'wait_manager_hr_approve']);
 
             $sql = $sql->where('cs.deleted', 0)
                 ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));

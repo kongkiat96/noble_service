@@ -22,10 +22,10 @@
 
                                         <li class="nav-item">
                                             <button type="button" class="nav-link active" role="tab"
-                                                data-bs-toggle="tab" data-bs-target="#approve-it"
-                                                aria-controls="#approve-it" aria-selected="true" id="reTabA">
+                                                data-bs-toggle="tab" data-bs-target="#approve-cctv"
+                                                aria-controls="#approve-cctv" aria-selected="true" id="reTabA">
                                                 รออนุมัติดำเนินงาน <span class="badge bg-white text-primary ms-1"
-                                                    id="caseApproveCountIT">0</span>
+                                                    id="caseApproveCountCCTV">0</span>
                                             </button>
                                         </li>
 
@@ -40,27 +40,20 @@
                                         </li> --}}
 
                                         <li class="nav-item">
-                                            {{-- <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                                data-bs-target="#caseCheckWork" aria-controls="#caseCheckWork" aria-selected="true"
-                                                id="reTabB">
+                                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                                data-bs-target="#caseCheckWorkCCTV" aria-controls="#caseCheckWorkCCTV" aria-selected="true"
+                                                id="reTabC">
                                                 รออนุมัติงานเสร็จสิ้น <span class="badge bg-white text-primary ms-1"
-                                                    id="caseCheckWorkCount">0</span>
-                                            </button> --}}
-                                            <button type="button" class="nav-link" role="tab"
-                                                data-bs-toggle="tab" data-bs-target="#caseCheckWork"
-                                                aria-controls="#caseCheckWork" aria-selected="true" id="reTabB">
-                                                รออนุมัติงานเสร็จสิ้น <span class="badge bg-white text-primary ms-1"
-                                                    id="caseCheckWorkCount">0</span>
+                                                    id="caseCheckWorkCCTVCount">0</span>
                                             </button>
-
                                         </li>
                                     </ul>
 
                                     <div class="tab-content">
 
-                                        <div class="tab-pane fade show active" id="approve-it" role="tabpanel">
+                                        <div class="tab-pane fade show active" id="approve-cctv" role="tabpanel">
                                             <div class="text-nowrap table-responsive">
-                                                <table class="dt-approve-it table table-hover table-striped">
+                                                <table class="dt-approve-cctv table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>
@@ -77,9 +70,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="tab-pane fade" id="caseCheckWork" role="tabpanel">
+                                        <div class="tab-pane fade" id="caseCheckWorkCCTV" role="tabpanel">
                                             <div class="text-nowrap table-responsive">
-                                                <table class="dt-caseCheckWork table table-hover table-striped">
+                                                <table class="dt-caseCheckWork-cctv table table-hover table-striped">
                                                     <thead class="table-light">
                                                         <tr>
                                                             <th>ลำดับ</th>

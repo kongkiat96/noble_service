@@ -74,9 +74,6 @@
                     </div>
                 </div>
                 <form id="formApproveToPadding">
-                        
-
-
                     <div class="col-md-12 mb-2">
                         <label class="form-label-md mb-2" for="case_status">สถานะการอนุมัติงาน</label>
                         {{-- <select name="case_status" id="case_status" class="form-select select2"

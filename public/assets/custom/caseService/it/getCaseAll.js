@@ -385,8 +385,8 @@ function reTable() {
 $(document).ready(function () {
     scheduleFetch("/case-service/realtime-case-new-count/wait-approve-it", "caseCountWaitApproveIT", 90000);
     scheduleFetch("/case-service/realtime-case-new-count/it", "caseNewCountIT", 90000); // สำหรับ MT
-    scheduleFetch("/case-service/realtime-case-doing-count/it", "caseDoingCountIT", 90000); // สำหรับ FU
-    scheduleFetch("/case-service/realtime-case-success-count/it", "caseSuccessCountIT", 90000); // สำหรับ FU
+    scheduleFetch("/case-service/realtime-case-doing-count/it", "caseDoingCountIT", 90000);
+    scheduleFetch("/case-service/realtime-case-success-count/it", "caseSuccessCountIT", 90000);
     setInterval(reTable, 90000);
 });
 

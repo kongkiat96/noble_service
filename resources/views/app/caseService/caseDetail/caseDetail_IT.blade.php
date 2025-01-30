@@ -7,7 +7,8 @@
             </button>
         </li>
 
-        @if ($data['tag_work'] != 'wait_manager_it_approve')
+        {{-- @if ($data['tag_work'] != 'wait_manager_it_approve') --}}
+        @if (!in_array($data['tag_work'], ['wait_manager_it_approve','wait_manager_hr_approve']))
             <li class="nav-item">
                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                     data-bs-target="#case-action" aria-controls="#case-action" aria-selected="true">

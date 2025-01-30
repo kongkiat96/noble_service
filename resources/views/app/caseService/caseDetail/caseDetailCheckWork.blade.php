@@ -161,11 +161,15 @@
                             <label class="form-label-sm mt-2 text-danger" for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
                         </div>
 
-                        
+                        @if($data['use_tag_code'] != 'permission' && $data['case_status'] != 'case_status')
                         <div class="divider">
                             <div class="divider-text font-weight-bold font-size-lg">สถานะการตรวจสอบการทำงาน</div>
                         </div>
+                        @endif
                     </div>
+                    <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
+                    <input type="text" name="tagStep" id="tagStep" value="managerCheckWork" hidden>
+                    @if($data['use_tag_code'] != 'permission' && $data['case_status'] != 'case_status')
                     <div class="row">
                         <div class="col-md-12 mb-4">
                             <label class="form-label-md mb-2" for="case_status">สถานะการตรวจสอบการทำงาน <span
@@ -202,40 +206,22 @@
                     </div>
 
 
-                    <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
-                    <input type="text" name="tagStep" id="tagStep" value="managerCheckWork" hidden>
-                    {{-- <div class="divider">
-                        <div class="divider-text font-weight-bold font-size-lg">รูปภาพการแก้ไขปัญหา</div>
-                    </div> --}}
+                    
                 </form>
-                {{-- <div class="row"> --}}
-                {{-- <div class="col-12 text-center">
-                    <form action="/upload" class="dropzone needsclick" id="pic-case">
-                        <div class="dz-message needsclick">
-                            อัพโหลดรูปภาพในการแก้ไขปัญหา
-                            <span class="note needsclick">(สามารถแนบได้สูงสุด 5 รูป)</span>
-                        </div>
-                        <div class="fallback">
-                            <input name="file" id="pic-case" type="file" />
-                        </div>
-                    </form>
-                </div> --}}
-                {{-- </div> --}}
-
                 <hr class="mt-4">
                 <div class="col-12 text-center">
                     {{-- set case status getDataStatusWork --}}
-                    @if(in_array($data['case_status'],['1']))
-                    <div class="alert alert-warning text-bold" role="alert">
-                        รายการนี้อยู่ระหว่างตรวจสอบงาน
-                      </div>
+                    @if (in_array($data['group_status'], ['Success']))
+                        <div class="alert alert-warning text-bold" role="alert">
+                            รายการนี้อยู่ระหว่างตรวจสอบงาน
+                        </div>
                     @else
                     <button type="submit" name="saveManagerCaseCheckWork" id="saveManagerCaseCheckWork"
                         class="btn btn-success btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-save'></i>
                         บันทึกข้อมูล</button>
                         @endif
                 </div>
-
+                @endif
 
             </div>
         </div>

@@ -963,13 +963,17 @@ function badgeStatusTagWork(data, type, full, row) {
         wait_manager_mt_approve: { title: 'รอการอนุมัติจากฝ่ายช่าง', className: 'bg-label-primary' },
         openCaseWaitApprove: { title: 'แจ้งปัญหาการใช้งาน / รอการอนุมัติจากผู้บังคับบัญชา', className: 'bg-label-warning' },
         wait_manager_it_approve: { title: 'รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
-
+        wait_manager_hr_approve: { title: 'รอการอนุมัติจากฝ่าย HR', className: 'bg-label-warning' },
 
         manager_approve_MT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายช่าง', className: 'bg-label-primary' },
         manager_approve_IT: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
+        manager_approve_cctv: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่ายไอที', className: 'bg-label-primary' },
+        manager_approve_permission: { title: 'อนุมัติจากผู้บังคับบัญชา / รอการอนุมัติจากฝ่าย Hr', className: 'bg-label-primary' },
 
         manager_mt_approve: { title: 'อนุมัติจากฝ่ายช่าง / รอดำเนินงาน', className: 'bg-label-primary' },
         manager_it_approve: { title: 'อนุมัติจากฝ่ายไอที / รอดำเนินงาน', className: 'bg-label-primary' },
+        manager_cctv_approve: { title: 'อนุมัติจากฝ่ายไอที / รอดำเนินงาน', className: 'bg-label-primary' },
+        manager_permission_approve: { title: 'อนุมัติจากฝ่าย Hr / รอดำเนินงาน', className: 'bg-label-primary' },
 
         reject_manager_approve_MT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
         reject_manager_approve_IT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
