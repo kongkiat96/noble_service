@@ -377,7 +377,7 @@ $(function () {
 })
 
 function reTable() {
-    // $('.dt-approve-case-it').DataTable().ajax.reload();
+    $('.dt-case-wait-approve').DataTable().ajax.reload(null, false);
     $('.dt-case-openCase').DataTable().ajax.reload(null, false);
     $('.dt-case-working').DataTable().ajax.reload(null, false);
     $('.dt-case-success').DataTable().ajax.reload(null, false);

@@ -138,7 +138,7 @@
                                         <li class="nav-item">
                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                                 data-bs-target="#case-success" aria-controls="#case-success" aria-selected="true"
-                                                id="reTabD">
+                                                id="reTabC">
                                                 รอบันทึกค่าใช้จ่าย / งานที่เสร็จสิ้น<span class="badge bg-white text-primary ms-1" id="caseSuccessCountIT">0</span>
                                             </button>
                                         </li>
