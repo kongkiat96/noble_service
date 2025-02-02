@@ -305,13 +305,30 @@
                     <div class="row g-1 form-block">
                         @if (!empty($image))
                             @foreach ($image as $key => $value)
-                                <div class="col-md-6 mb-3">
-                                    <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
-                                            src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                    <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
+                                        src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                        alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                        data-bs-target="#imageModal{{ $key }}" />
+                                </div>
+                            </div>
+                            <div class="modal fade" id="imageModal{{ $key }}"
+                                aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                class="img-fluid" alt="{{ $value->file_name }}">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
                             @endforeach
                         @else
                             ไม่พบข้อมูลรูปภาพ
@@ -324,11 +341,30 @@
                             @foreach ($imageDoing as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
+                                        <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                        <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                             src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                                            alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal_after{{ $key }}" />
                                     </div>
                                 </div>
+                                <div class="modal fade" id="imageModal_after{{ $key }}"
+                                    aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                    class="img-fluid" alt="{{ $value->file_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             @endforeach
                         @else
                             ไม่พบข้อมูลรูปภาพ

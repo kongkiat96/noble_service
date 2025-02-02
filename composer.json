@@ -16,6 +16,7 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.4",
+        "laravolt/avatar": "^4.1",
         "mpdf/mpdf": "^8.2"
     },
     "require-dev": {
@@ -44,7 +45,8 @@
         "files": [
             "app/Helpers/getAccessToMenu.php",
             "app/Helpers/NumberHelper.php",
-            "app/Helpers/CalculateDateHelper.php"
+            "app/Helpers/CalculateDateHelper.php",
+            "app/Helpers/serviceCenter.php"
         ]
     },
     "autoload-dev": {

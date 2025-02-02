@@ -439,7 +439,7 @@ class CaseModel extends Model
                 $setTitle = 'ช่างซ่อมบำรุง / อาคาร';
                 $useTag = $mainQuery->use_tag;
             }
-            // dd($mainQuery);
+            // dd($mainQuery->employee_other_case);
             // สร้างโครงสร้างข้อมูลผลลัพธ์
             
             $data = [
@@ -473,7 +473,8 @@ class CaseModel extends Model
                     'case_end'              => $mainQuery->case_end,
                     'created_at'            => $mainQuery->created_at,
                     'calSLA'                => @$calSLA,
-                    'calSLANullCaseEnd'     => @$calSLANullCaseEnd
+                    'calSLANullCaseEnd'     => @$calSLANullCaseEnd,
+                    'branch'                => $this->getDataMasterModel->branchEmployee($mainQuery->employee_other_case),
                 ],
                 'dataimage' => $imageQuery->toArray(), // แปลงเป็น array
                 'dataimageDoing' => $imageQueryDoing->toArray()

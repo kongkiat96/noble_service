@@ -22,15 +22,17 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="user-avatar-section">
-                            <div class="d-flex align-items-center flex-column">
-
+                            <div class="col-md-12 text-center">
                                 @if ($dataEmployee->img_base == null)
-                                    <img class="img-fluid rounded my-4" src="{{ asset('assets/img/img-not-found.png') }}"
-                                        alt="Employee Image" height="200" width="200" />
+                                    <div class="svg-profile img-fluid rounded">
+                                        {!! config('aboutEmployee.imageName') !!}
+                                    </div>
                                 @else
                                     <img class="img-fluid rounded my-4" src="{{ $dataEmployee->img_base }}"
                                         alt="Employee Image" height="200" width="200" />
                                 @endif
+                            </div>
+                            <div class="col-md-12">
                                 <div class="user-info text-center">
                                     <h4 class="mb-2">{{ $dataEmployee->first_name . ' ' . $dataEmployee->last_name }}</h4>
                                     @if ($dataEmployee->user_class == 'SuperAdmin')

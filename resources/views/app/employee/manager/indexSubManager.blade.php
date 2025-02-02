@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.app-popup')
 
 @section('content')
-    <nav aria-label="breadcrumb">
+    {{-- <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ url('/home') }}">หน้าแรก</a>
@@ -12,7 +12,7 @@
             <li class="breadcrumb-item active">{{ $urlName }}</li>
         </ol>
     </nav>
-    <hr>
+    <hr> --}}
 
     
 

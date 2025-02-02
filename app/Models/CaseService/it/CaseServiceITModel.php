@@ -64,7 +64,8 @@ class CaseServiceITModel extends Model
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
-                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
+                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
+                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode')
                 ];
             }
 
@@ -141,7 +142,8 @@ class CaseServiceITModel extends Model
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
-                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
+                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
+                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode')
                 ];
             }
 
@@ -223,6 +225,7 @@ class CaseServiceITModel extends Model
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
                     'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
+                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode'),
                     'check_price'   => $value->price
                 ];
             }
@@ -291,7 +294,8 @@ class CaseServiceITModel extends Model
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
-                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
+                    'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
+                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode')
                 ];
             }
 

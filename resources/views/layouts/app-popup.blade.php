@@ -13,17 +13,6 @@
 
     @include('layouts.inc-stylesheet')
     @yield('stylesheets')
-    <style>
-        .svg-top-right svg {
-            width: 100%;  /* ขนาดจะเป็น 50% ของความกว้างของ container */
-            height: 100%; /* ความสูงจะคำนวณจาก aspect ratio */
-        }
-        .svg-profile svg {
-            width: 40%;  /* ขนาดจะเป็น 50% ของความกว้างของ container */
-            height: 40%; /* ความสูงจะคำนวณจาก aspect ratio */
-            margin-bottom: 5%;
-        }
-    </style>
 </head>
 
 <body>
@@ -31,9 +20,9 @@
     <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
         <div class="layout-container">
 
-            <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+            {{-- <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
                 @include('layouts.inc-top-menu')
-            </nav>
+            </nav> --}}
 
             <!-- Layout container -->
             <div class="layout-page">
@@ -41,7 +30,7 @@
                 <div class="content-wrapper">
 
                     <!-- Menu -->
-                    @include('layouts.inc-menu')
+                    {{-- @include('layouts.inc-menu') --}}
                     <!-- /Menu -->
 
                     <div class="container-fluid flex-grow-1 container-p-y">

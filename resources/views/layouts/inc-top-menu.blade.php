@@ -2,8 +2,8 @@
     <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a href="{{ url('/home') }}" class="app-brand-link gap-2">
             <span class="app-brand-logo demo">
-                <img src="{{ asset('storage/uploads/aboutApp/' . config('aboutApp.about_app_img')) }}"
-                    alt="app image" width="50px" height="50px">
+                <img src="{{ asset('storage/uploads/aboutApp/' . config('aboutApp.about_app_img')) }}" alt="app image"
+                    width="50px" height="50px">
             </span>
             <span class="demo menu-text fw-bolder">{{ config('aboutApp.show_app_name') }}</span>
         </a>
@@ -35,8 +35,9 @@
                     <div class="avatar avatar-online">
                         {{-- <img src="../../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> --}}
                         @if (config('aboutEmployee.getAll')->img_base == null)
-                            <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/img-not-found.png') }}"
-                                alt="Employee Image" />
+                            <div class="svg-top-right">
+                                {!! config('aboutEmployee.imageName') !!}
+                            </div>
                         @else
                             <img class="w-px-40 h-px-40 rounded-circle"
                                 src="{{ config('aboutEmployee.getAll')->img_base }}" alt="Employee Image" />
@@ -51,9 +52,9 @@
                                     <div class="avatar avatar-online">
                                         {{-- <img src="" alt class="w-px-40 h-auto rounded-circle" /> --}}
                                         @if (config('aboutEmployee.getAll')->img_base == null)
-                                            <img class="w-px-40 h-auto rounded-circle"
-                                                src="{{ asset('assets/img/img-not-found.png') }}"
-                                                alt="Employee Image" />
+                                        <div class="svg-top-right">
+                                            {!! config('aboutEmployee.imageName') !!}
+                                        </div>
                                         @else
                                             <img class="w-px-40 h-auto rounded-circle"
                                                 src="{{ config('aboutEmployee.getAll')->img_base }}"
@@ -63,16 +64,17 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">{{ config('aboutEmployee.getAll')->prefix_name. ' '. config('aboutEmployee.getAll')->first_name.' '.config('aboutEmployee.getAll')->last_name }}</span>
+                                    <span
+                                        class="fw-semibold d-block">{{ config('aboutEmployee.getAll')->prefix_name . ' ' . config('aboutEmployee.getAll')->first_name . ' ' . config('aboutEmployee.getAll')->last_name }}</span>
                                     {{-- <small class="text-muted">Admin</small> --}}
-                                    @if(config('aboutEmployee.getAll')->user_class == 'SuperAdmin')
+                                    @if (config('aboutEmployee.getAll')->user_class == 'SuperAdmin')
                                         <span class="badge bg-label-danger">ผู้ดูแลระบบ</span>
                                     @elseif(config('aboutEmployee.getAll')->user_class == 'Admin')
                                         <span class="badge bg-label-warning">เจ้าหน้าที่</span>
                                     @elseif(config('aboutEmployee.getAll')->user_class == 'user')
                                         <span class="badge bg-label-primary">ผู้บันทึกข้อมูล</span>
                                     @else
-                                    <span class="badge bg-label-info">ผู้ใช้งานทั่วไป</span>
+                                        <span class="badge bg-label-info">ผู้ใช้งานทั่วไป</span>
                                     @endif
                                 </div>
                             </div>

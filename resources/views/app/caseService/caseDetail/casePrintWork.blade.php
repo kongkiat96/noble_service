@@ -85,6 +85,7 @@
 </head>
 
 <body>
+    {{-- {{ dd($data) }} --}}
     <div class="card">
         <div class="card-header">
             <h3><b>ใบงานแจ้งงาน{{ $setTitle }}</b></h3>
@@ -123,6 +124,10 @@
                 <tr>
                     <th>ชื่อผู้แจ้ง : </th>
                     <td class="text-highlight">{{ $data['employee_other_case_name'] }}</td>
+                    <th>สาขา : </th>
+                    <td class="text-highlight" colspan="3">{{ $data['branch'] }}</td>
+                </tr>
+                <tr>
                     <th>ผู้อนุมัติ : </th>
                     <td class="text-highlight" colspan="3">{{ !empty($data['manager_name']) ? $data['manager_name'] : '-' }}</td>
                 </tr>

@@ -64,7 +64,8 @@
                                 <label class="form-label-sm mt-2 text-danger"
                                     for="case_end">ขณะนี้เกินระยะเวลาที่กำหนด</label>
                             @else
-                                <label class="form-label-sm mt-2 text-warning" for="case_end">ขณะนี้เหลือเวลาอีก {{ $data['calSLANullCaseEnd']['time_remaining'] }}</label>
+                                <label class="form-label-sm mt-2 text-warning" for="case_end">ขณะนี้เหลือเวลาอีก
+                                    {{ $data['calSLANullCaseEnd']['time_remaining'] }}</label>
                             @endif
                         </div>
                     </div>
@@ -80,36 +81,44 @@
                         <input type="text" id="ticket" class="form-control" name="ticket"
                             value="{{ $data['ticket'] }}" readonly autofocus>
                     </div>
-    
+
                     <div class="col-md-6 mb-4">
                         <label class="form-label-md mb-2" for="category_main">รายการกลุ่มอุปกรณ์</label>
-                            <select class="form-select select2" name="category_main" id="category_main" data-allow-clear="true">
-                                <option value="">Select</option>
-                                @foreach ($dataCategoryMain as $key => $value)
-                                <option value="{{ $value->id }}" @if ($data['category_main'] == $value->id ) selected @endif>{{ $value->category_main_name }}</option>
-                                @endforeach
-                            </select>
+                        <select class="form-select select2" name="category_main" id="category_main"
+                            data-allow-clear="true">
+                            <option value="">Select</option>
+                            @foreach ($dataCategoryMain as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_main'] == $value->id) selected @endif>
+                                    {{ $value->category_main_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6 mb-4">
                         <label class="form-label-md mb-2" for="category_type">รายการประเภทหมวดหมู่</label>
-                            <select class="form-select select2" name="category_type" id="category_type" data-allow-clear="true">
-                                <option value="">Select</option>
-                                @foreach ($dataCategoryType as $key => $value)
-                                <option value="{{ $value->id }}" @if ($data['category_type'] == $value->id ) selected @endif>{{ $value->category_type_name }}</option>
-                                @endforeach
-                            </select>
+                        <select class="form-select select2" name="category_type" id="category_type"
+                            data-allow-clear="true">
+                            <option value="">Select</option>
+                            @foreach ($dataCategoryType as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_type'] == $value->id) selected @endif>
+                                    {{ $value->category_type_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6 mb-4">
                         <label class="form-label-md mb-2" for="category_detail">อาการที่ต้องการแจ้งปัญหา</label>
-                            <select class="form-select select2" name="category_detail" id="category_detail" data-allow-clear="true">
-                                <option value="">Select</option>
-                                @foreach ($dataCategoryDetail as $key => $value)
-                                <option value="{{ $value->id }}" @if ($data['category_detail'] == $value->id ) selected @endif>{{ $value->category_detail_name }}</option>
-                                @endforeach
-                            </select>
+                        <select class="form-select select2" name="category_detail" id="category_detail"
+                            data-allow-clear="true">
+                            <option value="">Select</option>
+                            @foreach ($dataCategoryDetail as $key => $value)
+                                <option value="{{ $value->id }}" @if ($data['category_detail'] == $value->id) selected @endif>
+                                    {{ $value->category_detail_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <input type="text" name="category_type_old" id="category_type_old" value="{{ $data['category_type'] }}" hidden>
-                    <input type="text" name="category_detail_old" id="category_detail_old" value="{{ $data['category_detail'] }}" hidden>
+                    <input type="text" name="category_type_old" id="category_type_old"
+                        value="{{ $data['category_type'] }}" hidden>
+                    <input type="text" name="category_detail_old" id="category_detail_old"
+                        value="{{ $data['category_detail'] }}" hidden>
                     <input type="text" name="caseID" id="caseID" value="{{ $data['id'] }}" hidden>
                     <div class="col-md-6 mb-4">
                         <label class="form-label-md mb-2" for="asset_number">หมายเลขครุภัณฑ์</label>
@@ -142,7 +151,8 @@
                     </div>
                 @else
                     <button type="submit" name="changeCategory" id="changeCategory"
-                        class="btn btn-warning btn-form-block-overlay"><i class='menu-icon tf-icons bx bx-git-compare'></i>
+                        class="btn btn-warning btn-form-block-overlay"><i
+                            class='menu-icon tf-icons bx bx-git-compare'></i>
                         เปลี่ยนแปลงข้อมูลการแจ้ง</button>
                 @endif
             </div>
@@ -305,9 +315,26 @@
                             @foreach ($image as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
+                                        <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                        <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                             src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                                            alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal{{ $key }}" />
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="imageModal{{ $key }}"
+                                    aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                    class="img-fluid" alt="{{ $value->file_name }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -322,9 +349,26 @@
                             @foreach ($imageDoing as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
+                                        <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                        <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                             src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                                            alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal_after{{ $key }}" />
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="imageModal_after{{ $key }}"
+                                    aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                    class="img-fluid" alt="{{ $value->file_name }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -468,7 +512,6 @@
     })();
 </script>
 <script>
-
     mapSelectedCategory('#category_type', '#category_main', true)
     mapSelectedCategoryDetail('#category_detail', '#category_type', true)
 </script>

@@ -85,19 +85,21 @@
                         <div class="row m-2">
                             <div class="col-md-6">
                                 <div class="form-check form-check-success form-check-inline">
-                                    <input name="case_status" class="form-check-input" type="radio" value="manager_{{ $setLowercase }}_approve" id="rm_approve" />
+                                    <input name="case_status" class="form-check-input" type="radio"
+                                        value="manager_{{ $setLowercase }}_approve" id="rm_approve" />
                                     <label class="form-check-label" for="rm_approve"> อนุมัติดำเนินการ </label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check form-check-danger form-check-inline">
-                                    <input name="case_status" class="form-check-input" type="radio" value="reject_manager_{{ $setLowercase }}_approve" id="rm_reject" />
+                                    <input name="case_status" class="form-check-input" type="radio"
+                                        value="reject_manager_{{ $setLowercase }}_approve" id="rm_reject" />
                                     <label class="form-check-label" for="rm_reject"> ไม่อนุมัติดำเนินการ </label>
                                 </div>
                             </div>
                         </div>
-                        
-                        
+
+
                     </div>
                     <div class="col-md-12 mb-2">
                         <label class="form-label-md mb-2" for="case_approve_detail">รายละเอียดการอนุมัติงาน</label>
@@ -127,9 +129,26 @@
                     @foreach ($image as $key => $value)
                         <div class="col-md-6 mb-3">
                             <div class="card">
-                                <img class="card-img-top img-fluid w-150 h-150"
+                                <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                     src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                    alt="{{ $value->file_name }}" />
+                                    alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                    data-bs-target="#imageModal{{ $key }}" />
+                            </div>
+                        </div>
+                        <div class="modal fade" id="imageModal{{ $key }}"
+                            aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                            class="img-fluid" alt="{{ $value->file_name }}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -160,4 +179,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{ asset('/assets/custom/caseService/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+<script type="text/javascript"
+    src="{{ asset('/assets/custom/caseService/approveCaseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>

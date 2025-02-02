@@ -269,7 +269,6 @@ class CaseServiceController extends Controller
     {
         // dd($ticket);
         $getCaseDetail = $this->caseModel->getDataCaseDetailApprove($ticket);
-        // dd($getCaseDetail);
         $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
         $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
         $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
@@ -348,6 +347,6 @@ class CaseServiceController extends Controller
         $mpdf->WriteHTML($html); // เขียน HTML ลง PDF
 
         // สร้างไฟล์ PDF และดาวน์โหลด
-        return $mpdf->Output('invoice.pdf', 'I'); // 'I' หมายถึงการแสดงใน browser, 'D' สำหรับการดาวน์โหลด
+        return $mpdf->Output($getCaseDetail['message']['datadetail']['ticket'].'.pdf', 'I'); // 'I' หมายถึงการแสดงใน browser, 'D' สำหรับการดาวน์โหลด
     }
 }

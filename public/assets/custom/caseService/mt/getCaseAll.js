@@ -74,7 +74,7 @@ $(function () {
                 class: "text-center",
             },
             {
-                data: 'created_user',
+                data: 'updated_user',
                 class: "text-center",
             },
         ],
@@ -157,7 +157,7 @@ $(function () {
                 class: "text-center",
             },
             {
-                data: 'created_user',
+                data: 'updated_user',
                 class: "text-center",
             },
         ],
@@ -247,7 +247,7 @@ $(function () {
                 class: "text-center",
             },
             {
-                data: 'created_user',
+                data: 'updated_user',
                 class: "text-center",
             },
         ],
@@ -358,7 +358,7 @@ $(function () {
                 class: "text-center",
             },
             {
-                data: 'created_user',
+                data: 'updated_user',
                 class: "text-center",
             },
         ],

@@ -38,10 +38,10 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-3">
                     <button type="submit" name="printWork" id="printWork"
-                    class="btn btn-danger btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-file-pdf'></i>
-                    พิมพ์ใบงาน</button>
+                        class="btn btn-danger btn-form-block-overlay"><i class='menu-icon tf-icons bx bxs-file-pdf'></i>
+                        พิมพ์ใบงาน</button>
                 </div>
-                
+
             </div>
             <div class="row g-1 form-block">
                 <div class="col-md-6 mb-4">
@@ -121,7 +121,8 @@
                         </div>
                         <div class="col-md-3 mb-4">
                             <label class="form-label-md mb-2" for="sla">SLA</label>
-                            <input type="text" id="sla" class="form-control" name="sla" readonly value="{{ $data['sla'] }}">
+                            <input type="text" id="sla" class="form-control" name="sla" readonly
+                                value="{{ $data['sla'] }}">
                         </div>
                         <div class="col-md-9 mb-4">
                             <label class="form-label-md mb-2" for="case_price">ค่าใช้จ่าย</label>
@@ -131,7 +132,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control numeral-mask text-end"
                                     placeholder="ค่าใช้จ่าย" name="case_price" id="case_price"
-                                    oninput="formatAmount(this)" value="{{ $data['price'] }}"/>
+                                    oninput="formatAmount(this)" value="{{ $data['price'] }}" />
                                 <span class="input-group-text">฿</span>
                             </div>
 
@@ -141,14 +142,15 @@
                         <div class="col-md-12 mb-4">
                             <label for="worker" class="form-label-md mb-2">ช่างผู้ปฏิบัติงาน / รับผิดชอบ</label>
                             <input id="worker" name="worker" class="form-control"
-                                placeholder="&nbsp ช่างผู้ปฏิบัติงาน / รับผิดชอบ" value="{{ $workerNames }}" disabled/>
+                                placeholder="&nbsp ช่างผู้ปฏิบัติงาน / รับผิดชอบ" value="{{ $workerNames }}"
+                                disabled />
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
 
                         <div class="col-md-12 mb-4">
                             <label for="checker" class="form-label-md mb-2">ผู้รับเหมา / ซัพนอก</label>
                             <input id="checker" name="checker" class="form-control"
-                                placeholder="&nbsp ผู้รับเหมา / ซัพนอก" value="{{ $checkerNames }}" disabled/>
+                                placeholder="&nbsp ผู้รับเหมา / ซัพนอก" value="{{ $checkerNames }}" disabled />
                             {{-- value="abatisse2@nih.gov, Justinian Hattersley" /> --}}
                         </div>
                         <div class="divider">
@@ -156,22 +158,27 @@
                         </div>
                         <div class="col-md-6 mb-4">
                             <label class="form-label-md mb-2" for="case_start">วันที่แจ้งงาน</label>
-                            <input type="text" id="case_start" class="form-control" name="case_start" readonly value="{{ $data['case_start'] }}">
+                            <input type="text" id="case_start" class="form-control" name="case_start" readonly
+                                value="{{ $data['case_start'] }}">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label-md mb-2" for="case_end">วันที่ดำเนินงานเรียบร้อย</label>
-                            <input type="text" id="case_end" class="form-control" name="case_end" readonly value="{{ $data['case_end'] }}">
-                            <label class="form-label-sm mt-2 text-danger" for="case_end">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                            <input type="text" id="case_end" class="form-control" name="case_end" readonly
+                                value="{{ $data['case_end'] }}">
+                            <label class="form-label-sm mt-2 text-danger"
+                                for="case_end">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
                         </div>
 
                         <div class="col-md-6 mb-4">
                             <label class="form-label-md mb-2" for="calSLA">ระยะเวลาที่คำนวณแล้ว</label>
-                            <input type="text" id="calSLA" class="form-control" name="calSLA" readonly value="{{ $data['calSLA']['message'] }}">
-                            <label class="form-label-sm mt-2 text-danger" for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
+                            <input type="text" id="calSLA" class="form-control" name="calSLA" readonly
+                                value="{{ $data['calSLA']['message'] }}">
+                            <label class="form-label-sm mt-2 text-danger"
+                                for="calSLA">นับจากวันที่ผู้แจ้งตรวจสอบงานเรียบร้อย</label>
                         </div>
 
-                       
+
                         <div class="divider">
                             <div class="divider-text font-weight-bold font-size-lg">สถานะดำเนินงาน</div>
                         </div>
@@ -199,7 +206,7 @@
                     </div>
 
                 </form>
-                
+
 
                 <hr class="mt-4">
                 <div class="col-12 text-center">
@@ -237,9 +244,26 @@
                             @foreach ($image as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
+                                        <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                        <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                             src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                                            alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal{{ $key }}" />
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="imageModal{{ $key }}"
+                                    aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                    class="img-fluid" alt="{{ $value->file_name }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -254,9 +278,26 @@
                             @foreach ($imageDoing as $key => $value)
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid w-150 h-150"
+                                        <!-- กดที่ภาพเพื่อเปิด Modal -->
+                                        <img class="card-img-top img-fluid w-150 h-150" style="cursor: pointer;"
                                             src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
-                                            alt="{{ $value->file_name }}" />
+                                            alt="{{ $value->file_name }}" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal_after{{ $key }}" />
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="imageModal_after{{ $key }}"
+                                    aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="{{ asset('storage/uploads/caseService/' . $value->file_name) }}"
+                                                    class="img-fluid" alt="{{ $value->file_name }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -290,4 +331,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>
+<script type="text/javascript"
+    src="{{ asset('/assets/custom/caseService/caseAction.js?v=') }}@php echo date("H:i:s") @endphp"></script>

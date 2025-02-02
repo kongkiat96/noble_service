@@ -431,6 +431,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('/test')->group(function () {
     Route::get('/test-noti-telegram', 'Test\FunctionTestAllController@notiTelegram');
+    Route::get('/test-avatar', 'Test\FunctionTestAllController@testAvatar');
 });
 //Clear route cache:
 Route::get('/route-cache', function () {

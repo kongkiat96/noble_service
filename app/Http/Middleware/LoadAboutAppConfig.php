@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\serviceCenter;
 use App\Models\Employee\EmployeeModel;
 use Closure;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +30,14 @@ class LoadAboutAppConfig
         if (Auth::check()) {
             $getDataEmployee = $this->employeeModel->getDataEmployee(Auth::user()->map_employee);
             $empIDEncrypt = encrypt(Auth::user()->map_employee);
+            $mapFullName = $getDataEmployee->first_name . ' ' . $getDataEmployee->last_name;
+            $imageName = serviceCenter::generateProfile($mapFullName);
+
+            // dd($imageName);
             Config::set([
                 'aboutEmployee.getAll' => $getDataEmployee,
-                'aboutEmployee.empIDEncrypt' => $empIDEncrypt
+                'aboutEmployee.empIDEncrypt' => $empIDEncrypt,
+                'aboutEmployee.imageName' => $imageName
             ]);
         }
 

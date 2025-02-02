@@ -682,4 +682,15 @@ class getDataMasterModel extends Model
             return null;
         }
     }
+
+    public function branchEmployee($employeeID)
+    {
+        $query = DB::connection('mysql')->table('tbt_employee AS emp')
+        ->leftJoin('tbm_branch AS branch', 'emp.branch_id', '=', 'branch.id')
+        ->where('emp.ID', $employeeID)->where('emp.deleted', 0)
+        ->select(DB::raw("CONCAT(branch.branch_name,' (',branch.branch_code,')') as branch_name"))
+        ->first();
+        // dd($query);
+        return $query->branch_name;
+    }
 }

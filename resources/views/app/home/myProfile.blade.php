@@ -36,15 +36,17 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="user-avatar-section">
-                            <div class="d-flex align-items-center flex-column">
-
+                            <div class="col-md-12 text-center">
                                 @if ($dataEmployee->img_base == null)
-                                    <img class="img-fluid rounded my-4" src="{{ asset('assets/img/img-not-found.png') }}"
-                                        alt="Employee Image" height="200" width="200" />
+                                    <div class="svg-profile img-fluid rounded">
+                                        {!! config('aboutEmployee.imageName') !!}
+                                    </div>
                                 @else
                                     <img class="img-fluid rounded my-4" src="{{ $dataEmployee->img_base }}"
                                         alt="Employee Image" height="200" width="200" />
                                 @endif
+                            </div>
+                            <div class="col-md-12">
                                 <div class="user-info text-center">
                                     <h4 class="mb-2">{{ $dataEmployee->first_name . ' ' . $dataEmployee->last_name }}</h4>
                                     @if ($dataEmployee->user_class == 'SuperAdmin')
@@ -106,8 +108,8 @@
 
                                 <li class="nav-item">
                                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#changePassword" aria-controls="#changePassword" aria-selected="true"
-                                        id="reTabA">
+                                        data-bs-target="#changePassword" aria-controls="#changePassword"
+                                        aria-selected="true" id="reTabA">
                                         เปลี่ยนแปลงรหัสผ่าน
                                     </button>
                                 </li>
@@ -132,7 +134,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="prefixName">คำนำหน้าชื่อ</label>
-            
+
                                                 <select id="prefixName" name="prefixName" class="form-select select2"
                                                     autocomplete="off" data-allow-clear="true">
                                                     <option value="">Select</option>
@@ -143,7 +145,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-            
+
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="firstName">ชื่อ</label>
                                                 <input type="text" id="firstName" name="firstName" class="form-control"
@@ -156,8 +158,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="birthday">วัน/เดือน/ปีเกิด</label>
-                                                <input type="text" name="birthday" id="birthday" class="form-control"
-                                                    autocomplete="off" placeholder="YYYY-MM-DD"
+                                                <input type="text" name="birthday" id="birthday"
+                                                    class="form-control" autocomplete="off" placeholder="YYYY-MM-DD"
                                                     value="{{ $dataEmployee->birthday }}" />
                                             </div>
                                             <div class="col-md-6">
@@ -172,15 +174,18 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="phoneNumber">เบอร์โทรศัพท์</label>
-                                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control"
-                                                    autocomplete="off" value="{{ $dataEmployee->phone_number }}" />
+                                                <input type="text" id="phoneNumber" name="phoneNumber"
+                                                    class="form-control" autocomplete="off"
+                                                    value="{{ $dataEmployee->phone_number }}" />
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label-md mb-2" for="currentAddress">ที่อยู่ปัจจุบัน</label>
-                                                <input type="text" id="currentAddress" name="currentAddress" class="form-control"
-                                                    autocomplete="off" value="{{ $dataEmployee->current_address }}" />
+                                                <label class="form-label-md mb-2"
+                                                    for="currentAddress">ที่อยู่ปัจจุบัน</label>
+                                                <input type="text" id="currentAddress" name="currentAddress"
+                                                    class="form-control" autocomplete="off"
+                                                    value="{{ $dataEmployee->current_address }}" />
                                             </div>
-            
+
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="province">จังหวัด</label>
                                                 <select id="province" name="province" class="form-select select2"
@@ -195,24 +200,26 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="amphoe">อำเภอ</label>
-                                                <select id="amphoe" name="amphoe" class="form-select select2" autocomplete="off"
-                                                    data-allow-clear="true">
+                                                <select id="amphoe" name="amphoe" class="form-select select2"
+                                                    autocomplete="off" data-allow-clear="true">
                                                     <option value="">Select</option>
                                                     @foreach ($getMapAmphoe as $key => $value)
                                                         <option value="{{ $value->amphoe_code }}"
-                                                            @if ($dataEmployee->amphoe_code == $value->amphoe_code) selected @endif>{{ $value->amphoe }}
+                                                            @if ($dataEmployee->amphoe_code == $value->amphoe_code) selected @endif>
+                                                            {{ $value->amphoe }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label-md mb-2" for="tambon">ตำบล</label>
-                                                <select id="tambon" name="tambon" class="form-select select2" autocomplete="off"
-                                                    data-allow-clear="true">
+                                                <select id="tambon" name="tambon" class="form-select select2"
+                                                    autocomplete="off" data-allow-clear="true">
                                                     <option value="">Select</option>
                                                     @foreach ($getMapTambon as $key => $value)
                                                         <option value="{{ $value->tambon_code }}"
-                                                            @if ($dataEmployee->tambon_code == $value->tambon_code) selected @endif>{{ $value->tambon }}
+                                                            @if ($dataEmployee->tambon_code == $value->tambon_code) selected @endif>
+                                                            {{ $value->tambon }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -222,17 +229,20 @@
                                                 <input type="text" id="zipcode" name="zipcode" class="form-control"
                                                     autocomplete="off" readonly value="{{ $dataEmployee->zipcode }}" />
                                                 <input type="text" id="mapIDProvince" name="mapIDProvince" hidden
-                                                    value="{{ $dataEmployee->map_province }}" autocomplete="off" readonly />
+                                                    value="{{ $dataEmployee->map_province }}" autocomplete="off"
+                                                    readonly />
                                             </div>
-            
+
                                             <input type="text" name="baseimg" id="baseimg" hidden
                                                 value="{{ $dataEmployee->img_base }}" autocomplete="off" readonly>
-            
-                                            <input type="text" name="log_img" id="log_img" hidden autocomplete="off"
-                                                value="{{ $dataEmployee->img_base }}" style="border-color:red" readonly>
-                                            <input type="text" name="emp_id" id="emp_id" hidden autocomplete="off"
-                                                value="{{ $dataEmployee->emp_id }}" style="border-color:red" readonly>
-        
+
+                                            <input type="text" name="log_img" id="log_img" hidden
+                                                autocomplete="off" value="{{ $dataEmployee->img_base }}"
+                                                style="border-color:red" readonly>
+                                            <input type="text" name="emp_id" id="emp_id" hidden
+                                                autocomplete="off" value="{{ $dataEmployee->emp_id }}"
+                                                style="border-color:red" readonly>
+
                                         </div>
                                     </div>
                                 </div>
@@ -258,16 +268,15 @@
                                             <div class="mb-3 col-md-6 form-password-toggle">
                                                 <label class="form-label" for="confirmPassword">ยืนยันรหัสผ่านใหม่</label>
                                                 <div class="input-group input-group-merge">
-                                                    <input class="form-control" type="password"
-                                                        name="confirmPassword" id="confirmPassword"
+                                                    <input class="form-control" type="password" name="confirmPassword"
+                                                        id="confirmPassword"
                                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                                                     <span class="input-group-text cursor-pointer"><i
                                                             class="bx bx-hide"></i></span>
                                                 </div>
                                             </div>
                                             <div class="text-center">
-                                                <button type="submit" name="changePassword"
-                                                    id="changePassword"
+                                                <button type="submit" name="changePassword" id="changePassword"
                                                     class="btn btn-info btn-form-block-overlay"><i
                                                         class='menu-icon tf-icons bx bxs-paper-plane'></i>
                                                     เปลี่ยนแปลงรหัสผ่าน</button>
