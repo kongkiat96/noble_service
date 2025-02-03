@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.app-popup')
 
 @section('content')
-    <nav aria-label="breadcrumb">
+    {{-- <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ url('/home') }}">หน้าแรก</a>
@@ -12,10 +12,10 @@
             <li class="breadcrumb-item active">{{ $urlName }}</li>
         </ol>
     </nav>
-    <hr>
+    <hr> --}}
     {{-- {{ dd($dataEmployee->ID) }} --}}
     <div class="row g-2">
-        <div class="col-md-3 col-sm-12">
+        {{-- <div class="col-md-3 col-sm-12">
             <div class="card mt-2">
                 <div class="card-body">
                     <form action="/upload" class="dropzone needsclick" id="pic-employee">
@@ -29,16 +29,14 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9 col-sm-12">
+        </div> --}}
+        <div class="col-md-12 col-sm-12">
             <div class="bs-stepper wizard-vertical vertical wizard-vertical-icons-example mt-2">
                 <div class="bs-stepper-header">
                     <div class="mx-auto">
-                        @if ($dataEmployee->img_base == null)
-                            <img src="{{ asset('assets/img/img-not-found.png') }}" alt="Employee Image" width="200px" height="200px" />
-                        @else
-                            <img src="{{ $dataEmployee->img_base }}" alt="Employee Image" width="200px" height="200px" />
-                        @endif
+                        <div class="svg-profile img-fluid rounded">
+                            {!! $imageName !!}
+                        </div>
                     </div>
                     <hr>
                     <div class="step" data-target="#account-details-vertical">
@@ -315,8 +313,7 @@
 
                                 <input type="text" name="log_img" id="log_img" hidden autocomplete="off"
                                     value="{{ $dataEmployee->img_base }}" style="border-color:red" readonly>
-                                <input type="text" name="emp_id" id="emp_id" hidden autocomplete="off"
-                                    value="{{ $dataEmployee->emp_id }}" style="border-color:red" readonly>
+                                <input type="text" name="emp_id" id="emp_id"  autocomplete="off" value="{{ encrypt($dataEmployee->emp_id) }}" hidden style="border-color:red" readonly>
 
                                 <div class="col-12 d-flex justify-content-between">
                                     <button class="btn btn-primary btn-prev">
@@ -335,6 +332,13 @@
             </div>
         </div>
     </div>
+    <div class="row text-center mt-3">
+        <div class="col-12">
+            <a href="javascript:void(0);" onclick="closeWindow()" class="btn btn-danger">
+                <i class="bx bx-window-close"></i> ปิดหน้าต่างนี้
+            </a>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script type="text/javascript"
@@ -347,5 +351,10 @@
 
         const datePickers = ['dateStart', 'dateEnd', 'birthday'];
         initializeDatePickers(datePickers);
+    </script>
+    <script>
+        function closeWindow() {
+            window.close(); // ปิดหน้าต่าง
+        }
     </script>
 @endsection

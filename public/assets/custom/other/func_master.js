@@ -87,6 +87,64 @@ function handleAjaxDeleteResponse(itemId, deleteUrl) {
     });
 }
 
+function handleAjaxRestoreResponse(itemId, deleteUrl) {
+    Swal.fire({
+        text: "ยืนยันการกู้ข้อมูล",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "ยกเลิก",
+        confirmButtonText: "ยืนยัน",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return postFormData(deleteUrl, itemId)
+                .then(response => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            text: "กู้ข้อมูลสำเร็จ",
+                            icon: "success",
+                            confirmButtonText: "ตกลง",
+                        });
+                        reTable();
+                    } else {
+                        throw new Error(response.message);
+                    }
+                })
+                .catch(() => {
+                    handleAjaxSaveError();
+                });
+        },
+    });
+}
+
+function handleAjaxResetPassword(itemId, deleteUrl) {
+    Swal.fire({
+        text: "ยืนยันการรีเซ็ตรหัสผ่าน",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "ยกเลิก",
+        confirmButtonText: "ยืนยัน",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return postFormData(deleteUrl, itemId)
+                .then(response => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            text: "รีเซ็ตรหัสผ่านสำเร็จ (P@ssw0rd#@!)",
+                            icon: "success",
+                            confirmButtonText: "ตกลง",
+                        });
+                        reTable();
+                    } else {
+                        throw new Error(response.message);
+                    }
+                })
+                .catch(() => {
+                    handleAjaxSaveError();
+                });
+        },
+    });
+}
+
 function handleAjaxSaveError(xhr, textStatus, errorThrown) {
     Swal.fire({
         icon: 'error',
@@ -392,11 +450,83 @@ function renderGroupActionButtons(data, type, row, useFunc, disableButtons = fal
     // }
 
     return `
-    <button type="button" class="btn btn-icon btn-label-warning btn-warning ${classCssEdit}" ${disableEdit} onclick="${editFunction}(${row.ID})">
+    <button type="button" class="btn btn-icon btn-label-warning btn-warning ${classCssEdit}" ${disableEdit} onclick="${editFunction}('${row.ID}')">
         <span class="tf-icons bx bx-edit-alt"></span>
     </button>&nbsp
-    <button type="button" class="btn btn-icon btn-label-danger btn-danger ${classCssDelete}" ${disableDelete} onclick="${deleteFunction}(${row.ID})">
+    <button type="button" class="btn btn-icon btn-label-danger btn-danger ${classCssDelete}" ${disableDelete} onclick="${deleteFunction}('${row.ID}')">
         <span class="tf-icons bx bx-trash"></span>
+    </button>
+`;
+}
+
+function renderGroupActionButtonsForEmployee(data, type, row, useFunc, disableButtons = false, buttonAction = 'all') {
+    // console.log(useFunc)
+    const editFunction = `funcEdit${useFunc}`;
+    const restoreFunction = `funcRestore${useFunc}`;
+    let disableEdit = '';
+    let disableDelete = '';
+    let classCssEdit = '';
+    let classCssDelete = '';
+
+    if (disableButtons) {
+        if (buttonAction === 'all' || buttonAction === 'edit') {
+            disableEdit = 'disabled';
+            classCssEdit = 'd-none';
+        }
+        if (buttonAction === 'all' || buttonAction === 'delete') {
+            disableDelete = 'disabled';
+            classCssDelete = 'd-none';
+        }
+    }
+
+    // if (disableButtons) {
+    //     disable = 'disabled';
+    // }
+
+    return `
+    <button type="button" class="btn btn-icon btn-label-warning btn-warning ${classCssEdit}" ${disableEdit} onclick="${editFunction}('${row.ID}')">
+        <span class="tf-icons bx bx-edit-alt"></span>
+    </button>&nbsp
+    <button type="button" class="btn btn-icon btn-label-info btn-info ${classCssDelete}" ${disableDelete} onclick="${restoreFunction}('${row.ID}')">
+        <span class="tf-icons bx bx-recycle"></span>
+    </button>
+`;
+}
+
+function renderGroupActionButtonsForSearchEmployee(data, type, row, useFunc, disableButtons = false, buttonAction = 'all') {
+    // console.log(useFunc)
+    const editFunction = `funcEdit${useFunc}`;
+    const deleteFunction = `funcDelete${useFunc}`;
+    const resetPasswordFunction = `funcResetPassword${useFunc}`;
+    let disableEdit = '';
+    let disableDelete = '';
+    let classCssEdit = '';
+    let classCssDelete = '';
+
+    if (disableButtons) {
+        if (buttonAction === 'all' || buttonAction === 'edit') {
+            disableEdit = 'disabled';
+            classCssEdit = 'd-none';
+        }
+        if (buttonAction === 'all' || buttonAction === 'delete') {
+            disableDelete = 'disabled';
+            classCssDelete = 'd-none';
+        }
+    }
+
+    // if (disableButtons) {
+    //     disable = 'disabled';
+    // }
+
+    return `
+    <button type="button" class="btn btn-icon btn-label-warning btn-warning ${classCssEdit}" ${disableEdit} onclick="${editFunction}('${row.ID}')">
+        <span class="tf-icons bx bx-edit-alt"></span>
+    </button>&nbsp
+        <button type="button" class="btn btn-icon btn-label-danger btn-danger ${classCssDelete}" ${disableDelete} onclick="${deleteFunction}('${row.ID}')">
+        <span class="tf-icons bx bx-trash"></span>
+    </button>&nbsp
+    <button type="button" class="btn btn-icon btn-label-primary btn-primary ${classCssDelete}" ${disableDelete} onclick="${resetPasswordFunction}('${row.ID}')">
+        <span class="tf-icons bx bx-key"></span>
     </button>
 `;
 }

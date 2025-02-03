@@ -47,7 +47,7 @@ $(function () {
                 orderable: false,
                 searchable: false,
                 class: "text-center",
-                render: (data, type, row) => renderGroupActionButtons(data, type, row, 'EmployeeCurrent')
+                render: (data, type, row) => renderGroupActionButtonsForSearchEmployee(data, type, row, 'EmployeeCurrent')
             }
         ],
         columnDefs: [
@@ -112,9 +112,17 @@ function reTable() {
 }
 
 function funcEditEmployeeCurrent(employeeID) {
-    window.location.href = `/employee/edit-employee/show-edit-employee/${employeeID}`
+    // window.location.href = `/employee/edit-employee/show-edit-employee/${employeeID}`
+    window.open(
+        '/employee/edit-employee/show-edit-employee/' + employeeID,
+        '_blank', // ชื่อหรือ Target ของหน้าต่าง (ใช้ '_blank' เป็น default)
+        'width=1024,height=800,scrollbars=yes,resizable=yes' // กำหนดขนาดและคุณสมบัติของหน้าต่าง
+    );
 }
-
+function funcResetPasswordEmployeeCurrent(employeeID) {
+    // alert(employeeID)
+    handleAjaxResetPassword(employeeID, "/employee/reset-password-employee/" + employeeID);
+}
 function funcDeleteEmployeeCurrent(employeeID) {
     // alert(employeeID)
     handleAjaxDeleteResponse(employeeID, "/employee/delete-employee/" + employeeID);

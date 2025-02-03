@@ -60,7 +60,7 @@ class LoginController extends Controller
             $user = Auth::user(); // ดึงข้อมูลผู้ใช้ที่เข้าสู่ระบบ
 
             // ตรวจสอบ status_login
-            if ($user->status_login !== 1) {
+            if ($user->status_login !== 1 || $user->deleted === 1) {
                 Auth::logout(); // Logout ผู้ใช้ทันที
                 return redirect('login')->with('error', 'บัญชีของคุณถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ');
             }

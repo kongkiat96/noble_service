@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/list-all-employee')->group(function () {
             Route::get('', 'Employee\EmployeeController@getAllEmployee');
             Route::post('/table-employee-current', 'Employee\EmployeeController@showDataEmployeeCurrent');
-            Route::get('/table-employee-disable', 'Employee\EmployeeController@showDataEmployeeDisable');
+            Route::post('/table-employee-disable', 'Employee\EmployeeController@showDataEmployeeDisable');
         });
 
         Route::prefix('/search-all-employee')->group(function () {
@@ -70,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::post('/delete-employee/{employeeID}', 'Employee\EmployeeController@deleteEmployee');
+        Route::post('/restore-employee/{employeeID}', 'Employee\EmployeeController@restoreEmployee');
+        Route::post('/reset-password-employee/{employeeID}', 'Employee\EmployeeController@resetPasswordEmployee');
 
         Route::prefix('/edit-employee')->group(function () {
             Route::get('/show-edit-employee/{employeeID}', 'Employee\EmployeeController@showEditEmployee');

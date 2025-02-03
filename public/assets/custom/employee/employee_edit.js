@@ -1,36 +1,36 @@
-const previewTemplate = `<div class="dz-preview dz-file-preview">
-<div class="dz-details">
-  <div class="dz-thumbnail">
-    <img data-dz-thumbnail>
-    <span class="dz-nopreview">No preview</span>
-    <div class="dz-success-mark"></div>
-    <div class="dz-error-mark"></div>
-    <div class="dz-error-message"><span data-dz-errormessage></span></div>
-    <div class="progress">
-      <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></div>
-    </div>
-  </div>
-  <div class="dz-filename" data-dz-name></div>
-  <div class="dz-size" data-dz-size></div>
-</div>
-</div>`;
+// const previewTemplate = `<div class="dz-preview dz-file-preview">
+// <div class="dz-details">
+//   <div class="dz-thumbnail">
+//     <img data-dz-thumbnail>
+//     <span class="dz-nopreview">No preview</span>
+//     <div class="dz-success-mark"></div>
+//     <div class="dz-error-mark"></div>
+//     <div class="dz-error-message"><span data-dz-errormessage></span></div>
+//     <div class="progress">
+//       <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></div>
+//     </div>
+//   </div>
+//   <div class="dz-filename" data-dz-name></div>
+//   <div class="dz-size" data-dz-size></div>
+// </div>
+// </div>`;
 
-const myDropzone = new Dropzone('#pic-employee', {
-    previewTemplate: previewTemplate,
-    parallelUploads: 1,
-    maxFilesize: 5,
-    addRemoveLinks: true,
-    maxFiles: 1,
-    acceptedFiles: 'image/*'
-});
+// const myDropzone = new Dropzone('#pic-employee', {
+//     previewTemplate: previewTemplate,
+//     parallelUploads: 1,
+//     maxFilesize: 5,
+//     addRemoveLinks: true,
+//     maxFiles: 1,
+//     acceptedFiles: 'image/*'
+// });
 
-myDropzone.on("success", function (file, response) {
-    // console.log(response, file['dataURL']);
-    document.getElementById('baseimg').value = file['dataURL'];
-});
-myDropzone.on("removedfile", function (file) {
-    document.getElementById('baseimg').value = '';
-});
+// myDropzone.on("success", function (file, response) {
+//     // console.log(response, file['dataURL']);
+//     document.getElementById('baseimg').value = file['dataURL'];
+// });
+// myDropzone.on("removedfile", function (file) {
+//     document.getElementById('baseimg').value = '';
+// });
 
 
 function calculateAge(birthday) {
@@ -52,7 +52,6 @@ document.getElementById("birthday").addEventListener("change", function () {
 
 $(document).ready(function () {
     $('#saveEditEmployee').on("click", function (e) {
-        // alert("sss")
         e.preventDefault();
         removeValidationFeedback();
         const form = $("#formEditEmployee")[0];
@@ -76,8 +75,27 @@ $(document).ready(function () {
 })
 
 function onSaveEditEmployeeSuccess(response) {
-    handleAjaxSaveResponse(response);
-    console.log(response)
+    // handleAjaxEditResponse(response);
+    // console.log(response)
+    if (response.status === 200) {
+        Swal.fire({
+            icon: 'success',
+            text: 'แก้ไขข้อมูลสำเร็จ',
+            confirmButtonText: 'ตกลง'
+        }).then((result) => {
+            window.close();
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            text: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'
+        })
+    }
+}
+
+function reTable() {
+    $('.dt-employee-current').DataTable().ajax.reload(null, false);
+    $('.dt-employee-disable').DataTable().ajax.reload(null, false);
 }
 
 function setupFormValidationEmployee(formElement) {

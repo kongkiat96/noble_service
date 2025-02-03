@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Helpers\getAccessToMenu;
+use App\Helpers\serviceCenter;
 use App\Http\Controllers\Controller;
 use App\Models\Employee\EmployeeModel;
 use App\Models\Master\getDataMasterModel;
@@ -93,7 +94,7 @@ class EmployeeController extends Controller
     {
         $url        = request()->segments();
         $urlName    = "แก้ไขข้อมูลพนักงาน";
-
+        $employeeID = decrypt($employeeID);
         $prefixName     = $this->masterModel->getDataPrefixName();
         $provinceName   = $this->masterModel->getDataProvince();
         $getCompany     = $this->masterModel->getDataCompany();
@@ -111,7 +112,7 @@ class EmployeeController extends Controller
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
         }
         $getAccessMenus = getAccessToMenu::getAccessMenus();
-
+        $imageName = serviceCenter::generateProfile($getDataEmployee->first_name.' '.$getDataEmployee->last_name);
 
         return view('app.employee.edit-employee.editEmployee', [
             'url'           => $url,
@@ -126,7 +127,8 @@ class EmployeeController extends Controller
             'getMapTambon'      => $getMapTambon,
             'dataEmployee'      => $getDataEmployee,
             'listMenus'         => $getAccessMenus,
-            'dataBranch'        => $getBranch
+            'dataBranch'        => $getBranch,
+            'imageName'         => $imageName
         ]);
     }
 
@@ -134,7 +136,7 @@ class EmployeeController extends Controller
     {
         try {
             // dd($request->input());
-
+            $employeeID = decrypt($employeeID);
             $request->merge(['mapIDGroup' => $request->input()['groupOfDepartment']]);
 
             if (empty($request->input()['baseimg'])) {
@@ -156,8 +158,23 @@ class EmployeeController extends Controller
 
     public function deleteEmployee($employeeID)
     {
+        $employeeID = decrypt($employeeID);
         $deleteData = $this->employeeModel->deleteEmployee($employeeID);
         return response()->json(['status' => $deleteData['status'], 'message' => $deleteData['message']]);
+    }
+
+    public function restoreEmployee($employeeID)
+    {
+        $employeeID = decrypt($employeeID);
+        $restoreData = $this->employeeModel->restoreEmployee($employeeID);
+        return response()->json(['status' => $restoreData['status'], 'message' => $restoreData['message']]);
+    }
+
+    public function resetPasswordEmployee($employeeID)
+    {
+        $employeeID = decrypt($employeeID);
+        $restoreData = $this->employeeModel->resetPasswordEmployee($employeeID);
+        return response()->json(['status' => $restoreData['status'], 'message' => $restoreData['message']]);
     }
 
     public function searchEmployee()

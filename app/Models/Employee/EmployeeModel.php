@@ -34,7 +34,7 @@ class EmployeeModel extends Model
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
                 ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
                 ->where('tbt_employee.deleted', 0)
-                ->where('tbt_employee.status_login', 1)
+                ->whereIn('tbt_employee.status_login', [0,1])
                 ->select(
                     'tbt_employee.ID',
                     'tbt_employee.employee_code',
@@ -68,7 +68,7 @@ class EmployeeModel extends Model
             $newArr = [];
             foreach ($sql as $key => $value) {
                 $newArr[] = [
-                    'ID' => $value->ID,
+                    'ID' =>  encrypt($value->ID),
                     'full_name' => $value->full_name,
                     'employee_code' => $value->employee_code,
                     'email' => $value->email,
@@ -102,19 +102,19 @@ class EmployeeModel extends Model
         }
     }
 
-    public function getDataEmployeeCurrentOld($request)
+    public function getDataEmployeeDisable($param)
     {
         try {
-
-            $query = $this->getDatabase->table('tbt_employee')
+            $sql = $this->getDatabase->table('tbt_employee')
                 ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
                 ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
                 ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
                 ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
                 ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
-                ->where('tbt_employee.deleted', 0)
-                ->where('tbt_employee.status_login', 1)
+                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
+                ->where('tbt_employee.deleted', 1)
+                ->whereIn('tbt_employee.status_login', [0,1])
                 ->select(
                     'tbt_employee.ID',
                     'tbt_employee.employee_code',
@@ -126,128 +126,56 @@ class EmployeeModel extends Model
                     'tbm_department.department_name',
                     'tbm_group.group_name',
                     'tbt_employee.user_class',
-                    'status_login'
+                    'status_login',
+                    'tbm_branch.branch_name',
+                    'tbm_branch.branch_code',
+                    'tbt_employee.created_at',
+                    'tbt_employee.created_user',
+                    'tbt_employee.update_at',
+                    'tbt_employee.update_user'
                 );
+            if ($param['start'] == 0) {
+                $sql = $sql->limit($param['length'])->orderBy('tbt_employee.user_class', 'desc')->get();
+            } else {
+                $sql = $sql->offset($param['start'])
+                    ->limit($param['length'])
+                    ->orderBy('tbt_employee.user_class', 'desc')->get();
+            }
+            // $sql = $sql->orderBy('tbt_employee.user_class', 'desc');
+            $dataCount = $sql->count();
 
-
-            // คำสั่งเรียงลำดับ (Sorting)
-            $columns = ['ID', 'employee_code', 'email', 'full_name', 'class_name', 'position_name', 'company_name_th', 'department_name', 'group_name', 'user_class'];
-            $orderColumn = $columns[$request->input('order.0.column')];
-            $orderDirection = $request->input('order.0.dir');
-            $query->orderBy($orderColumn, $orderDirection);
-
-            // คำสั่งค้นหา (Searching)
-            $searchValue = $request->input('search.value');
-            if (!empty($searchValue)) {
-                $query->where(function ($query) use ($columns, $searchValue) {
-                    foreach ($columns as $column) {
-                        $query->orWhere('employee_code', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('email', 'like', '%' . $searchValue . '%');
-                        // $query->orWhere('full_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere(DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name)'), 'like', '%' . $searchValue . '%');
-                        $query->orWhere('class_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('position_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('company_name_th', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('department_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('group_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('user_class', 'like', '%' . $searchValue . '%');
-                    }
-                });
+            // dd($sql);
+            $newArr = [];
+            foreach ($sql as $key => $value) {
+                $newArr[] = [
+                    'ID' =>  encrypt($value->ID),
+                    'full_name' => $value->full_name,
+                    'employee_code' => $value->employee_code,
+                    'email' => $value->email,
+                    'full_name' => $value->full_name,
+                    'class_name' => $value->class_name,
+                    'position_name' => $value->position_name,
+                    'company_name_th' => $value->company_name_th,
+                    'department_name' => $value->department_name,
+                    'group_name' => $value->group_name,
+                    'user_class' => $value->user_class,
+                    'branch_name' => !empty($value->branch_name) && !empty($value->branch_code) ? $value->branch_name . ' (' . $value->branch_code . ')' : '-',
+                    'status_login' => $value->status_login,
+                    'created_at' => $value->created_at,
+                    'created_user' => $value->created_user,
+                    'updated_at' => !empty($value->updated_at) ? $value->updated_at : '-',
+                    'updated_user' => !empty($value->updated_user) ? $value->updated_user : '-',
+                    'Permission' => Auth::user()->user_system
+                ];
             }
 
-            $recordsTotal = $query->count();
-            // รับค่าที่ส่งมาจาก DataTables
-            $start = $request->input('start');
-            $length = $request->input('length');
-
-            $data = $query->offset($start)
-                ->limit($length)
-                ->get();
-
-            $output = [
-                'draw' => $request->input('draw'),
-                'recordsTotal' => $recordsTotal,
-                'recordsFiltered' => $recordsTotal, // หรือจำนวนรายการที่ผ่านการค้นหา
-                'data' => $data,
+            $returnData = [
+                "recordsTotal" => $dataCount,
+                "recordsFiltered" => $dataCount,
+                "data" => $newArr,
             ];
-            // dd($output);
-            return $output;
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
-    public function getDataEmployeeDisable($request)
-    {
-        try {
-
-            $query = $this->getDatabase->table('tbt_employee')
-                ->leftJoin('tbm_group', 'tbt_employee.map_company', '=', 'tbm_group.ID')
-                ->leftJoin('tbm_department', 'tbm_group.department_id', '=', 'tbm_department.ID')
-                ->leftJoin('tbm_company', 'tbm_department.company_id', '=', 'tbm_company.ID')
-                ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
-                ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
-                ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
-                ->where('tbt_employee.deleted', 0)
-                ->where('tbt_employee.status_login', 0)
-                ->select(
-                    'tbt_employee.ID',
-                    'tbt_employee.employee_code',
-                    'tbt_employee.email',
-                    DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name) AS full_name'),
-                    'tbm_class_list.class_name',
-                    'tbt_employee.position_name',
-                    'tbm_company.company_name_th',
-                    'tbm_department.department_name',
-                    'tbm_group.group_name',
-                    'tbt_employee.user_class',
-                    'status_login'
-                );
-
-
-            // คำสั่งเรียงลำดับ (Sorting)
-            $columns = ['ID', 'employee_code', 'email', 'full_name', 'class_name', 'position_name', 'company_name_th', 'department_name', 'group_name', 'user_class'];
-            $orderColumn = $columns[$request->input('order.0.column')];
-            $orderDirection = $request->input('order.0.dir');
-            $query->orderBy($orderColumn, $orderDirection);
-
-            // คำสั่งค้นหา (Searching)
-            $searchValue = $request->input('search.value');
-            if (!empty($searchValue)) {
-                $query->where(function ($query) use ($columns, $searchValue) {
-                    foreach ($columns as $column) {
-                        $query->orWhere('employee_code', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('email', 'like', '%' . $searchValue . '%');
-                        // $query->orWhere('full_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere(DB::raw('CONCAT(tbm_prefix_name.prefix_name, " ", tbt_employee.first_name, " ", tbt_employee.last_name)'), 'like', '%' . $searchValue . '%');
-                        $query->orWhere('class_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('position_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('company_name_th', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('department_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('group_name', 'like', '%' . $searchValue . '%');
-                        $query->orWhere('user_class', 'like', '%' . $searchValue . '%');
-                    }
-                });
-            }
-
-            $recordsTotal = $query->count();
-            // รับค่าที่ส่งมาจาก DataTables
-            $start = $request->input('start');
-            $length = $request->input('length');
-
-            $data = $query->offset($start)
-                ->limit($length)
-                ->get();
-
-            $output = [
-                'draw' => $request->input('draw'),
-                'recordsTotal' => $recordsTotal,
-                'recordsFiltered' => $recordsTotal, // หรือจำนวนรายการที่ผ่านการค้นหา
-                'data' => $data,
-            ];
-            // dd($output);
-            return $output;
+            // dd($returnData);
+            return $returnData;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return false;
@@ -350,6 +278,7 @@ class EmployeeModel extends Model
                     'map_province'      => $dataEmployee['mapIDProvince'],
                     'img_base'          => $dataEmployee['baseimg'],
                     'branch_id'         => $dataEmployee['branch_id'],
+                    'deleted'           => $dataEmployee['statusLogin'] == 1 ? 0 : 1,
                     'update_at'         => Carbon::now(),
                     'update_user'       => Auth::user()->emp_code
                 ]);
@@ -391,6 +320,7 @@ class EmployeeModel extends Model
     {
         try {
             $deleteData = $this->getDatabase->table('tbt_employee')->where('ID', $employeeID)->update([
+                'status_login'      => 0,
                 'deleted'           => 1,
                 'update_user'       => Auth::user()->emp_code,
                 'update_at'         => Carbon::now()
@@ -404,6 +334,65 @@ class EmployeeModel extends Model
             $returnStatus = [
                 'status'    => 200,
                 'message'   => 'Delete Success'
+            ];
+        } catch (Exception $e) {
+            $returnStatus = [
+                'status'    => intval($e->getCode()),
+                'message'   => $e->getMessage()
+            ];
+            Log::info($returnStatus);
+        } finally {
+            return $returnStatus;
+        }
+    }
+
+    public function restoreEmployee($employeeID)
+    {
+        try {
+            $restoreData = $this->getDatabase->table('tbt_employee')->where('ID', $employeeID)->update([
+                'status_login'      => 1,
+                'deleted'           => 0,
+                'update_user'       => Auth::user()->emp_code,
+                'update_at'         => Carbon::now()
+            ]);
+
+            $restoreUser = $this->getDatabase->table('users')->where('map_employee', $employeeID)->update([
+                'status_login'           => 1,
+                'updated_at'             => Carbon::now()
+            ]);
+
+            $returnStatus = [
+                'status'    => 200,
+                'message'   => 'Restore Success'
+            ];
+        } catch (Exception $e) {
+            $returnStatus = [
+                'status'    => intval($e->getCode()),
+                'message'   => $e->getMessage()
+            ];
+            Log::info($returnStatus);
+        } finally {
+            return $returnStatus;
+        }
+    }
+
+    public function resetPasswordEmployee($employeeID)
+    {
+        try {
+            $setPassword = 'P@ssw0rd#@!';
+            $resetPasswordData = $this->getDatabase->table('tbt_employee')->where('ID', $employeeID)->update([
+                'update_user'       => Auth::user()->emp_code,
+                'update_at'         => Carbon::now()
+            ]);
+
+            $resetPasswordUser = $this->getDatabase->table('users')->where('map_employee', $employeeID)->update([
+                'password'               => bcrypt($setPassword),
+                'updated_at'             => Carbon::now()
+            ]);
+
+            $returnStatus = [
+                'status'    => 200,
+                'message'   => 'ResetPassword Success'
             ];
         } catch (Exception $e) {
             $returnStatus = [
@@ -447,8 +436,8 @@ class EmployeeModel extends Model
                 ->leftJoin('tbm_class_list', 'tbt_employee.position_class', '=', 'tbm_class_list.ID')
                 ->leftJoin('tbm_prefix_name', 'tbt_employee.prefix_id', '=', 'tbm_prefix_name.ID')
                 ->leftJoin('tbm_province', 'tbt_employee.map_province', '=', 'tbm_province.ID')
-                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id')
-                ->where('tbt_employee.deleted', 0);
+                ->leftJoin('tbm_branch', 'tbt_employee.branch_id', '=', 'tbm_branch.id');
+                // ->where('tbt_employee.deleted', 0);
 
             if ($param['company_id'] != '') {
                 $sql = $sql->where('tbt_employee.company_id', intval($param['company_id']));
@@ -503,7 +492,7 @@ class EmployeeModel extends Model
             $newArr = [];
             foreach ($sql as $key => $value) {
                 $newArr[] = [
-                    'ID' => $value->ID,
+                    'ID' => encrypt($value->ID),
                     'full_name' => $value->full_name,
                     'employee_code' => $value->employee_code,
                     'email' => $value->email,
