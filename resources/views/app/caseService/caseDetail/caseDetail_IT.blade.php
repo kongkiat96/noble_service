@@ -138,7 +138,7 @@
             </form>
             <div class="col-12 text-center">
                 {{-- set case status getDataStatusWork --}}
-                @if (in_array($data['group_status'], ['Success']))
+                @if (in_array($data['group_status'], ['Success','success']))
                     <div class="alert alert-warning text-bold" role="alert">
                         รายการนี้อยู่ระหว่างตรวจสอบงาน
                     </div>
@@ -266,7 +266,7 @@
                 <hr class="mt-4">
                 <div class="col-12 text-center">
                     {{-- set case status getDataStatusWork --}}
-                    @if (in_array($data['group_status'], ['Success']))
+                    @if (in_array($data['group_status'], ['Success','success']))
                         <div class="alert alert-warning text-bold" role="alert">
                             รายการนี้อยู่ระหว่างตรวจสอบงาน
                         </div>
