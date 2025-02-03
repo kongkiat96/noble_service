@@ -155,24 +155,27 @@ class CaseServiceController extends Controller
             // dd($getCaseDetail);
             $detailCase = $getCaseDetail['message']['datadetail'];
             // dd($detailCase);
-            $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
+            // $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
             $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
             $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
             $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
             $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
-            $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
-            $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
-            $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
+            
 
             if(in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
                 $useCodeCategory = 'IT';
             } else {
                 $useCodeCategory = $detailCase['use_tag_code'];
             }
+            $setTextLowercase = strtolower($useCodeCategory);
 
             $getListCategoryMain = $this->getMaster->getDataCategoryMain($useCodeCategory);
             $getListCategoryType = $this->getMaster->getListCategoryType($detailCase['category_main']);
             $getListCategoryDetail = $this->getMaster->getListCategoryDetail($detailCase['category_type']);
+
+            $getCategoryItem = $this->caseModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+            $getCategoryList = $this->caseModel->getCategoryList($categoryItem);
+            $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
             // dd($getListCategoryMain);
             $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
             $workerArray = json_decode($detailCase['worker'], true);
