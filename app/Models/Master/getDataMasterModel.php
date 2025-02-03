@@ -512,8 +512,8 @@ class getDataMasterModel extends Model
             //     )
             //     ->get();
             $query = DB::connection('mysql')->table('tbm_worker AS worker')
-                ->leftJoin('tbt_employee AS employee', 'worker.employee_id', '=', 'employee.ID')
-                ->leftJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
+                ->rightJoin('tbt_employee AS employee', 'worker.employee_id', '=', 'employee.ID')
+                ->rightJoin('tbm_prefix_name', 'employee.prefix_id', '=', 'tbm_prefix_name.ID')
                 ->whereIn('worker.use_tag', [$useTag, 'all'])
                 ->where('worker.deleted', 0)
                 ->where('worker.status_tag', 1)

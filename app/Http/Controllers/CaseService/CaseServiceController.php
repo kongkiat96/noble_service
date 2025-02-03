@@ -168,7 +168,7 @@ class CaseServiceController extends Controller
                 $useCodeCategory = $detailCase['use_tag_code'];
             }
             $setTextLowercase = strtolower($useCodeCategory);
-
+            // dd($setTextLowercase);
             $getListCategoryMain = $this->getMaster->getDataCategoryMain($useCodeCategory);
             $getListCategoryType = $this->getMaster->getListCategoryType($detailCase['category_main']);
             $getListCategoryDetail = $this->getMaster->getListCategoryDetail($detailCase['category_type']);
