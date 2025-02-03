@@ -106,7 +106,7 @@ function setupFormValidationOpenCaseService(formElement, setSelect) {
         category_main: validators.notEmpty('เลือกข้อมูล รายการกลุ่มอุปกรณ์'),
         category_type: validators.notEmpty('เลือกข้อมูล รายการประเภทหมวดหมู่'),
         category_detail: validators.notEmpty('เลือกข้อมูล อาการที่ต้องการแจ้งปัญหา'),
-        case_detail: validators.notEmptyAndRegexp('ระบุ รายละเอียด', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/]+$/),
+        case_detail: validators.notEmptyAndRegexp('ระบุ รายละเอียด', /^[a-zA-Z0-9ก-๏\s\(\)\[\]\-\''\/\.,]+$/),
     };
 
     return FormValidation.formValidation(formElement, {
