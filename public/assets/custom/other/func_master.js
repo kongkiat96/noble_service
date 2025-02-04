@@ -367,7 +367,7 @@ function renderStatusWorkBadge(data, type, full, row) {
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
         mt: { title: 'ใช้งานฝ่ายช่าง', className: 'bg-label-danger' },
         cctv: { title: 'ใช้งานสำหรับอนุมัติ CCTV', className: 'bg-label-info' },
-        permission: { title: 'ใช้งานสำหรับอนุมัติสิทธิ์การใช้งาน', className: 'bg-label-danger' }
+        permission: { title: 'ใช้งานสำหรับอนุมัติสิทธิ์', className: 'bg-label-danger' }
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
@@ -384,17 +384,6 @@ function renderStatusShowBadge(data, type, full, row) {
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
     return `<span class="badge ${status.className}">${status.title}</span>`;
 }
-
-// function renderStatusWorkBadge(data, type, full, row) {
-//     const statusMap = {
-//         all: { title: 'ทั้งหมด', className: 'bg-label-success' },
-//         it: { title: 'ฝ่าย IT', className: 'bg-label-info' },
-//         mt: { title: 'ฝ่ายช่าง', className: 'bg-label-warning' },
-//         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
-//     };
-//     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
-//     return `<span class="badge ${status.className}">${status.title}</span>`;
-// }
 
 function renderUserClassBadge(data, type, full, row) {
     const statusMap = {

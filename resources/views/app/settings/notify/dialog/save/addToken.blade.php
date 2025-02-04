@@ -50,6 +50,7 @@
                         <option value="">Select</option>
                         <option value="it">ใช้งานฝ่าย IT</option>
                         <option value="mt">ใช้งานฝ่ายช่าง</option>
+                        <option value="permission">ใช้งานสำหรับอนุมัติสิทธิ์</option>
                         <option value="all">ใช้งานทุกระบบ</option>
                     </select>
                 </div>

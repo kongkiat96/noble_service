@@ -45,7 +45,12 @@ class SentNotifyModel extends Model
             $dataDetail = new CaseModel();
             $searchData = DB::connection('mysql')->table('tbt_case_service')->where('id', $idCase)->where('deleted', 0)->first();
             // dd($searchData);
-            $setTokenTelegram = DB::connection('mysql')->table('tbm_notify')->whereIn('use_tag', [$searchData->use_tag, 'all'])->where('notify_type', 'telegram')->where('status_use', 1)->first();
+            if(in_array($searchData->use_tag, ['IT', 'cctv'])) {
+                $useCodeCategory = 'IT';
+            } else {
+                $useCodeCategory = $searchData->use_tag;
+            }
+            $setTokenTelegram = DB::connection('mysql')->table('tbm_notify')->whereIn('use_tag', [$useCodeCategory, 'all'])->where('notify_type', 'telegram')->where('status_use', 1)->first();
             // dd($setTokenTelegram);
             if (!empty($setTokenTelegram)) {
                 $tokenDetail = [

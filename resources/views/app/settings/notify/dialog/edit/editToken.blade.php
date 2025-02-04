@@ -50,6 +50,7 @@
                         <option value="">Select</option>
                         <option value="it" @if($dataTelegram->use_tag == 'it') selected @endif>ใช้งานฝ่าย IT</option>
                         <option value="mt" @if($dataTelegram->use_tag == 'mt') selected @endif>ใช้งานฝ่ายช่าง</option>
+                        <option value="permission" @if($dataTelegram->use_tag == 'permission') selected @endif>ใช้งานสำหรับอนุมัติสิทธิ์</option>
                         <option value="all" @if($dataTelegram->use_tag == 'all') selected @endif>ใช้งานทุกระบบ</option>
                     </select>
                 </div>
