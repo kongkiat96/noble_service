@@ -367,7 +367,7 @@ function renderStatusWorkBadge(data, type, full, row) {
         it: { title: 'ใช้งานฝ่าย IT', className: 'bg-label-primary' },
         mt: { title: 'ใช้งานฝ่ายช่าง', className: 'bg-label-danger' },
         cctv: { title: 'ใช้งานสำหรับอนุมัติ CCTV', className: 'bg-label-info' },
-        permission: { title: 'ใช้งานสำหรับอนุมัติสิทธิ์', className: 'bg-label-danger' }
+        permission: { title: 'ใช้งานสำหรับอนุมัติสิทธิ์', className: 'bg-label-warning' }
         // hr: { title: 'ใช้งานฝ่าย HR', className: 'bg-label-primary' }
     };
     const status = statusMap[data] || { title: 'Undefined', className: 'bg-label-secondary' };
