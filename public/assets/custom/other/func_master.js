@@ -600,7 +600,7 @@ function renderGroupActionAccessMenuButtons(data, type, row, useFunc) {
     // console.log(type)
     const accessMenuFunction = `func${useFunc}`;
     return `
-    <button type="button" class="btn btn-icon btn-label-danger btn-danger" onclick="${accessMenuFunction}(${row.ID})">
+    <button type="button" class="btn btn-icon btn-label-danger btn-danger" onclick="${accessMenuFunction}('${row.ID}')">
         <span class="tf-icons bx bx-sitemap"></span>
     </button>
 `;
