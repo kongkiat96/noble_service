@@ -58,6 +58,7 @@ class MenuController extends Controller
     {
         // dd($idMapEmployee);
         if (request()->ajax()) {
+            $idMapEmployee = decrypt($idMapEmployee);
             $getMenuToAccess    = $this->getMaster->getMenuToAccess();
             $getUser = $this->getMaster->getUserList($idMapEmployee);
             $getAccessMenu = $this->getMaster->getAccessMenu($getUser[0]->emp_code);
