@@ -202,35 +202,35 @@ class CaseController extends Controller
             // dd($getCaseDetail);
             $setTextLowercase = strtolower($getCaseDetail['message']['datadetail']['use_tag_code']);
             // dd($setTextLowercase);
-            if ($getCaseDetail['status'] == 200) {
+            $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
+            $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
+            $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
+            $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
+            $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
+            $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
+            // $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
+
+            // $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
+            $setWorker = $getCaseDetail['message']['datadetail'];
+            $workerArray = json_decode($setWorker['worker'], true);
+            $workerNames = collect($workerArray)
+                ->pluck('name')
+                ->implode(', ');
+            // dd($workerNames);
+            // $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
+            $setChecker = $getCaseDetail['message']['datadetail'];
+            $checkerArray = json_decode($setChecker['checker'], true);
+            $checkerNames = collect($checkerArray)
+                ->pluck('name')
+                ->implode(', ');
+
+            if (in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
+                $useCodeCategory = 'IT';
+            } else {
+                $useCodeCategory = $getCaseDetail['message']['datadetail']['use_tag_code'];
+            }
+            if ($getCaseDetail['status'] == 200 && $getCaseDetail['message']['datadetail']['case_status'] != 'case_success') {
                 if ($getCaseDetail['message']['datadetail']['tag_work'] == 'case_success_user' || ($setTextLowercase == 'permission' && $getCaseDetail['message']['datadetail']['case_status'] == 'case_success')) {
-                    $categoryMain = $getCaseDetail['message']['datadetail']['category_main'];
-                    $categoryType = $getCaseDetail['message']['datadetail']['category_type'];
-                    $categoryDetail = $getCaseDetail['message']['datadetail']['category_detail'];
-                    $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
-                    $getCategoryItem = $this->caseServiceModel->getCategoryItem($categoryMain, $categoryType, $categoryDetail);
-                    $getCategoryList = $this->caseServiceModel->getCategoryList($categoryItem);
-                    // $getStatusWork = $this->getMaster->getDataStatusWork($setTextLowercase, 'admin');
-
-                    // $getDataWorker = $this->getMaster->getDataWorker($setTextLowercase);
-                    $setWorker = $getCaseDetail['message']['datadetail'];
-                    $workerArray = json_decode($setWorker['worker'], true);
-                    $workerNames = collect($workerArray)
-                        ->pluck('name')
-                        ->implode(', ');
-                    // dd($workerNames);
-                    // $getDataChecker = $this->getMaster->getChecker($setTextLowercase);
-                    $setChecker = $getCaseDetail['message']['datadetail'];
-                    $checkerArray = json_decode($setChecker['checker'], true);
-                    $checkerNames = collect($checkerArray)
-                        ->pluck('name')
-                        ->implode(', ');
-
-                    if (in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
-                        $useCodeCategory = 'IT';
-                    } else {
-                        $useCodeCategory = $getCaseDetail['message']['datadetail']['use_tag_code'];
-                    }
                     return view('app.caseService.caseDetail.caseDetailCheckWork', [
                         'data' => $getCaseDetail['message']['datadetail'],
                         'image' => $getCaseDetail['message']['dataimage'],
@@ -252,7 +252,20 @@ class CaseController extends Controller
                     ]);
                 }
             } else {
-                return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
+                return view('app.caseService.caseDetail.caseDetailViewWork', [
+                    'data' => $getCaseDetail['message']['datadetail'],
+                    'image' => $getCaseDetail['message']['dataimage'],
+                    'imageDoing' => $getCaseDetail['message']['dataimageDoing'],
+                    'categoryItem' => $getCategoryItem,
+                    'categoryList' => $getCategoryList,
+                    // 'getDataWorker' => $getDataWorker,
+                    // 'getStatusWork' => $getStatusWork,
+                    'workerNames' => $workerNames,
+                    // 'getDataChecker' => $getDataChecker,
+                    'checkerNames' => $checkerNames,
+                    'setLowercase' => $useCodeCategory
+                ]);
+                // return response()->json(['status' => $getCaseDetail['status'], 'message' => $getCaseDetail['message']]);
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
