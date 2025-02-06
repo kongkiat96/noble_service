@@ -591,9 +591,10 @@ class ApproveCaseModel extends Model
                     'casePrice' => $getDataCase->price
                 ];
             } else if ($saveStatus['tagStep'] == 'managerCheckWork') {
-                $caseStatus = $saveStatus['case_status'];
-
+                $caseStatus = strtolower($saveStatus['case_status']);
+                // dd(strtolower($caseStatus), $caseStatus, $setTextLower);
                 $mapStatus = $caseStatus == 'manager_' . $setTextLower . '_checkwork_success' ? 'case_success' : 'case_reject';
+                // dd($mapStatus);
                 $setUpdate = [
                     'caseStatus' => $mapStatus,
                     'caseStep' => $mapStatus,

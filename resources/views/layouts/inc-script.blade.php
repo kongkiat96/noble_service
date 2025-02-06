@@ -77,6 +77,8 @@
 <script src="{{ asset('assets/js/orgchart.js') }}"></script>
 <script src="{{ asset('assets/js/app-user-view-security.js') }}"></script>
 
+<script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
+
 <script src="https://cdn.datatables.net/fixedcolumns/4.2.0/js/dataTables.fixedColumns.min.js"></script>
 <!-- DataTables Buttons JS -->
 {{-- <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script> --}}

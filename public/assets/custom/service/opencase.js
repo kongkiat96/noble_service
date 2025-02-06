@@ -132,11 +132,11 @@ function onSaveOpenCaseServiceSuccess(response) {
             confirmButtonText: 'ตกลง'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#formOpenCaseService')[0].reset();
-                $('.select2').val(null).trigger('change');
-                resetDropzone();
-                $("#openCaseService").attr("disabled", false);
-
+                // $('#formOpenCaseService')[0].reset();
+                // $('.select2').val(null).trigger('change');
+                // resetDropzone();
+                // $("#openCaseService").attr("disabled", false);
+                window.location.reload();
             }
         });
     } else {

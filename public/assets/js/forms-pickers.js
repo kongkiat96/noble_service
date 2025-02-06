@@ -121,13 +121,18 @@ $(function () {
     });
   }
 
-  // Range
   if (bsDatepickerRange.length) {
     bsDatepickerRange.datepicker({
       todayHighlight: true,
+      format: 'yyyy-mm-dd',
+      clearBtn: true,
       orientation: isRtl ? 'auto right' : 'auto left'
+    }).on('clearDate', function () {
+      // ล้างค่าทั้ง start date และ end date
+      bsDatepickerRange.find('input').val('');
     });
   }
+  
 
   // Disabled Days
   if (bsDatepickerDisabledDays.length) {

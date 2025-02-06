@@ -413,6 +413,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/case-print-work/{ticket}', 'CaseService\CaseServiceController@casePrintWork');
     });
 
+    Route::prefix('/report')->group(function () {
+        Route::get('/report-{type}', 'Report\ReportAllController@index');
+    });
+
     Route::prefix('getMaster')->group(function () {
         Route::get('/get-company/{id}', 'Master\getDataMasterController@getDataCompany');
         Route::get('/get-department/{id}', 'Master\getDataMasterController@getDataDepartment');
