@@ -415,6 +415,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('/report')->group(function () {
         Route::get('/report-{type}', 'Report\ReportAllController@index');
+        Route::post('/get-data-report/{type}', 'Report\ReportAllController@getDataReport');
     });
 
     Route::prefix('getMaster')->group(function () {

@@ -162,7 +162,7 @@ class CaseServiceController extends Controller
             $categoryItem = $getCaseDetail['message']['datadetail']['case_item'];
             
 
-            if(in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
+            if(in_array($detailCase['use_tag_code'], ['IT', 'cctv', 'permission'])) {
                 $useCodeCategory = 'IT';
             } else {
                 $useCodeCategory = $detailCase['use_tag_code'];

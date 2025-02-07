@@ -25,14 +25,20 @@ class ReportAllController extends Controller
             return redirect('/')->with('error', 'คุณไม่มีสิทธิ์เข้าถึงเมนู');
         }
         $getAccessMenus = getAccessToMenu::getAccessMenus();
-
+        // dd($setTextLowercase);
+        $getListCategoryMain = $this->getMaster->getDataCategoryMain($type);
+        $getStatusWork = $this->getMaster->getDataStatusWork($type, 'admin');
+        // $getListCategoryType = $this->getMaster->getListCategoryType($detailCase['category_main']);
+        // $getListCategoryDetail = $this->getMaster->getListCategoryDetail($detailCase['category_type']);
         switch ($type) {
             case 'it':
                 return view('app.report.it.index', [
                     'url' => $url,
                     'urlName' => $urlName,
                     'urlSubLink' => $urlSubLink,
-                    'listMenus' => $getAccessMenus
+                    'listMenus' => $getAccessMenus,
+                    'dataCategoryMain' => $getListCategoryMain,
+                    'statusWork'    => $getStatusWork
                 ]);
                 break;
             case 'mt':
@@ -40,11 +46,20 @@ class ReportAllController extends Controller
                     'url' => $url,
                     'urlName' => $urlName,
                     'urlSubLink' => $urlSubLink,
-                    'listMenus' => $getAccessMenus
+                    'listMenus' => $getAccessMenus,
+                    'dataCategoryMain' => $getListCategoryMain,
+                    'statusWork'    => $getStatusWork
                 ]);
                 break;
             default:
                 return abort(404);
         }
+    }
+
+    public function getDataReport(Request $request, $type)
+    {
+        
+        $test = decrypt($type);
+        dd($test);
     }
 }
