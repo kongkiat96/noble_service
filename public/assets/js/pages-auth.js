@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 message: 'กรุณาระบุชื่อผู้ใช้ หรืออีเมล์'
               },
               stringLength: {
-                min: 3,
+                min: 2,
                 message: 'ข้อมูลไม่ถูกต้อง'
               }
             }
