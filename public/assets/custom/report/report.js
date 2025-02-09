@@ -3,7 +3,7 @@ $(function () {
     dt_SearchDataReport.DataTable({
         processing: true,
         paging: true,
-        pageLength: 50,
+        pageLength: 200,
         deferRender: true,
         ordering: true,
         lengthChange: true,
@@ -24,41 +24,50 @@ $(function () {
                     return meta.row + 1;
                 },
             },
-            { data: "employee_code", class: "text-nowrap" },
-            // { data: "email", class: "text-nowrap" },
-            // { data: "full_name", class: "text-nowrap" },
-            // { data: "class_name", class: "text-nowrap" },
-            // { data: "position_name", class: "text-nowrap" },
-            // { data: "company_name_th", class: "text-nowrap" },
-            // { data: "department_name", class: "text-nowrap" },
-            // { data: "group_name", class: "text-nowrap" },
-            // { data: "branch_name", class: "text-nowrap" },
-            // { data: "user_class", class: "text-nowrap", render: renderUserClassBadge },
-            // {
-            //     data: "status_login",
-            //     orderable: false,
-            //     searchable: false,
-            //     class: "text-center",
-            //     render: renderStatusBadge
-            // },
-            // {
-            //     data: 'ID',
-            //     orderable: false,
-            //     searchable: false,
-            //     class: "text-center",
-            //     render: (data, type, row) => renderGroupActionButtonsForSearchEmployee(data, type, row, 'EmployeeCurrent')
-            // }
+            { data: "ticket", class: "text-nowrap" },
+            {
+                data: 'case_status',
+                class: "text-center",
+                render: badgeStatusTagWork
+            },
+            { data: "case_open", class: "text-nowrap" },
+            { data: "sv_approve_date", class: "text-nowrap" },
+            { data: "manager_department_approve_date", class: "text-nowrap" },
+            { data: "case_open_branch", class: "text-nowrap" },
+            { data: "category_main_name", class: "text-nowrap" },
+            { data: "category_type_name", class: "text-nowrap" },
+            { data: "category_detail_name", class: "text-nowrap" },
+            { data: "category_item_name", class: "text-nowrap" },
+            { data: "category_list_name", class: "text-nowrap" },
+            { data: "sla", class: "text-nowrap" },
+            { data: "cal_sla", class: "text-nowrap" },
+            { data: "check_user_detail", class: "text-nowrap" },
+            { data: "worker", class: "text-nowrap" },
+            { data: "checker", class: "text-nowrap" },
+            { data: "price", class: "text-nowrap" },
         ],
         columnDefs: [
             {
                 targets: 0,
             },
         ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bx bx-file me-2"></i>Export to Excel',
+                className: 'btn btn-success', // ใช้ Bootstrap Class
+                title: 'Data Report Case Service ', // ชื่อไฟล์ Excel
+                autoFilter: true,
+            }
+        ]
     });
 
 })
 
+function reTable(){
 
+}
 $(document).ready(function () {
     $('#searchDataForReport').click(function () {
         var start_date = $('#start_date').val();

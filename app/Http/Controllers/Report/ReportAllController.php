@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Report;
 use App\Helpers\getAccessToMenu;
 use App\Http\Controllers\Controller;
 use App\Models\Master\getDataMasterModel;
+use App\Models\Report\ReportAllModel;
 use Illuminate\Http\Request;
 
 class ReportAllController extends Controller
 {
     private $getMaster;
+    private $reportModel;
     public function __construct()
     {
         $this->getMaster = new getDataMasterModel();
+        $this->reportModel = new ReportAllModel();
     }
     public function index($type)
     {
@@ -38,7 +41,8 @@ class ReportAllController extends Controller
                     'urlSubLink' => $urlSubLink,
                     'listMenus' => $getAccessMenus,
                     'dataCategoryMain' => $getListCategoryMain,
-                    'statusWork'    => $getStatusWork
+                    'statusWork'    => $getStatusWork,
+                    'reportType'  => $type
                 ]);
                 break;
             case 'mt':
@@ -48,7 +52,8 @@ class ReportAllController extends Controller
                     'urlSubLink' => $urlSubLink,
                     'listMenus' => $getAccessMenus,
                     'dataCategoryMain' => $getListCategoryMain,
-                    'statusWork'    => $getStatusWork
+                    'statusWork'    => $getStatusWork,
+                    'reportType'  => $type
                 ]);
                 break;
             default:
@@ -58,8 +63,7 @@ class ReportAllController extends Controller
 
     public function getDataReport(Request $request, $type)
     {
-        
-        $test = decrypt($type);
-        dd($test);
+        $getAllReport = $this->reportModel->getDataReport($request, $type);
+        return response()->json($getAllReport);
     }
 }

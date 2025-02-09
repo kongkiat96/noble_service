@@ -392,7 +392,10 @@ $(document).ready(function () {
 
 function getDetailCase(ticket) {
     // $('.dt-approve-history').DataTable().ajax.reload();
-
+    setTimeout(() => {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }, 100);  // เพิ่มดีเลย์เล็กน้อย
     $.ajax({
         type: 'GET',
         url: setURLCaseService + "/case-action/" + ticket,

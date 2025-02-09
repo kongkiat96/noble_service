@@ -12,6 +12,7 @@ $(document).ready(function () {
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
+                $('#approveCaseToPadding').attr("disabled", true);
                 postFormData(setURLApprove + "/approve-case-padding/" + caseID, formData)
                     .done(onSaveApproveCaseSuccess)
                     .fail(handleAjaxSaveError);
@@ -29,6 +30,7 @@ $(document).ready(function () {
         console.log(formData)
         fv.validate().then(function (status) {
             if (status === 'Valid') {
+                $('#saveManagerCaseCheckWork').attr("disabled", true);
                 postFormData(setURLApprove + "/case-check-work/" + caseID, formData)
                     .done(onSaveApproveCaseSuccess)
                     .fail(handleAjaxSaveError);

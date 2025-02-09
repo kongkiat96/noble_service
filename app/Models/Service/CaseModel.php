@@ -548,7 +548,7 @@ class CaseModel extends Model
                     'CaseDetail'    => wordwrap($value->hCaseDetail, 300, "<br>", true) ?? '-',
                     'CasePrice'     => number_format($value->hPrice, 2) ?? '0.00',
                     'CreatedAt'     => $value->hCreatedAt ?? '-',
-                    'CreatedUserName' => $value->hCreatedUserName ?? '-',
+                    'CreatedUserName' => $value->hCreatedUserName ?? $value->hCreatedUser,
                 ];
             }
             // dd($newArr);

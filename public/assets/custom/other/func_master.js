@@ -1097,12 +1097,19 @@ function badgeStatusTagWork(data, type, full, row) {
         reject_manager_approve_MT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
         reject_manager_approve_IT: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
 
+        reject_manager_approve_permission: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+        reject_manager_approve_cctv: { title: 'ไม่อนุมัติจากผู้บังคับบัญชา', className: 'bg-label-danger' },
+
         reject_manager_mt_approve: { title: 'ไม่อนุมัติจากฝ่ายช่าง', className: 'bg-label-danger' },
         reject_manager_it_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
+        reject_manager_cctv_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
+        reject_manager_permission_approve: { title: 'ไม่อนุมัติจากฝ่ายไอที', className: 'bg-label-danger' },
 
         case_success: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบ', className: 'bg-label-success' },
         case_success_user: { title: 'งานเรียบร้อย / ผ่านการตรวจสอบจากผู้แจ้ง', className: 'bg-label-warning' },
-        case_reject: { title: 'งานไม่เรียบร้อย / ไม่ผ่านการตรวจสอบ', className: 'bg-label-danger' }
+        case_reject: { title: 'งานไม่เรียบร้อย / ไม่ผ่านการตรวจสอบ', className: 'bg-label-danger' },
+
+        auto_close_case: { title: 'ปิดงานอัตโนมัติ', className: 'bg-label-secondary' },
     };
 
     if (!statusTagWork[data]) {
