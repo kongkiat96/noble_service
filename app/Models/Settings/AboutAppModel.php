@@ -49,7 +49,7 @@ class AboutAppModel extends Model
     
             return $returnData;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()

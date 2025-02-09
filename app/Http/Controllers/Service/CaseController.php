@@ -29,7 +29,7 @@ class CaseController extends Controller
             return response()->json(['status' => $saveCase['status'], 'message' => $saveCase['message']]);
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -46,7 +46,7 @@ class CaseController extends Controller
             return response()->json($getAllCase);
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -63,7 +63,7 @@ class CaseController extends Controller
             return response()->json($getCaseCheckWork);
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -185,7 +185,7 @@ class CaseController extends Controller
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -269,7 +269,7 @@ class CaseController extends Controller
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -286,7 +286,7 @@ class CaseController extends Controller
             return response()->json($getCaseDetail);
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),

@@ -38,7 +38,7 @@ class FormDepartmentModel extends Model
             // dd($saveToEvaluation);
             return $saveToEvaluation;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -52,7 +52,7 @@ class FormDepartmentModel extends Model
             $getData = DB::connection('mysql')->table('tbt_evaluation')->where('id', $id)->first();
             return $getData;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()

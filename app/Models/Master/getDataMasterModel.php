@@ -101,15 +101,12 @@ class getDataMasterModel extends Model
 
     public function getDataCompany()
     {
-        Log::info('getDataCompany: Retrieving companies from the database.');
         try {
             $getCompany = DB::connection('mysql')->table('tbm_company')
                 ->select('ID', 'company_name_th', 'company_name_en')
                 ->where('status', 1)
                 ->where('deleted', 0)
                 ->get();
-
-            Log::info('getDataCompany: Successfully retrieved companies.');
 
             return $getCompany;
         } catch (Exception $exception) {
@@ -121,7 +118,6 @@ class getDataMasterModel extends Model
 
     public function getDataDepartment()
     {
-        Log::info('getDataDepartment: Starting to retrieve departments.');
         try {
             $getDepartment = DB::connection('mysql')->table('tbm_department AS depart')
                 ->leftJoin('tbm_company AS company', 'depart.company_id', '=', 'company.ID')
@@ -419,7 +415,7 @@ class getDataMasterModel extends Model
             // dd($getEmployee);
             return $getEmployee;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -447,7 +443,7 @@ class getDataMasterModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -473,7 +469,7 @@ class getDataMasterModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -528,7 +524,7 @@ class getDataMasterModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),

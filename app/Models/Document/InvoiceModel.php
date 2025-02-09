@@ -54,7 +54,7 @@ class InvoiceModel extends Model
 
             return $returnData;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => false,
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -119,7 +119,7 @@ class InvoiceModel extends Model
 
             return $returnData;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => false,
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -177,7 +177,7 @@ class InvoiceModel extends Model
 
             return $sql;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -209,7 +209,7 @@ class InvoiceModel extends Model
                 'total_amount' => number_format($totalAmount, 2), // จัดรูปแบบจำนวนเงิน
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -268,7 +268,7 @@ class InvoiceModel extends Model
                 'message' => 'Delete Success'
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -285,7 +285,7 @@ class InvoiceModel extends Model
                 'message' => 'Delete Success'
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -310,7 +310,7 @@ class InvoiceModel extends Model
                 'message' => 'Update Success'
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -335,7 +335,7 @@ class InvoiceModel extends Model
                 'message' => 'Update Success'
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -360,7 +360,7 @@ class InvoiceModel extends Model
                 'message' => 'Delete Success'
             ];
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500, // ใช้ 500 เป็นค่าดีฟอลต์สำหรับข้อผิดพลาดทั่วไป
                 'message' => 'Error occurred: ' . $e->getMessage()

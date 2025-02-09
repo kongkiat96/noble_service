@@ -209,7 +209,7 @@ class CaseModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -290,7 +290,7 @@ class CaseModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -373,7 +373,7 @@ class CaseModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -488,7 +488,7 @@ class CaseModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -561,7 +561,7 @@ class CaseModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -586,7 +586,7 @@ class CaseModel extends Model
             return $queryDataCategory;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -609,7 +609,7 @@ class CaseModel extends Model
             return $queryDataCategory;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -734,7 +734,7 @@ class CaseModel extends Model
             }
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -771,7 +771,7 @@ class CaseModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -808,7 +808,7 @@ class CaseModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -835,7 +835,7 @@ class CaseModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [
@@ -863,7 +863,7 @@ class CaseModel extends Model
             return $query;
         } catch (Exception $e) {
             // บันทึกข้อผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
 
             // ส่งคืนข้อผิดพลาด
             return [

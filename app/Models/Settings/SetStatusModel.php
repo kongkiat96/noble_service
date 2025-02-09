@@ -79,7 +79,7 @@ class SetStatusModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -142,7 +142,7 @@ class SetStatusModel extends Model
             ];
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -180,7 +180,7 @@ class SetStatusModel extends Model
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -210,7 +210,7 @@ class SetStatusModel extends Model
             ];
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -361,7 +361,7 @@ class SetStatusModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -379,7 +379,7 @@ class SetStatusModel extends Model
             return $getData;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -416,7 +416,7 @@ class SetStatusModel extends Model
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -440,7 +440,7 @@ class SetStatusModel extends Model
             ];
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),

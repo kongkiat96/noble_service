@@ -123,7 +123,7 @@ class NotifyModel extends Model
             return $returnData;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -154,7 +154,7 @@ class NotifyModel extends Model
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -169,7 +169,7 @@ class NotifyModel extends Model
             $getData = DB::connection('mysql')->table('tbm_notify')->where('id', $id)->first();
             return $getData;
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()
@@ -198,7 +198,7 @@ class NotifyModel extends Model
             }
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return [
                 'status' => $e->getCode(),
@@ -225,7 +225,7 @@ class NotifyModel extends Model
                 ];
             }
         } catch (Exception $e) {
-            Log::debug('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
             return [
                 'status' => intval($e->getCode()) ?: 500,
                 'message' => 'Error occurred: ' . $e->getMessage()
