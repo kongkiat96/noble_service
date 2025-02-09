@@ -100,6 +100,15 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'autoCloseCase' => [
+            'driver' => 'daily',
+            //'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/' . date('Y/m/') . 'autoCloseCase.log'), // add dynamic folder structure
+            'level' => 'debug',
+            'days' => 31,
+            'permission' => 0777, //file สร้างด้วย root ต้อง set permission ใหม่
+        ]
     ],
 
 ];
