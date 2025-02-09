@@ -81,6 +81,7 @@ $(document).ready(function () {
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {
+                $('#approveCaseManager').attr("disabled", true);
                 postFormData(setURLApprove + "/approve-case-manager/" + caseID, formData)
                     .done(onSaveApproveCaseSuccess)
                     .fail(handleAjaxSaveError);
@@ -98,6 +99,7 @@ $(document).ready(function () {
         console.log(formData)
         fv.validate().then(function (status) {
             if (status === 'Valid') {
+                $('#saveCaseCheckWork').attr("disabled", true);
                 postFormData(setURLApprove + "/case-check-work/" + caseID, formData)
                     .done(onSaveApproveCaseSuccess)
                     .fail(handleAjaxSaveError);

@@ -46,6 +46,7 @@
                 </div>
                 <input type="text" name="caseTicket" id="caseTicket" value="{{ $data['ticket'] }}" hidden>
             </div>
+            {{-- {{ dd($data) }} --}}
             @if (!empty($data['sla']))
                 <form>
                     <div class="row">

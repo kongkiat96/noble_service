@@ -77,8 +77,6 @@
 <script src="{{ asset('assets/js/orgchart.js') }}"></script>
 <script src="{{ asset('assets/js/app-user-view-security.js') }}"></script>
 
-<script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
-
 <script src="https://cdn.datatables.net/fixedcolumns/4.2.0/js/dataTables.fixedColumns.min.js"></script>
 <!-- DataTables Buttons JS -->
 {{-- <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script> --}}
@@ -97,3 +95,11 @@
         });
     }
 </script>
+
+
+
+
+<!-- DataTables Buttons Extension -->
+{{-- <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script> --}}
