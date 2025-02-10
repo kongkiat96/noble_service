@@ -480,7 +480,8 @@ class getDataMasterModel extends Model
 
     public function getFullNameEmp($mapEmployee, $tag)
     {
-        $query = DB::connection('mysql')
+        try {
+            $query = DB::connection('mysql')
             ->table('tbt_employee AS empUser')
             ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
         if ($tag == 'mapEmpID') {
@@ -491,7 +492,15 @@ class getDataMasterModel extends Model
         $query = $query->where('empUser.deleted', 0)
             ->select(DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_name"))
             ->first();
+        // dd($query);
         return $query->employee_name;
+        } catch (Exception $e) {
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage(). ', mapEmployee: ' . $mapEmployee . ', tag: ' . $tag);
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return true;
+        }
+        
     }
 
     public function getDataWorker($useTag)

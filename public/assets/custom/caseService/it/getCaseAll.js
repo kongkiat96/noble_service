@@ -325,14 +325,20 @@ $(function () {
                 data: 'check_price',
                 class: "text-center",
                 render: function (data, type, row) {
-                    if (data == 0.00) {
+                    if (data == null) {
                         return `
                         <span class="badge bg-label-danger">รอบันทึกค่าใช้จ่าย</span>
                     `;
                     } else {
-                        return `
-                        <span class="badge bg-label-success">บันทึกค่าใช้จ่ายแล้ว</span>
-                    `;
+                        if(data == 0.00) {
+                            return `
+                            <span class="badge bg-label-secondary">` + data + `</span>
+                        `;
+                        } else {
+                            return `
+                            <span class="badge bg-label-warning">` + data + `</span>
+                        `;
+                        }
                     }
                 }
             },
