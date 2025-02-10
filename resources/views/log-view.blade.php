@@ -12,7 +12,7 @@
             color: #212529;
         }
         .log-container {
-            height: 80vh;
+            height: 75vh;
             overflow-y: auto;
             background-color: #fff;
             border-radius: 12px;
