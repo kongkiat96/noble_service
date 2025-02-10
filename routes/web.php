@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -447,22 +446,8 @@ Route::get('/route-cache', function () {
     return 'Routes cache has been cleared';
 });
 
-Route::get('/view-log/{year}/{month}/{day}', function () {
-    // กำหนด path ของ log file
-    $year = request('year');
-    $month = request('month');
-    $day = request('day');
-    $logFilePath = storage_path('logs/' . $year.'/'.$month.'/' .'autoCloseCase-'.$year.'-'.$month.'-'.$day.'.log');  // หรือ log ที่คุณต้องการใช้
-    // dd($logFilePath);
-    // ตรวจสอบว่ามีไฟล์ log หรือไม่
-    if (File::exists($logFilePath)) {
-        // อ่านข้อมูลจาก log file
-        $logContents = File::get($logFilePath);
-    } else {
-        // ถ้าไม่มีไฟล์ log ให้แสดงข้อความแจ้งเตือน
-        $logContents = "Log file not found!";
-    }
-
-    // ส่งข้อมูลไปยัง view
-    return view('log-view', ['logs' => $logContents, 'year' => $year, 'month' => $month, 'day' => $day]);
+Route::prefix('/view-log')->group(function () {
+    Route::get('/auto-close/', 'ViewLog\ViewLogController@viewLogAutoCloseCase');
+    Route::get('/error-all/', 'ViewLog\ViewLogController@viewLogErrorAll');
 });
+
