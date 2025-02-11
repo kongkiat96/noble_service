@@ -57,7 +57,7 @@ class CloseCaseModel extends Model
             })
             ->where('cs.deleted', '0')
             ->whereIn('cs.use_tag', $useTags)
-            ->whereRaw('DATEDIFF(CURDATE(), cs.case_start) >= ?', [1])
+            ->whereRaw('DATEDIFF(CURDATE(), cs.case_start) > ?', [1])
             ->where('cs.tag_user_approve', 'N')
             ->where('gs.group_status_en', 'success')
             ->where('cs.auto_close', 'N')
