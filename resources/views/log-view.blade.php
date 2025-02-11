@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Logs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -12,7 +13,7 @@
             color: #212529;
         }
         .log-container {
-            height: 75vh;
+            height: 70vh;
             overflow-y: auto;
             background-color: #fff;
             border-radius: 12px;
@@ -78,22 +79,38 @@
         .log-info { color: #87ceeb; }
         .log-success { color: #98c379; }
         .log-debug { color: #b19cd9; }
+        .filter-buttons {
+            margin-bottom: 1rem;
+        }
+        .filter-buttons button {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid py-4">
         <div class="header mb-3 d-flex justify-content-between align-items-center">
             <h4 class="mb-0">{{ $title }}</h4>
-            <span class="date-badge">{{ $date  }}</span>
+            <span class="date-badge">{{ $date }}</span>
         </div>
         
         <div class="row mb-3">
             <div class="col-md-4">
                 <form action="{{ url('/view-log') }}/{{ $url }}" method="GET" class="d-flex">
-                    <input type="date" name="date" class="form-control search-box" required>
-                    <button type="submit" class="btn btn-primary ml-2">Search</button>
+                    <input type="date" name="date" class="form-control search-box" required>&nbsp;
+                    <button type="submit" class="btn btn-primary ml-2"> Search</button>
                 </form>
             </div>
+        </div>
+
+        <!-- เพิ่มปุ่มกรอง log ตามระดับความสำคัญ -->
+        <div class="filter-buttons">
+            <button class="btn btn-primary" data-filter="all">All</button>
+            <button class="btn btn-danger" data-filter="error">Error</button>
+            <button class="btn btn-warning" data-filter="warning">Warning</button>
+            <button class="btn btn-info" data-filter="info">Info</button>
+            <button class="btn btn-success" data-filter="success">Success</button>
+            <button class="btn btn-secondary" data-filter="debug">Debug</button>
         </div>
 
         <div class="log-container">
@@ -105,21 +122,51 @@
     <script>
         $(document).ready(function() {
             const logContent = $('#log-contents');
-            let content = logContent.html();
-            
-            // Add color highlighting
-            content = content.replace(/ERROR|CRITICAL|ALERT|EMERGENCY/gi, '<span class="log-error">$&</span>');
-            content = content.replace(/WARNING/gi, '<span class="log-warning">$&</span>');
-            content = content.replace(/INFO/gi, '<span class="log-info">$&</span>');
-            content = content.replace(/SUCCESS/gi, '<span class="log-success">$&</span>');
-            content = content.replace(/DEBUG/gi, '<span class="log-debug">$&</span>');
-            
-            // Add line breaks and spacing
-            content = content.split('\n').map(line => 
-                `<div class="log-line">${line}</div>`
-            ).join('');
-            
-            logContent.html(content);
+            let originalContent = logContent.html();
+
+            // ฟังก์ชันเพิ่มสีและแบ่งบรรทัด
+            function highlightLogs(content) {
+                content = content.replace(/ERROR|CRITICAL|ALERT|EMERGENCY/gi, '<span class="log-error">$&</span>');
+                content = content.replace(/WARNING/gi, '<span class="log-warning">$&</span>');
+                content = content.replace(/INFO/gi, '<span class="log-info">$&</span>');
+                content = content.replace(/SUCCESS/gi, '<span class="log-success">$&</span>');
+                content = content.replace(/DEBUG/gi, '<span class="log-debug">$&</span>');
+                content = content.split('\n').map(line => 
+                    `<div class="log-line">${line}</div>`
+                ).join('');
+                return content;
+            }
+
+            // แสดง log พร้อมสี
+            logContent.html(highlightLogs(originalContent));
+
+            // ฟังก์ชันค้นหา log
+            $('#search-log').on('input', function() {
+                const searchText = $(this).val().toLowerCase();
+                const filteredContent = originalContent.split('\n').filter(line => 
+                    line.toLowerCase().includes(searchText)
+                ).join('\n');
+                logContent.html(highlightLogs(filteredContent));
+            });
+
+            // ฟังก์ชันกรอง log ตามระดับความสำคัญ
+            $('.filter-buttons button').on('click', function() {
+                const filter = $(this).data('filter');
+                let filteredContent = originalContent;
+
+                if (filter !== 'all') {
+                    filteredContent = originalContent.split('\n').filter(line => 
+                        line.toUpperCase().includes(filter.toUpperCase())
+                    ).join('\n');
+                }
+
+                // ตรวจสอบว่าหากไม่มี log ที่ตรงกับเงื่อนไข
+                if (filteredContent.trim() === '') {
+                    logContent.html('<div class="log-not-found">Log not found</div>');
+                } else {
+                    logContent.html(highlightLogs(filteredContent));
+                }
+            });
         });
     </script>
 </body>
