@@ -62,7 +62,7 @@ class SentNotifyModel extends Model
                 // dd($getDataDetail['message']['datadetail']);
                 $assetCheckNull = $mapData['asset_number'] == null ? '-' : $mapData['asset_number'];
                 $managerCheckNull = $mapData['manager_name'] == null ? '-' : $mapData['manager_name'];
-                $message = "*Ticket: " . $mapData['ticket'] . "*\n-------------------------\n*รายละเอียดการแจ้งซ่อม*\n- ฝ่ายที่ต้องการแจ้ง : " . $mapData['use_tag'] . " \n- รายการกลุ่มอุปกรณ์ : " . $mapData['category_main_name'] . " \n- รายการประเภทหมวดหมู่ : " . $mapData['category_type_name'] . " \n- อาการที่ต้องการแจ้งปัญหา : " . $mapData['category_detail_name'] . " \n- หมายเลขครุภัณฑ์ : " . $assetCheckNull . " \n- ผู้แจ้งปัญหา : " . $mapData['employee_other_case_name'] . " \n- ผู้บังคับบัญชา : " . $managerCheckNull . " \n- รายละเอียด : " . $mapData['case_detail'] . " \n- เวลา: " . $mapData['created_at'] . "\n\n[คลิกเพื่อตรวจสอบรายการ](" . $setURL . ")";
+                $message = "*No. : " . $mapData['ticket'] . "*\n-------------------------\n*รายละเอียดการแจ้งซ่อม*\n *กลุ่ม* : " . $mapData['category_main_name'] . " \n *หมวดหมู่* : " . $mapData['category_type_name'] . " \n *อาการ* : " . $mapData['category_detail_name'] . " \n *เลขครุภัณฑ์* : " . $assetCheckNull . " \n *ผู้แจ้ง* : " . $mapData['employee_other_case_name'] . " \n *ผู้อนุมัติแจ้งงาน* : " . $managerCheckNull . " \n *รายละเอียด* : " . $mapData['case_detail'] . " \n *วันและเวลาที่แจ้ง* : " . $mapData['created_at'] . "\n";
                 // dd($message);
                 SentNotifyModel::sentTelegramNotify($message, $tokenDetail);
                 return true;
