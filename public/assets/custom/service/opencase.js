@@ -5,7 +5,7 @@ $(document).ready(function () {
         const form = $("#formOpenCaseService")[0];
         const fv = setupFormValidationOpenCaseService(form);
         const formData = new FormData(form);
-        const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+        const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
         // Include files from Dropzone in formData
         const myDropzone = Dropzone.forElement("#pic-case");

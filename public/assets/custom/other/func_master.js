@@ -823,7 +823,7 @@ function AddPicMultiple(inputPicID) {
         multiplePic = new Dropzone(inputPicID, {
             previewTemplate: previewTemplate,
             parallelUploads: 1,
-            maxFilesize: 2,
+            maxFilesize: 5,
             maxFiles: 5,
             addRemoveLinks: true,
             acceptedFiles: 'image/*'

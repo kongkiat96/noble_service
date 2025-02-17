@@ -225,7 +225,7 @@ class CaseModel extends Model
             $sql = DB::connection('mysql')->table('tbt_case_service AS cs')
                 ->where(function ($query) use ($param) {
                     $query->where('cs.case_user_open', Auth::user()->emp_code)
-                        // ->orWhere('cs.manager_emp_id', Auth::user()->map_employee)
+                        ->orWhere('cs.employee_other_case', Auth::user()->map_employee)
                         ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
                 })
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
