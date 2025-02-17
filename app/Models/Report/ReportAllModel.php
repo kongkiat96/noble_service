@@ -145,7 +145,6 @@ class ReportAllModel extends Model
             }
 
             $data = $query->get();
-            // dd($data);
             $newArr = $data->map(function ($value) {
                 if (is_numeric($value->case_status)) {
                     $caseStatus = $this->getDataMasterModel->getStatusWorkForByID($value->case_status);
@@ -193,8 +192,12 @@ class ReportAllModel extends Model
                 'status' => 200,
                 "recordsTotal" => $dataCount,
                 "recordsFiltered" => $dataCount,
-                "data" => $newArr,
+                // "data" => $newArr,
+                "data" => mb_convert_encoding($newArr, 'UTF-8', 'auto'),
+                
             ];
+            // $testDebug = json_decode($returnData);
+            // log::info($returnData);
             // dd($returnData);
             return $returnData;
         } catch (Exception $e) {

@@ -79,6 +79,7 @@ $(document).ready(function () {
         var category_detail = $('#category_detail').val();
         var report_type = $('#reportType').val();
         // var category_type_id = $('#category_type_id').val();
+        var formSection = $('.form-block'); // Section ที่จะ block
         $.ajax({
             url: "/report/get-data-report/" + report_type,
             type: 'POST',
@@ -96,6 +97,9 @@ $(document).ready(function () {
                 category_type_id: category_type_id,
                 category_detail: category_detail,
             },
+            beforeSend: function () {
+                applyBlockUIOnload(formSection); // บล็อก UI ฟอร์ม
+            },
             success: function (data) {
                 // ล้างข้อมูลเก่าและอัปเดต DataTable
                 const table = $('.dt-search-datareport').DataTable();
@@ -109,6 +113,9 @@ $(document).ready(function () {
                     text: 'เกิดข้อผิดพลาดในการดึงข้อมูล',
                     showConfirmButton: false
                 });
+            },
+            complete: function () {
+                applyBlockUIOnload(formSection, false); // บล็อก UI ฟอร์ม
             }
         });
     });

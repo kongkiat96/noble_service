@@ -92,7 +92,7 @@
                 </div>
                 <input type="text" value="{{ encrypt($reportType) }}" id="reportType" name="reportType" hidden>
                 <div class="demo-inline-spacing text-center">
-                    <button type="button" class="btn btn-label-info btn-form-block-overlay" id="searchDataForReport">
+                    <button type="button" class="btn btn-label-info" id="searchDataForReport">
                         <span class="tf-icons bx bx-search me-1"></span>ค้นหาข้อมูล
                     </button>
                     <button type="button" class="btn btn-label-danger" id="resetSearchData">

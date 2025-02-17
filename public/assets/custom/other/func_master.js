@@ -189,6 +189,29 @@ $(document).on('click', '.btn-form-block-overlay', function () {
     }
 });
 
+function applyBlockUIOnload(element, show = true) {
+    var options = {
+        message: '<div class="spinner-border text-primary" role="status"></div>',
+        css: {
+            backgroundColor: 'transparent',
+            border: '0'
+        },
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8
+        }
+    };
+
+    if (element.length) {
+        if (show) {
+            element.block(options); // แสดง Block UI
+        } else {
+            element.unblock(); // ซ่อน Block UI
+        }
+    }
+}
+
+
 function removeValidationFeedback() {
     $('.fv-plugins-message-container.invalid-feedback').remove();
     $('.is-invalid').removeClass('is-invalid');
