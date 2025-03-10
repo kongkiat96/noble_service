@@ -651,8 +651,13 @@ class SetTypeCategoryModel extends Model
             $data['use_tag']    = $getCategoryAllID->use_tag;
             $data['created_at'] = now();
             $data['created_user'] = Auth::user()->emp_code;
-            // dd($data);
+            $data['mapSla'] = $data['sla'].$data['day'];
             unset($data['categoryAllID']);
+            unset($data['sla']);
+            unset($data['day']);
+            // dd($data);
+            $data['sla'] = $data['mapSla'];
+            unset($data['mapSla']);
             DB::connection('mysql')->table('tbm_category_list')->insert($data);
             return [
                 'status' => 200,
@@ -750,6 +755,12 @@ class SetTypeCategoryModel extends Model
         try {
             $data['updated_at'] = now();
             $data['updated_user'] = Auth::user()->emp_code;
+            $data['mapSla'] = $data['sla'].$data['day'];
+            unset($data['sla']);
+            unset($data['day']);
+            $data['sla'] = $data['mapSla'];
+            unset($data['mapSla']);
+            // dd($data);
             DB::connection('mysql')->table('tbm_category_list')->where('deleted', 0)->where('id', $categoryListID)->update($data);
             return [
                 'status' => 200,

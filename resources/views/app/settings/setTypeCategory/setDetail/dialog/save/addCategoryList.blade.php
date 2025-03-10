@@ -53,9 +53,19 @@
                     </div> --}}
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label-md mb-2" for="sla">SLA</label>
-                        <input type="text" id="sla" class="form-control" name="sla"
-                            autocomplete="off" placeholder="Ex. D3"/>
+                        <label class="form-label-md mb-2" for="sla">SLA <span class="text-danger">*</span></label>
+                        <div class="row">
+                            <div class="col-4 mt-1">
+                                <input type="radio" name="sla" id="D" value="D" class="form-check-input"><label class="form-check-label" for="D">&nbsp;&nbsp;วัน</label>
+                            </div>
+                            <div class="col-4 mt-1">
+                                <input type="radio" name="sla" id="H" value="H" class="form-check-input"><label class="form-check-label" for="H">&nbsp;&nbsp;ชั่วโมง</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="number" name="day" id="day" class="form-control" min="0">
+                            </div>
+                        </div>
+                        
                         <label class="form-label-md mb-2 text-danger mt-1" for="sla">(D = วัน, H = ชั่วโมง)</label>
 
                     </div>

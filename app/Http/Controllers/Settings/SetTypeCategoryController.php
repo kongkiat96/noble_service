@@ -349,14 +349,27 @@ class SetTypeCategoryController extends Controller
     {
         if (request()->ajax()) {
             $getDataCategoryList = $this->setCategoryModel->getDataCategoryListByID($categoryListID);
-            // dd($getDataCategoryList);
+            // dd($getDataCategoryList->sla);
             $getMasterChecker = $this->masterModel->getChecker($getDataCategoryList->use_tag);
             $getDataCategoryItem = $this->masterModel->getListCategoryItem($getDataCategoryList->category_detail_id);
             // dd($getDataCategoryItem);
+            $sla = $getDataCategoryList->sla; // ค่า SLA เช่น "D1", "H5", "D12"
+
+            // ใช้ Regular Expression เพื่อแยกตัวอักษร (D หรือ H) และตัวเลข
+            if (preg_match('/^([A-Za-z]+)(\d+)$/', $sla, $matches)) {
+                $sla_text = $matches[1]; // ตัวอักษร SLA เช่น "D" หรือ "H"
+                $sla_num = (int) $matches[2]; // ตัวเลข SLA เช่น 1, 5, 12
+            } else {
+                $sla_text = null;
+                $sla_num = null;
+            }
+            // dd($sla_text, $sla_num);
             return view('app.settings.setTypeCategory.setDetail.dialog.edit.editCategoryList', [
                 'dataCategoryList' => $getDataCategoryList,
                 'datamasterChecker' => $getMasterChecker,
-                'dataCategoryItem' => $getDataCategoryItem
+                'dataCategoryItem' => $getDataCategoryItem,
+                'dataSlaText'   => $sla_text,
+                'dataSlaNum'    => $sla_num
             ]);
         }
         return abort(404);
@@ -364,6 +377,7 @@ class SetTypeCategoryController extends Controller
 
     public function editCategoryList($categoryListID, Request $request)
     {
+        // dd($request);
         $dataCategory = $this->setCategoryModel->saveEditDataCategoryList($categoryListID, $request->input());
         return response()->json(['status' => $dataCategory['status'], 'message' => $dataCategory['message']]);
     }

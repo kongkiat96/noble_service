@@ -55,10 +55,25 @@
                             value="{{ $dataCategoryList->processing }}" />
                     </div> --}}
 
-                    <div class="col-md-6 mb-3">
+                    {{-- <div class="col-md-6 mb-3">
                         <label class="form-label-md mb-2" for="sla">SLA</label>
                         <input type="text" id="sla" class="form-control" name="sla" autocomplete="off"
                             value="{{ $dataCategoryList->sla }}" />
+                    </div> --}}
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label-md mb-2" for="sla">SLA</label>
+                        <div class="row">
+                            <div class="col-4 mt-1">
+                                <input type="radio" name="sla" id="D" value="D" class="form-check-input" {{ $dataSlaText == 'D' ? 'checked' : '' }}><label class="form-check-label" for="D">&nbsp;&nbsp;วัน</label>
+                            </div>
+                            <div class="col-4 mt-1">
+                                <input type="radio" name="sla" id="H" value="H" class="form-check-input" {{ $dataSlaText == 'H' ? 'checked' : '' }}><label class="form-check-label" for="H">&nbsp;&nbsp;ชั่วโมง</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="number" name="day" id="day" class="form-control" min="0" value="{{ $dataSlaNum }}">
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="col-md-6">
