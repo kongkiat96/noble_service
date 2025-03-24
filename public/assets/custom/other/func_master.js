@@ -1133,6 +1133,7 @@ function badgeStatusTagWork(data, type, full, row) {
         case_reject: { title: 'งานไม่เรียบร้อย / ไม่ผ่านการตรวจสอบ', className: 'bg-label-danger' },
 
         auto_close_case: { title: 'ปิดงานอัตโนมัติ', className: 'bg-label-secondary' },
+        auto_close_case_wait_recheck: { title: 'ผ่านการตรวจสอบงานอัตโนมัติจากระบบ	', className: 'bg-label-warning' },
     };
 
     if (!statusTagWork[data]) {

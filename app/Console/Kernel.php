@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\updateAutoCloseCase::class
+        Commands\updateAutoCloseCase::class,
+        Commands\updateAutoCloseCaseForMT::class
     ];
 
     /**
@@ -27,8 +28,12 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('updateAutoCloseCase:runbatch --updateAutoCloseCase')
-                ->daily()
-                ->at('23:00');
+            ->daily()
+            ->at('23:00');
+
+        $schedule->command('updateAutoCloseCaseForMT:runbatch --updateAutoCloseCaseForMT')
+            ->daily()
+            ->at('23:00');
     }
 
     /**
@@ -38,7 +43,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

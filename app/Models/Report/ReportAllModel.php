@@ -65,7 +65,7 @@ class ReportAllModel extends Model
                 })
                 ->leftJoin('tbt_case_service_history AS csh_check_user', function ($join) {
                     $join->on('cs.id', '=', 'csh_check_user.case_service_id')
-                        ->whereIn('csh_check_user.case_status', ['case_success_user', 'auto_close_case', DB::raw("CONCAT('reject_manager_approve_', cs.use_tag)"), DB::raw("CONCAT('reject_manager_', cs.use_tag, '_approve')")]);
+                        ->whereIn('csh_check_user.case_status', ['case_success_user', 'auto_close_case','auto_close_case_wait_recheck', DB::raw("CONCAT('reject_manager_approve_', cs.use_tag)"), DB::raw("CONCAT('reject_manager_', cs.use_tag, '_approve')")]);
                 })
                 ->leftJoin('tbt_employee AS em', 'cs.employee_other_case', '=', 'em.ID')
                 ->leftJoin('tbm_branch AS br', 'em.branch_id', '=', 'br.id')

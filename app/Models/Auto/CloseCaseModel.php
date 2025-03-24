@@ -16,14 +16,12 @@ class CloseCaseModel extends Model
     {
         try {
             $caseTypes = [
-                'IT' => ['IT', 'permission', 'cctv'],
-                'MT' => ['MT']
+                'IT' => ['IT', 'permission', 'cctv']
             ];
 
             foreach ($caseTypes as $type => $tags) {
                 $cases = $this->getAutoCloseCases($tags);
                 $count = $cases->count(); // นับจำนวนรายการของแต่ละกลุ่ม
-
                 // Log จำนวนรายการในกลุ่ม
                 Log::channel('autoCloseCase')->info("Group: {$type}, Total Cases: {$count}");
 
@@ -33,6 +31,33 @@ class CloseCaseModel extends Model
                 }
             }
             DB::statement("CALL auto_close_cases()");
+            Log::channel('autoCloseCase')->info("Stored Procedure auto_close_cases() executed successfully.");
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function updateAutoCloseCaseForMT()
+    {
+        try {
+            $caseTypes = [
+                'MT' => ['MT']
+            ];
+
+            foreach ($caseTypes as $type => $tags) {
+                $cases = $this->getAutoCloseCases($tags);
+                $count = $cases->count(); // นับจำนวนรายการของแต่ละกลุ่ม
+                // dd($cases);
+                // Log จำนวนรายการในกลุ่ม
+                Log::channel('autoCloseCase')->info("Group: {$type}, Total Cases: {$count}");
+
+                // Log รายละเอียดของแต่ละ case
+                foreach ($cases as $case) {
+                    Log::channel('autoCloseCase')->info("Ticket: " . $case->ticket);
+                }
+            }
+            DB::statement("CALL auto_close_cases_for_mt()");
             Log::channel('autoCloseCase')->info("Stored Procedure auto_close_cases() executed successfully.");
 
         } catch (Exception $e) {
