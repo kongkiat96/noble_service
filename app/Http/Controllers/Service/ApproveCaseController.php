@@ -114,7 +114,16 @@ class ApproveCaseController extends Controller
         try {
             $setInput = $request->input();
             // dd($setInput);
-            if(isset($setInput['category_type']) && isset($setInput['category_detail'])) {
+            $mapLog = [
+                'change_category' => $setInput,
+                'case_ID' => decrypt($caseID),
+                'user_ID' => Auth::user()->emp_code,
+                'date_time' => date('Y-m-d H:i:s')
+            ];
+            Log::info('--- Change Category ---');
+            Log::info($mapLog);
+            Log::info('--- End Change Category ---');
+            if (isset($setInput['category_type']) && isset($setInput['category_detail'])) {
                 $setNewInput = [
                     'category_main' => $setInput['category_main'],
                     'category_type' => $setInput['category_type'],
@@ -132,8 +141,15 @@ class ApproveCaseController extends Controller
             $saveCase = $this->approveCaseModel->saveChangeCategory($setNewInput, $decryptCaseID);
             return response()->json(['status' => $saveCase['status'], 'message' => $saveCase['message']]);
         } catch (Exception $e) {
-        
-    }}
+            // บันทึกข้อความผิดพลาดลงใน Log
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage());
+            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
+            return [
+                'status' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 
     public function realtimeCaseApproveCount()
     {
