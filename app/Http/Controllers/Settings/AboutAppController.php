@@ -80,7 +80,7 @@ class AboutAppController extends Controller
     public function getPublicFolderSize()
     {
         $folderPath = 'uploads/caseService'; // โฟลเดอร์ที่ต้องการตรวจสอบ
-        $limitMB = 500; // ขนาดสูงสุดที่กำหนด (MB)
+        $limitMB = 2000; // ขนาดสูงสุดที่กำหนด (MB)
 
         // คำนวณขนาดโฟลเดอร์
         $folderSizeBytes = $this->calculateFolderSize($folderPath);

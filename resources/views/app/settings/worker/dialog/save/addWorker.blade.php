@@ -23,8 +23,8 @@
                         <label class="form-label-md mb-2" for="use_tag">การปฏิบัติงานของฝ่าย <span class="text-danger">*</span></label>
                         <select id="use_tag" name="use_tag" class="form-select select2" data-allow-clear="true">
                             <option value="">Select</option>
-                            <option value="it">ปฏิบัติงานเฉพาะ ITs</option>
-                            <option value="mt">ปฏิบัติงานเฉพาะ MTs</option>
+                            <option value="it">ปฏิบัติงานเฉพาะ ICT</option>
+                            <option value="mt">ปฏิบัติงานเฉพาะ CMM</option>
                             <option value="all">ทำงานทั้งหมด</option>
                         </select>
                     </div>

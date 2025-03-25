@@ -184,7 +184,8 @@ class CaseServiceMTModel extends Model
                     'cd.category_detail_name',
                     DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"),
                     DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"),
-                    'sw.status_name'
+                    'sw.status_name',
+                    'sw.status_color'
                 );
 
             if ($param['start'] == 0) {
@@ -211,7 +212,8 @@ class CaseServiceMTModel extends Model
                     'manager_name'   => $value->manager_name,
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
                     'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
-                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode')
+                    'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode'),
+                    'status_color'  => $value->status_color
                 ];
             }
 
@@ -290,7 +292,7 @@ class CaseServiceMTModel extends Model
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
                     'created_user'  => $this->getMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
                     'updated_user'  => empty($value->updated_user) ? '-' : $this->getMasterModel->getFullNameEmp($value->updated_user, 'mapEmpCode'),
-                    'check_price'   => $value->price
+                    'check_price'   => number_format($value->price, 2),
                 ];
             }
 

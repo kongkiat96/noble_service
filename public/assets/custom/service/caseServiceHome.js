@@ -78,7 +78,18 @@ $(function () {
             {
                 data: 'case_status',
                 class: "text-center",
-                render: badgeStatusTagWork
+                render: function (data, type, row) {
+                    // console.log(row.status_color)
+                    // return badgeStatusTagWork(data);
+                    let color = row.status_color;
+
+                    // เช็กว่ามี "#" อยู่ในข้อความหรือไม่
+                    if (typeof color === 'string' && color.includes('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data);
+                    }
+                }
             },
             {
                 data: 'employee_other_case',
@@ -190,7 +201,18 @@ $(function () {
             {
                 data: 'case_status',
                 class: "text-center",
-                render: badgeStatusTagWork
+                render: function (data, type, row) {
+                    // console.log(row.status_color)
+                    // return badgeStatusTagWork(data);
+                    let color = row.status_color;
+
+                    // เช็กว่ามี "#" อยู่ในข้อความหรือไม่
+                    if (typeof color === 'string' && color.includes('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data);
+                    }
+                }
             },
             {
                 data: 'employee_other_case',
@@ -303,7 +325,18 @@ $(function () {
             {
                 data: 'case_status',
                 class: "text-center",
-                render: badgeStatusTagWork
+                render: function (data, type, row) {
+                    // console.log(row.status_color)
+                    // return badgeStatusTagWork(data);
+                    let color = row.status_color;
+
+                    // เช็กว่ามี "#" อยู่ในข้อความหรือไม่
+                    if (typeof color === 'string' && color.includes('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data);
+                    }
+                }
             },
             {
                 data: 'employee_other_case',

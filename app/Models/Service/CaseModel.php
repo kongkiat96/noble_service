@@ -228,6 +228,7 @@ class CaseModel extends Model
                         ->orWhere('cs.employee_other_case', Auth::user()->map_employee)
                         ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
                 })
+                ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
                 ->leftJoin('tbm_category_type AS ct', 'cs.category_type', '=', 'ct.id')
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
@@ -242,7 +243,7 @@ class CaseModel extends Model
                 $sql = $sql->where('cs.use_tag', 'MT');
             }
             $sql = $sql->where('cs.deleted', 0)
-                ->select('cs.*', 'cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
+                ->select('cs.*', 'sw.status_color','cm.category_main_name', 'ct.category_type_name', 'cd.category_detail_name', DB::raw("CONCAT(pre.prefix_name,' ',em.first_name,' ',em.last_name) as manager_name"), DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_other_case_name"));
 
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('cs.created_at', 'desc')->get();
@@ -276,7 +277,8 @@ class CaseModel extends Model
                     'employee_other_case'   => $value->employee_other_case_name,
                     'manager_name'   => $value->manager_name ?? '-',
                     'case_start'   => empty($value->case_start) ? '-' : $value->case_start,
-                    'created_user'  => $this->getDataMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode')
+                    'created_user'  => $this->getDataMasterModel->getFullNameEmp($value->created_user, 'mapEmpCode'),
+                    'status_color'  => $value->status_color
                 ];
             }
             // dd($newArr);
@@ -509,6 +511,7 @@ class CaseModel extends Model
                 ->table('tbt_case_service_history AS h')
                 ->leftJoin('tbt_employee AS emp', 'h.created_user', '=', 'emp.employee_code')
                 ->leftJoin('tbm_prefix_name AS pre', 'emp.prefix_id', '=', 'pre.ID')
+                ->leftJoin('tbm_status_work AS sw', 'h.case_status', '=', 'sw.ID')
                 ->where('case_service_id', $param['caseID'])
                 ->select(
                     'h.id AS hId',
@@ -517,7 +520,8 @@ class CaseModel extends Model
                     'h.price AS hPrice',
                     'h.created_at AS hCreatedAt',
                     'h.created_user AS hCreatedUser',
-                    DB::raw("CONCAT(pre.prefix_name,' ',emp.first_name,' ',emp.last_name) AS hCreatedUserName")
+                    DB::raw("CONCAT(pre.prefix_name,' ',emp.first_name,' ',emp.last_name) AS hCreatedUserName"),
+                    'sw.status_color AS setStatusColor'
                 );
             if ($param['start'] == 0) {
                 $sql = $sql->limit($param['length'])->orderBy('h.created_at', 'desc')->get();
@@ -549,6 +553,7 @@ class CaseModel extends Model
                     'CasePrice'     => number_format($value->hPrice, 2) ?? '0.00',
                     'CreatedAt'     => $value->hCreatedAt ?? '-',
                     'CreatedUserName' => $value->hCreatedUserName ?? $value->hCreatedUser,
+                    'status_color'  => $value->setStatusColor
                 ];
             }
             // dd($newArr);

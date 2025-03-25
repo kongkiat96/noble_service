@@ -44,7 +44,19 @@ $(function () {
             {
                 data: 'CaseStatus',
                 class: "text-center",
-                render: badgeStatusTagWork
+                // render: badgeStatusTagWork
+                render: function (data, type, row) {
+                    console.log(row.status_color); // Debug ค่า status_color
+
+                    let color = row.status_color;
+
+                    // ตรวจสอบว่า color เป็น string และขึ้นต้นด้วย #
+                    if (typeof color === 'string' && color.startsWith('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data); // ใช้ค่าเดิมถ้าไม่มี #
+                    }
+                }
             },
             {
                 data: 'CaseDetail',

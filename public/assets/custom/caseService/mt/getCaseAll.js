@@ -222,7 +222,16 @@ $(function () {
                 data: 'case_status',
                 class: "text-center",
                 render: function (data, type, row) {
-                    return badgeStatusTagWork(data);
+                    // console.log(row.status_color)
+                    // return badgeStatusTagWork(data);
+                    let color = row.status_color;
+
+                    // เช็กว่ามี "#" อยู่ในข้อความหรือไม่
+                    if (typeof color === 'string' && color.includes('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data);
+                    }
                 }
             },
             {
@@ -330,7 +339,7 @@ $(function () {
                         <span class="badge bg-label-danger">รอบันทึกค่าใช้จ่าย</span>
                     `;
                     } else {
-                        if(data == 0.00) {
+                        if (data == 0.00) {
                             return `
                             <span class="badge bg-label-secondary">` + data + `</span>
                         `;
@@ -339,7 +348,6 @@ $(function () {
                             <span class="badge bg-label-warning">` + data + `</span>
                         `;
                         }
-                        
                     }
                 }
             },
@@ -457,9 +465,17 @@ function getDetailCase(ticket) {
                 {
                     data: 'CaseStatus',
                     class: "text-center",
-                    // render: badgeStatusTagWork
                     render: function (data, type, row) {
-                        return badgeStatusTagWork(data);
+                        console.log(row.status_color); // Debug ค่า status_color
+
+                        let color = row.status_color;
+
+                        // ตรวจสอบว่า color เป็น string และขึ้นต้นด้วย #
+                        if (typeof color === 'string' && color.startsWith('#')) {
+                            return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                        } else {
+                            return badgeStatusTagWork(data); // ใช้ค่าเดิมถ้าไม่มี #
+                        }
                     }
                 },
                 {
