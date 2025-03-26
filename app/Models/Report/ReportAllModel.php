@@ -133,7 +133,8 @@ class ReportAllModel extends Model
                 'cs.checker',
                 'cs.price',
                 'cs.case_end',
-                'cs.case_start'
+                'cs.case_start',
+                'sw.status_color AS getColor'
             ]);
 
             if ($parameter['start'] == 0) {
@@ -184,7 +185,8 @@ class ReportAllModel extends Model
                     'checker' => $value->checker ? implode(', ', array_map(function ($checker) {
                         return $checker->name;
                     }, json_decode($value->checker))) : '-',
-                    'price' => !empty($value->price) ? $value->price : '-',
+                    'price' => !empty($value->price) ? number_format($value->price, 2) : '-',
+                    'status_color'  => $value->getColor
                 ];
             })->toArray();
 

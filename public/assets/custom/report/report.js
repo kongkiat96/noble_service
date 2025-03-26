@@ -25,10 +25,26 @@ $(function () {
                 },
             },
             { data: "ticket", class: "text-nowrap" },
+            // {
+            //     data: 'case_status',
+            //     class: "text-center",
+            //     render: badgeStatusTagWork
+            // },
             {
                 data: 'case_status',
                 class: "text-center",
-                render: badgeStatusTagWork
+                render: function (data, type, row) {
+                    // console.log(row.status_color)
+                    // return badgeStatusTagWork(data);
+                    let color = row.status_color;
+
+                    // เช็กว่ามี "#" อยู่ในข้อความหรือไม่
+                    if (typeof color === 'string' && color.includes('#')) {
+                        return `<span class="badge" style="background-color: ${color};">${data}</span>`;
+                    } else {
+                        return badgeStatusTagWork(data);
+                    }
+                }
             },
             { data: "case_open", class: "text-nowrap" },
             { data: "sv_approve_date", class: "text-nowrap" },
