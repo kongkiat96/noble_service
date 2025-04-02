@@ -296,7 +296,8 @@ class CaseServiceController extends Controller
             ->pluck('name')
             ->implode(', ');
 
-        if ($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT') {
+        // if ($getCaseDetail['message']['datadetail']['use_tag_code'] == 'IT') {
+            if (in_array($getCaseDetail['message']['datadetail']['use_tag_code'], ['IT', 'cctv', 'permission'])) {
             $setTitle = 'ฝ่ายไอที (ICT)';
         } else {
             $setTitle = 'ฝ่ายช่าง (CMM)';
