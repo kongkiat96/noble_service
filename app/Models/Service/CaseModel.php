@@ -226,7 +226,8 @@ class CaseModel extends Model
                 ->where(function ($query) use ($param) {
                     $query->where('cs.case_user_open', Auth::user()->emp_code)
                         ->orWhere('cs.employee_other_case', Auth::user()->map_employee)
-                        ->orWhere('cs.sub_emp_id', Auth::user()->map_employee);
+                        ->orWhere('cs.sub_emp_id', Auth::user()->map_employee)
+                        ->orWhere('cs.manager_emp_id', Auth::user()->map_employee);
                 })
                 ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
                 ->leftJoin('tbm_category_main AS cm', 'cs.category_main', '=', 'cm.id')
@@ -756,7 +757,8 @@ class CaseModel extends Model
                 ->where('cs.deleted', 0)
                 ->where(function ($query) {
                     $query->where('cs.case_user_open', Auth::user()->emp_code)
-                        ->orWhere('cs.employee_other_case', Auth::user()->map_employee);
+                        ->orWhere('cs.employee_other_case', Auth::user()->map_employee)
+                        ->orWhere('cs.manager_emp_id', Auth::user()->map_employee);
                 })
                 ->leftJoin('tbm_status_work AS sw', 'cs.case_status', '=', 'sw.ID')
                 ->leftJoin('tbm_group_status AS gs', 'sw.group_status', '=', 'gs.id');
