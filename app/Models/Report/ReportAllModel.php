@@ -32,16 +32,6 @@ class ReportAllModel extends Model
                 ->leftJoin('tbm_category_detail AS cd', 'cs.category_detail', '=', 'cd.id')
                 ->leftJoin('tbm_category_item AS ci', 'cs.case_item', '=', 'ci.id')
                 ->leftJoin('tbm_category_list AS cl', 'cs.case_list', '=', 'cl.id')
-
-                // ->leftJoin('tbt_case_service_history AS csh_manager', function ($join) {
-                //     $join->on('cs.id', '=', 'csh_manager.case_service_id')
-                //         // ->whereColumn('csh_manager.case_status', DB::raw("CONCAT('manager_approve_', cs.use_tag)"));
-                //         ->whereIn('csh_manager.case_status', [
-                //             DB::raw("CONCAT('manager_approve_', cs.use_tag)"),
-                //             DB::raw("CONCAT('reject_manager_approve_', cs.use_tag)")
-                //         ])->latest('csh_manager.created_at')->limit(1);
-                //         // ->where('csh_manager.case_step', '!=', 'wait_manager_it_approve');
-                // })
                 ->leftJoin('tbt_case_service_history AS csh_manager', function ($join) {
                     $join->on('cs.id', '=', 'csh_manager.case_service_id')
                         ->whereIn('csh_manager.case_status', [

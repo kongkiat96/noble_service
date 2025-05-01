@@ -170,7 +170,7 @@ class CaseModel extends Model
             // หากการบันทึกสำเร็จ
             if ($caseService) {
                 // บันทึกประวัติลงในตาราง tbt_case_service_history
-                SentNotifyModel::setDataCaseToSend($caseService);
+                // SentNotifyModel::setDataCaseToSend($caseService);
 
                 DB::connection('mysql')->table('tbt_case_service_history')->insert([
                     'case_service_id' => $caseService,

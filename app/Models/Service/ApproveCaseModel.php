@@ -3,6 +3,7 @@
 namespace App\Models\Service;
 
 use App\Models\Master\getDataMasterModel;
+use App\Models\Notify\SentNotifyModel;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -315,7 +316,6 @@ class ApproveCaseModel extends Model
     public function saveApproveCaseManager($data, $caseID)
     {
         try {
-            // dd($data);
             $getDataCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->first();
             if ($data['case_status'] == 'manager_approve') {
                 if ($getDataCase->use_tag == 'MT') {
@@ -328,11 +328,11 @@ class ApproveCaseModel extends Model
             } else {
                 $case_step      = $data['case_status'];
             }
-
-
-
             // dd($case_step,$case_status);
             if ($getDataCase) {
+                if(in_array($data['case_status'], ['manager_approve'])){
+                    SentNotifyModel::setDataCaseToSend($caseID);
+                }
                 $updateCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->update([
                     'case_status' => $data['case_status'] . '_' . $getDataCase->use_tag,
                     'case_step' => $case_step,
@@ -390,6 +390,11 @@ class ApproveCaseModel extends Model
             $case_step = $data['case_status'];
             $case_status = $data['case_status'];
             if ($getDataCase) {
+                
+                // if(in_array($case_status, ['manager_mt_approve',''])){
+                //     SentNotifyModel::setDataCaseToSend($caseID);
+                // }
+                
                 $updateCase = DB::connection('mysql')->table('tbt_case_service')->where('id', $caseID)->update([
                     'case_status' => $case_status,
                     'case_step' => $case_step,

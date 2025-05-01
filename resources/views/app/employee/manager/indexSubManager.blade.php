@@ -114,7 +114,7 @@
                         <div class="inline-spacing text-end">
                             @if (Auth::user()->user_system != 'Viewer')
                                 <button type="button" class="btn btn-info" id="addSubManager">
-                                    <i class='menu-icon tf-icons bx bx-git-repo-forked'></i> เพิ่มข้อมูลรายการผู้บังคับบัญชา
+                                    <i class='menu-icon tf-icons bx bx-git-repo-forked'></i> เพิ่มข้อมูลรายการผู้ใต้บังคับบัญชา
                                 </button>
                             @endif
                         </div>
