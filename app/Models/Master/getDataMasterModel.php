@@ -481,7 +481,7 @@ class getDataMasterModel extends Model
     public function getFullNameEmp($mapEmployee, $tag)
     {
         try {
-            Log::info('Data' . $mapEmployee);
+            // Log::info('Data : ' . $mapEmployee);
             $query = DB::connection('mysql')
             ->table('tbt_employee AS empUser')
             ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
@@ -494,6 +494,7 @@ class getDataMasterModel extends Model
             ->select(DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_name"))
             ->first();
         // dd($query);
+        Log::info('Data : ' . $query);
         return $query->employee_name;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
