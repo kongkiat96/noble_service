@@ -481,6 +481,7 @@ class getDataMasterModel extends Model
     public function getFullNameEmp($mapEmployee, $tag)
     {
         try {
+            Log::info('Data' . $mapEmployee);
             $query = DB::connection('mysql')
             ->table('tbt_employee AS empUser')
             ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
@@ -496,7 +497,7 @@ class getDataMasterModel extends Model
         return $query->employee_name;
         } catch (Exception $e) {
             // บันทึกข้อความผิดพลาดลงใน Log
-            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage(). ', mapEmployee: ' . $mapEmployee . ', tag: ' . $tag);
+            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage(). ', mapEmployee: ' . $mapEmployee . ', tag: ' . $tag . ', query: ' . $query);
             // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
             return true;
         }
