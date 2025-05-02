@@ -481,29 +481,45 @@ class getDataMasterModel extends Model
     public function getFullNameEmp($mapEmployee, $tag)
     {
         try {
-            // Log::info('Data : ' . $mapEmployee);
             $query = DB::connection('mysql')
-            ->table('tbt_employee AS empUser')
-            ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
-        if ($tag == 'mapEmpID') {
-            $query =  $query->where('empUser.ID', $mapEmployee);
-        } else if ($tag = 'mapEmpCode') {
-            $query =  $query->where('empUser.employee_code', $mapEmployee);
+                ->table('tbt_employee AS empUser')
+                ->leftJoin('tbm_prefix_name AS preUser', 'empUser.prefix_id', '=', 'preUser.ID');
+
+            if ($tag == 'mapEmpID') {
+                $query = $query->where('empUser.ID', $mapEmployee);
+            } else if ($tag == 'mapEmpCode') {
+                $query = $query->where('empUser.employee_code', $mapEmployee);
+            }
+
+            $result = $query->where('empUser.deleted', 0)
+                ->select(DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_name"))
+                ->first();
+
+            // Log::info('Employee query result: ' . json_encode($result));
+
+            // return $result ? $result->employee_name : null;
+            if ($result) {
+                // Log::info('Returning employee name: ' . $result->employee_name);
+                return $result->employee_name;
+            } else {
+                // Log::warning('No employee data found.', [
+                //     'mapEmployee' => $mapEmployee,
+                //     'tag' => $tag
+                // ]);
+                return null;
+            }
+        } catch (\Throwable $e) {
+            Log::error(
+                'Error in ' . get_class($this) . '::' . __FUNCTION__ .
+                    ', responseCode: ' . $e->getCode() .
+                    ', responseMessage: ' . $e->getMessage() .
+                    ', mapEmployee: ' . $mapEmployee .
+                    ', tag: ' . $tag
+            );
+            return null;
         }
-        $query = $query->where('empUser.deleted', 0)
-            ->select(DB::raw("CONCAT(preUser.prefix_name,' ',empUser.first_name,' ',empUser.last_name) as employee_name"))
-            ->first();
-        // dd($query);
-        Log::info('Data : ' . $query);
-        return $query->employee_name;
-        } catch (Exception $e) {
-            // บันทึกข้อความผิดพลาดลงใน Log
-            Log::error('Error in ' . get_class($this) . '::' . __FUNCTION__ . ', responseCode: ' . $e->getCode() . ', responseMessage: ' . $e->getMessage(). ', mapEmployee: ' . $mapEmployee . ', tag: ' . $tag . ', query: ' . $query);
-            // ส่งคืนข้อมูลสถานะเมื่อเกิดข้อผิดพลาด
-            return true;
-        }
-        
     }
+
 
     public function getDataWorker($useTag)
     {
@@ -674,16 +690,16 @@ class getDataMasterModel extends Model
         return $getMenuName;
     }
 
-    public function searchCaseApprove($categoryMain,$categoryType,$categoryDetail)
+    public function searchCaseApprove($categoryMain, $categoryType, $categoryDetail)
     {
         $searchData = DB::connection('mysql')->table('tbm_set_approve_case')
-        ->where('category_main', $categoryMain)
-        ->where('category_type', $categoryType)
-        ->where('category_detail', $categoryDetail)
-        ->where('status_use',1)
-        ->where('deleted', 0)->first();
+            ->where('category_main', $categoryMain)
+            ->where('category_type', $categoryType)
+            ->where('category_detail', $categoryDetail)
+            ->where('status_use', 1)
+            ->where('deleted', 0)->first();
         // dd($searchData);
-        if($searchData){
+        if ($searchData) {
             return $searchData->use_tag;
         } else {
             return null;
@@ -693,10 +709,10 @@ class getDataMasterModel extends Model
     public function branchEmployee($employeeID)
     {
         $query = DB::connection('mysql')->table('tbt_employee AS emp')
-        ->leftJoin('tbm_branch AS branch', 'emp.branch_id', '=', 'branch.id')
-        ->where('emp.ID', $employeeID)->where('emp.deleted', 0)
-        ->select(DB::raw("CONCAT(branch.branch_name,' (',branch.branch_code,')') as branch_name"))
-        ->first();
+            ->leftJoin('tbm_branch AS branch', 'emp.branch_id', '=', 'branch.id')
+            ->where('emp.ID', $employeeID)->where('emp.deleted', 0)
+            ->select(DB::raw("CONCAT(branch.branch_name,' (',branch.branch_code,')') as branch_name"))
+            ->first();
         // dd($query);
         return $query->branch_name;
     }
